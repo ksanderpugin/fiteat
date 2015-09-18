@@ -318,9 +318,10 @@ h2{
 	display: table-row;
 }
 
-#login_form_buttons > div > div{
+#login_form_buttons > div > a{
 	display: table-cell;
 	margin: 0;
+	padding: 0;
 }
 
 /*
@@ -333,10 +334,12 @@ h2{
 	min-width: 50px;
 	background-position: top;
 	background-repeat: no-repeat;
+	background-color: transparent !important;
 }
 
 .login_form_soc_button:hover{
 	background-position: bottom;
+	background-color: #30ba8f !important;
 }
 
 #vk{
