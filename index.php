@@ -49,16 +49,58 @@ $r_html = render(__DIR__ . "/views/mr_slide.php",["recipes" => $r_data]);
 			<div class="header_button header_left_button"><a href="#">Рецепты</a></div>
 			<div class="header_button header_left_button"><a href="diary.html">Дневник питания</a></div>
 			<div class="header_button header_left_button"><a href="#">Мой стол</a></div>
-
+			<!--
 			<div class="header_button header_right_button header_menu_login">
 				<div class="not_logged_in header_menu_name" onclick="logIn('in')">Войти
-					<!--<a href="<?=$fb_url?>">fb</a>//-->
 					<a href="<?=$vk_url?>">vk</a>
 				</div>
 				<div class="logged_in header_menu_name" onclick="">Ryzhova Olga</div>
 				<div class="header_menu_user_settings">
 					<div class="logged_in" onclick="">Настройки</div>
 					<div class="logged_in" onclick="logIn('out')">Выйти</div>
+				</div>
+			</div>
+			-->
+
+			<div class="header_button header_right_button header_menu_login">
+				<div class="not_logged_in header_menu_name">Вход</div>
+				<div class="logged_in header_menu_name" onclick="">Ryzhova Olga</div>
+				<div class="header_menu_user_settings">
+					<div class="logged_in" onclick="">Настройки</div>
+					<div class="logged_in" onclick="logIn('out')">Выйти</div>
+				</div>
+				<div class="header_menu_user_settings">
+					<!--<div class="not_logged_in" onclick="">Нечто довольно таки странное...</div>-->
+					<form class="not_logged_in login_form">
+
+						<p>Email</p>
+						<span id="">
+							<input type="text" placeholder="example@mail.com" name="name">
+						</span>
+
+						<p>Пароль</p>
+						<span id="">
+							<input type="text" placeholder="********" name="contacts">
+						</span>
+
+						<div id="login_form_buttons">
+							<div>
+								<div id="login_button_container" onclick="logIn('in')">
+									Войти
+									<!--<input type="submit" class="" name="loginDataSubmit" onclick="logIn('in')" value="Войти" />-->
+									<!--<div id="login_button_container_line"></div>-->
+								</div>
+								<div class="login_form_soc_button" id="fb">&nbsp;</div>
+								<div class="login_form_soc_button" id="vk">
+									<!--<a href="<?=$vk_url?>">&nbsp;</a>-->
+								</div>
+								<div class="login_form_soc_button" id="tw">&nbsp;</div>
+							</div>
+						</div>
+
+						<!--<div onclick="logIn('in')">Войти</div>-->
+					</form>
+					<!--<div class="not_logged_in" onclick="logIn('in')">Войти</div>-->
 				</div>
 			</div>
 
