@@ -1,6 +1,6 @@
 ﻿<?php foreach($recipes as $recipe) : ?>
 <div class="mr_slide">
-    <div class="mr_slide_pic" style="background-image: url(http://<?=$_SERVER['SERVER_NAME']?>/<?=$recipe['img']?>);"></div>
+    <div class="mr_slide_pic" style="background-image: url(<?=$recipe['img']?>);"></div>
     <div class="mr_slide_text">
         <p class="mr_slide_name"><?=$recipe['name']?></p>
         <p>На 100 грамм: <span><?=sprintf("%.2f",$recipe['k'])?> ккал</span></p>
