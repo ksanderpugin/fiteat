@@ -246,6 +246,15 @@ h2{
 	font-size: 12px;
 }
 
+.login_form input[type=password]{
+	height: 20px;
+	width: 180px;
+	margin: 0 10px 0 10px;
+	padding: 0 7px 0 7px;
+	border-radius: 10px;
+	border: 1px solid #797979;
+}
+
 .login_form input[type=text]{
 	height: 20px;
 	width: 180px;
@@ -953,6 +962,23 @@ q:after {
 	cursor: pointer;
 }
 
+.sidebar_menu_body > span{
+	height: 35px;
+	display: block;
+}
+
+.sidebar_menu_body > span > input[type=text]{
+	margin: 5px 0 0 10px;
+	height: 22px;
+	width: 80%;
+}
+
+.sidebar_menu_body > span > input[type=password]{
+	margin: 5px 0 0 10px;
+	height: 22px;
+	width: 80%;
+}
+
 .sidebar_menu_body > p:hover{
 	color: #30ba8f;
 }
@@ -965,6 +991,20 @@ q:after {
 
 .sidebar_menu_body a{
 	margin-left: 10px;
+}
+
+.sidebar_menu_form_soc_button a{
+	width: 35px;
+	height: 35px;
+	display: block;
+	background-position: top;
+	background-repeat: no-repeat;
+	background-color: transparent !important;
+}
+
+.sidebar_menu_form_soc_button:hover a{
+	background-position: bottom;
+	background-color: #30ba8f !important;
 }
 
 .sidebar_menu_close{

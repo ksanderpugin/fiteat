@@ -66,7 +66,7 @@ $r_html = render(__DIR__ . "/views/mr_slide.php",["recipes" => $r_data]);
 
 						<p>Пароль</p>
 						<span id="">
-							<input type="text" placeholder="********" name="contacts">
+							<input type="password" placeholder="password" name="contacts">
 						</span>
 
 						<div id="login_form_buttons">
@@ -208,12 +208,26 @@ $r_html = render(__DIR__ . "/views/mr_slide.php",["recipes" => $r_data]);
 		<div id="sidebar_menu">
 			<div class="sidebar_menu_body">
 				<div class="sidebar_menu_button logo">Fiteat</div>
-				<div class="sidebar_menu_button"><a href="#">Рецепты</a></div>
+				<div class="sidebar_menu_button"><a>Рецепты</a></div>
 				<div class="sidebar_menu_button"><a href="diary.html">Дневник питания</a></div>
-				<div class="sidebar_menu_button"><a href="#">Мой стол</a></div>
-				<div class="sidebar_menu_button not_logged_in" onclick="logIn('in')"><a href="#">Войти</a></div>
-				<div class="sidebar_menu_button logged_in"><a href="#">Настройки</a></div>
-				<div class="sidebar_menu_button logged_in" onclick="logIn('out')"><a href="#">Выйти</a></div>
+				<div class="sidebar_menu_button"><a>Мой стол</a></div>
+
+				<span>
+					<input type="text" placeholder="example@mail.com" name="name">
+				</span>
+				<span>
+					<input type="password" placeholder="password" name="contacts">
+				</span>
+
+				<div class="sidebar_menu_form_soc_button"><a id="fb">&nbsp;</a></div>
+				<div class="sidebar_menu_form_soc_button"><a id="vk">&nbsp;</a></div>
+				<div class="sidebar_menu_form_soc_button"><a id="tw">&nbsp;</a></div>
+
+				<div class="sidebar_menu_button" onclick="logIn('in')"><a>Войти</a></div>
+
+				<div class="sidebar_menu_button logged_in"><a>Настройки</a></div>
+				<div class="sidebar_menu_button logged_in" onclick="logIn('out')"><a>Выйти</a></div>
+
 				<p class="sidebar_menu_close" onclick="sidebarMenu('hide')">✖</p>
 			</div>
 			<div class="sidebar_page_background" onclick="sidebarMenu('hide')"></div>
