@@ -1147,9 +1147,11 @@ q:after {
 	display:inline;
 }
 
+/*
 .drop_down_block_calendar_date span:nth-child(odd){
 	color: #c82915;
 }
+*/
 
 .drop_down_block_calendar_icon_block{
 	display:inline-block;
@@ -1160,6 +1162,13 @@ q:after {
 	background-position: center;
 	background-repeat: no-repeat;
 	margin-left: 7px;
+	position: relative;
+}
+
+#double_datepicker{
+	position: absolute;
+	top: 27px;
+	right: -24px;
 }
 
 .diary_chart_left_part{

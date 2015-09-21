@@ -1,0 +1,220 @@
+div.datepicker {
+	position: relative;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	cursor: default;
+	display: none;
+}
+.datepickerContainer {
+	background: #ffffff;
+	position: absolute;
+	top: 1em;
+	left: 1em;
+	border-right: 1px solid white;
+	border-bottom: 1px solid white;
+}
+.datepickerBorderT {
+	position: absolute;
+	left: 1em;
+	top: 0;
+	right: 1em;
+	height: 1em;
+	/*background: url(../images/datepicker_t.png);*/
+	border-top: 1px solid lightgrey;
+	background-color: white;
+}
+.datepickerBorderT:after{
+	position: absolute;
+	top: -14px;
+	right: 10px;
+	content: url('../images/calendar_triangle.png');
+}
+.datepickerBorderB {
+	position: absolute;
+	left: 1em;
+	bottom: 0;
+	right: 1em;
+	height: 1em;
+	/*background: url(../images/datepicker_b.png);*/
+	border-bottom: 1px solid lightgrey;
+	background-color: white;
+}
+.datepickerBorderL {
+	position: absolute;
+	left: 0;
+	bottom: 1em;
+	top: 1em;
+	width: 1em;
+	/*background: url(../images/datepicker_l.png);*/
+	border-left: 1px solid lightgrey;
+	background-color: white;
+}
+.datepickerBorderR {
+	position: absolute;
+	right: 0;
+	bottom: 1em;
+	top: 1em;
+	width: 1em;
+	/*background: url(../images/datepicker_r.png);*/
+	border-right: 1px solid lightgrey;
+	background-color: white;
+}
+.datepickerBorderTL {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 1em;
+	height: 1em;
+	/*background: url(../images/datepicker_tl.png);*/
+	border-top: 1px solid lightgrey;
+	border-left: 1px solid lightgrey;
+	background-color: white;
+}
+.datepickerBorderTR {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 1em;
+	height: 1em;
+	/*background: url(../images/datepicker_tr.png);*/
+	border-top: 1px solid lightgrey;
+	border-right: 1px solid lightgrey;
+	background-color: white;
+}
+.datepickerBorderBL {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 1em;
+	height: 1em;
+	/*background: url(../images/datepicker_bl.png);*/
+	border-bottom: 1px solid lightgrey;
+	border-left: 1px solid lightgrey;
+	background-color: white;
+}
+.datepickerBorderBR {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 1em;
+	height: 1em;
+	/*background: url(../images/datepicker_br.png);*/
+	border-bottom: 1px solid lightgrey;
+	border-right: 1px solid lightgrey;
+	background-color: white;
+}
+.datepickerHidden {
+	display: none;
+}
+div.datepicker table {
+	border-collapse:collapse;
+}
+div.datepicker a {
+	color: #777;
+	text-decoration: none;
+	cursor: default;
+	outline: none;
+}
+div.datepicker table td {
+	text-align: right;
+	padding: 0;
+	margin: 0;
+}
+div.datepicker th:first-child {
+	text-align: left;
+}
+div.datepicker th {
+	text-align: right;
+	color: #999;
+	font-weight: normal;
+}
+div.datepicker tbody th {
+	text-align: right;
+}
+div.datepicker tbody a {
+	display: block;
+}
+.datepickerDays a {
+	width: 2em;
+	line-height: 1.25em;
+	height: 1.25em;
+	padding-right: 2px;
+}
+.datepickerYears a,
+.datepickerMonths a{
+	width: 4em;
+	line-height: 3em;
+	height: 3em;
+	text-align: center;
+}
+td.datepickerNotInMonth a {
+	color: #eee;
+}
+tbody.datepickerDays td.datepickerSelected{
+	background: #b5fddf;
+}
+tbody.datepickerDays td.datepickerNotInMonth.datepickerSelected {
+	background: #e8fef2;
+}
+tbody.datepickerYears td.datepickerSelected,
+tbody.datepickerMonths td.datepickerSelected{
+	background: #e8fef2;
+}
+div.datepicker a:hover,
+div.datepicker a:hover {
+	color: #22dd55;
+}
+div.datepicker td.datepickerNotInMonth a:hover {
+	color: #999;
+}
+div.datepicker tbody th {
+	text-align: right;
+}
+.datepickerSpace div {
+	width: 2em;
+}
+.datepickerGoNext a,
+.datepickerGoPrev a,
+.datepickerMonth a {
+	text-align: center;
+	height: 2em;
+	line-height: 2em;
+}
+.datepickerGoNext a {
+	float: right;
+	width: 2em;
+}
+.datepickerGoPrev a {
+	float: left;
+	width: 2em;
+}
+table.datepickerViewDays tbody.datepickerMonths,
+table.datepickerViewDays tbody.datepickerYears {
+	display: none;
+}
+table.datepickerViewMonths tbody.datepickerDays,
+table.datepickerViewMonths tbody.datepickerYears,
+table.datepickerViewMonths tr.datepickerDoW {
+	display: none;
+}
+table.datepickerViewYears tbody.datepickerDays,
+table.datepickerViewYears tbody.datepickerMonths,
+table.datepickerViewYears tr.datepickerDoW {
+	display: none;
+}
+td.datepickerDisabled a,
+td.datepickerDisabled.datepickerNotInMonth a{
+	color: #333;
+}
+td.datepickerDisabled a:hover {
+	color: #333;
+}
+td.datepickerSpecial a {
+	background: #700;
+}
+td.datepickerSpecial.datepickerSelected a {
+	background: #a00;
+}
+tr.datepickerDoW {
+	height: 2em;
+}

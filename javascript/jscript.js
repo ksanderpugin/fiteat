@@ -2,8 +2,8 @@ function init(){
 	initSlider('mr'); // init mainpage recipes slider
 	initDropDownBlocks(); // itit dropdown blocks
 	CreatePieChart();
-	CreateLineChart()
-
+	CreateLineChart();
+	datePickerInit();
 	initResize();
 }
 
@@ -228,4 +228,39 @@ function initResize(){
 		CreatePieChart();  
 		CreateLineChart();
 	}
+}
+
+function datePickerInit(){
+
+	$('#double_datepicker').DatePicker({
+		flat: true,
+		date: ['2015-09-10','2015-09-16'],
+		current: '2015-09-16',
+		calendars: 1,
+		mode: 'range',
+		starts: 1,
+		onChange: function(formated, dates){
+			console.log(formated);
+			$('#date').html(formated);
+		}
+	});
+
+	$( "#double_datepicker" ).css("display", "none");
+
+	$(".choose_period").click(
+	function() {
+		$( "#double_datepicker" ).css("display", "block");
+	});
+
+	$(document).on("mouseup touchend", function (e)
+	{
+		var container = $("#double_datepicker");
+
+		if (!container.is(e.target) // if the target of the click isn't the container...
+			&& container.has(e.target).length === 0) // ... nor a descendant of the container
+		{
+			container.hide();
+		}
+	});
+
 }

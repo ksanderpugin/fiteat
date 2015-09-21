@@ -1,0 +1,287 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<head>
+    <title>FitEat Diary</title>
+    <link rel="StyleSheet" type="text/css" href="stylesheets/main.css"/>
+    <link rel="StyleSheet" type="text/css" href="stylesheets/datepicker.css"/>
+    <script type="text/JavaScript" src="javascript/jquery-2.1.0.js"></script>
+    <script type="text/JavaScript" src="javascript/jquery-ui.js"></script>
+    <script type="text/javascript" src="javascript/datepicker.js"></script>
+    <script type="text/JavaScript" src="javascript/jscript.js"></script>
+</head>
+
+<body onload="init()">
+	<div class="header">
+		<div class="header_container">
+			<a class="header_mobile_menu" onclick="sidebarMenu('show')"></a>
+			<div class="header_button header_left_button logo"><!--Fiteat--></div>
+			<div class="header_button header_left_button"><a href="#">Рецепты</a></div>
+			<div class="header_button header_left_button"><a href="diary.html">Дневник питания</a></div>
+			<div class="header_button header_left_button"><a href="#">Мой стол</a></div>
+			<div class="header_button header_right_button header_menu_login">
+				<div class="not_logged_in header_menu_name">Вход</div>
+				<div class="logged_in header_menu_name" onclick="">Ryzhova Olga</div>
+				<div class="header_menu_user_settings">
+					<div class="logged_in" onclick="">Настройки</div>
+					<div class="logged_in" onclick="logIn('out')">Выйти</div>
+				</div>
+				<div class="header_menu_user_settings">
+					<form class="not_logged_in login_form">
+
+						<p>Email</p>
+						<span id="">
+							<input type="text" placeholder="example@mail.com" name="name">
+						</span>
+
+						<p>Пароль</p>
+						<span id="">
+							<input type="password" placeholder="password" name="contacts">
+						</span>
+
+						<div id="login_form_buttons">
+							<div>
+								<a id="login_button_container" onclick="logIn('in')">Войти</a>
+								<a class="login_form_soc_button" id="fb">&nbsp;</a>
+								<a class="login_form_soc_button" href="<?=$vk_url?>" id="vk">&nbsp;</a>
+								<a class="login_form_soc_button" id="tw">&nbsp;</a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="header_button header_right_button header_menu_search">
+				<img src="images/searchicon.png" alt="Search Icon">
+				<form>
+					<input type="text" placeholder="Поиск по сайту..." name="search">
+				</form>
+			</div>
+			<div class="header_button header_right_button"><a href="#">О проекте</a></div>
+		</div>
+	</div>
+
+	<div class="page_container">
+
+		<div class="diary_body">
+
+			<h1>Дневник питания</h1>
+
+			<div class="diary_chart_block">
+				<div class="diary_chart_left_part">
+
+					<div class="diary_chart_pie">
+						<canvas id="piechart"></canvas>
+					</div>
+
+					<div class="diary_chart_info">
+						<div class="diary_chart_labels">
+							<div class="diary_chart_label">
+								<!--<div class="diary_chart_colored_box" style="background-color: #ffa371;"></div>-->
+								<span>Белки</span>
+							</div>
+							<div class="diary_chart_label">
+								<!--<div class="diary_chart_colored_box" style="background-color: #fff571;"></div>-->
+								<span>Жиры</span>
+							</div>
+							<div class="diary_chart_label">
+								<!--<div class="diary_chart_colored_box" style="background-color: #62ddb7;"></div>-->
+								<span>Углеводы</span>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+
+						<div class="diary_chart_numbers">
+							<div class="diary_chart_number" style="color: #ffa371;">18%</div>
+							<div class="diary_chart_number" style="color: #eed406;">40%</div>
+							<div class="diary_chart_number" style="color: #62ddb7;">42%</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+
+					<div class="clearfix"></div>
+
+				</div>
+
+				<div class="diary_chart_right_part">
+					<h2>Статистика за сегодня</h2>
+					<div class="diary_chart_column diary_chart_column1">
+						<p>Б</p>
+						<p>Ж</p>
+						<p>У</p>
+						<p>ккал</p>
+					</div>
+					<div class="diary_chart_line">
+						<canvas id="linechart"></canvas>
+					</div>
+					<div class="diary_chart_column diary_chart_column2">
+						<p>Всего</p>
+						<p>26.16</p>
+						<p>59.21</p>
+						<p>63.33</p>
+						<p>870.88</p>
+					</div>
+					<div class="diary_chart_column diary_chart_column3">
+						<p>От нормы на день*</p>
+						<p>18%</p>
+						<p>169%</p>
+						<p>31%</p>
+						<p>69%</p>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+
+			<div class="drop_down_block">
+				<div class="drop_down_block_title">Список еды за день</div>
+				<div class="drop_down_block_calendar choose_one_day">
+					<div class="drop_down_block_calendar_date">
+						<span>Вт</span>
+						<span>, 11 Августа</span>
+					</div>
+					<div class="drop_down_block_calendar_icon_block">
+						<p id="single_datepicker"></p>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				<div class="drop_down_block_content">
+			        text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text
+				</div>
+				<div class="drop_down_block_point"></div>
+			</div>
+
+			<div class="drop_down_block">
+				<div class="drop_down_block_title">Статистика питания за период</div>
+				<div class="drop_down_block_calendar choose_period">
+					<div class="drop_down_block_calendar_date">
+						<div style="display:inline-block;">
+							<span style="color: #c82915;">Вт</span>
+							<span>, 11 Августа -</span>
+						</div>
+						<div style="display:inline-block;">
+							<div style="display:inline-block;">
+								<span style="color: #c82915;">Сб</span>
+								<span>, 15 Августа</span>
+							</div>
+							<div class="drop_down_block_calendar_icon_block">
+								<p id="double_datepicker"></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				<div class="drop_down_block_content">
+				        text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text 
+				</div>
+				<div class="drop_down_block_point"></div>
+			</div>
+
+			<div class="drop_down_block_close"></div>
+		</div>
+
+		<div class="footer">
+			<div class="footer_part">
+				<h2>Специальные рецепты</h2>
+				<div class="footer_recipes_columns_container">
+					<div class="footer_recipes_columns">
+						<a href="#">Рецепты из лука</a>
+						<a href="#">Простые рецепты</a>
+						<a href="#">50 рецептов для мивины</a>
+						<a href="#">Есть стакан и топор, что делать?</a>
+						<a href="#">Холостяцкая яичница</a>
+						<a href="#">Микроменю</a>
+						<a href="#">Макроменю</a>
+						<a href="#">Рыбка-фиш</a>
+						<a href="#">Сто рецептов красоты</a>
+						<a href="#">Рецепты из лука</a>
+						<a href="#">Простые рецепты</a>
+						<a href="#">Быстро приготовить</a>
+						<a href="#">50 рецептов для мивины</a>
+						<a href="#">Холостяцкая яичница</a>
+						<a href="#">Микроменю</a>
+						<a href="#">Макроменю</a>
+						<a href="#">Рыбка-фиш</a>
+						<a href="#">Сто рецептов красоты</a>
+						<a href="#">Рецепты из лука</a>
+						<a href="#">Простые рецепты</a>
+						<a href="#">Быстро приготовить</a>
+						<a href="#">50 рецептов для мивины</a>
+						<a href="#">Есть стакан и топор, что делать?</a>
+						<a href="#">Холостяцкая яичница</a>
+						<a href="#">Микроменю</a>
+						<a href="#">Макроменю</a>
+						<a href="#">Рыбка-фиш</a>
+						<a href="#">Сто рецептов красоты</a>
+					</div>
+				</div>
+			</div>
+			<div class="footer_part">
+				<div class="footer_form_container">
+					<p>Мы открыты к сотрудничеству :</p>
+					<form>
+						<p>Ваше имя</p>
+						<span id="name_span"><input type="text" placeholder="" name="name"></span>
+						<p>Предпочитаемый способ связи</p>
+						<span id="contacts_span"><input type="text" placeholder="Ваш имейл или телефон" name="contacts"></span>
+						<p>Сообщение</p>
+						<span id="message_span"><input type="text" placeholder="" name="message"></span>
+						<input type="submit" class="footerSendButton" name="mysubmit" value="Отправить" />
+					</form>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		<div class="footer_footer">2015 ©FITEAT Все права защищены</div>
+		</div>
+
+		<div id="sidebar_menu">
+			<div class="sidebar_menu_body">
+				<div class="sidebar_menu_button logo">Fiteat</div>
+				<div class="sidebar_menu_button"><a>Рецепты</a></div>
+				<div class="sidebar_menu_button"><a href="diary.html">Дневник питания</a></div>
+				<div class="sidebar_menu_button"><a>Мой стол</a></div>
+
+				<span class="not_logged_in" style="padding-left: 10px;">
+					Войти с помощью:
+				</span>
+
+				<div class="sidebar_menu_form_soc_button not_logged_in">
+					<a href="" class="sidebar_menu_form_soc_block">
+						<span>Facebook</span>
+						<div id="fb_side">&nbsp;</div>
+					</a>
+				</div>
+				<div class="sidebar_menu_form_soc_button not_logged_in">
+					<a href="<?=$vk_url?>" class="sidebar_menu_form_soc_block">
+						<span style="margin-right:1px;">Вконтакте</span>
+						<div id="vk_side">&nbsp;</div>
+					</a>
+				</div>
+				<div class="sidebar_menu_form_soc_button not_logged_in">
+					<a href="" class="sidebar_menu_form_soc_block">
+						<span>Twitter</span>
+						<div id="tw_side">&nbsp;</div>
+					</a>
+				</div>
+
+				<span class="not_logged_in">
+					<input type="text" placeholder="example@mail.com" name="name">
+				</span>
+				<span class="not_logged_in">
+					<input type="password" placeholder="password" name="contacts">
+				</span>
+
+				<div class="sidebar_menu_button not_logged_in" onclick="logIn('in')"><a>Войти</a></div>
+				<div class="sidebar_menu_button logged_in"><a>Настройки</a></div>
+				<div class="sidebar_menu_button logged_in" onclick="logIn('out')"><a>Выйти</a></div>
+
+				<p class="sidebar_menu_close" onclick="sidebarMenu('hide')">✖</p>
+			</div>
+			<div class="sidebar_page_background" onclick="sidebarMenu('hide')"></div>
+		</div>
+
+	</div>
+</body>
+</html>
