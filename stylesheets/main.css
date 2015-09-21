@@ -1133,7 +1133,8 @@ q:after {
 }
 
 .drop_down_block_content{
-    margin: 20px 20px 60px 20px;   
+    margin: 20px 20px 60px 20px;
+    min-height: 150px;  
 }
 
 .drop_down_block_calendar{
@@ -1165,10 +1166,16 @@ q:after {
 	position: relative;
 }
 
+#single_datepicker{
+	position: absolute;
+	top: 27px;
+	right: -145px; /* right: -24px; */
+}
+
 #double_datepicker{
 	position: absolute;
 	top: 27px;
-	right: -24px;
+	right: -145px; /* right: -24px; */
 }
 
 .diary_chart_left_part{

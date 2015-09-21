@@ -232,6 +232,8 @@ function initResize(){
 
 function datePickerInit(){
 
+	/* #double_datepicker */
+
 	$('#double_datepicker').DatePicker({
 		flat: true,
 		date: ['2015-09-10','2015-09-16'],
@@ -255,6 +257,39 @@ function datePickerInit(){
 	$(document).on("mouseup touchend", function (e)
 	{
 		var container = $("#double_datepicker");
+
+		if (!container.is(e.target) // if the target of the click isn't the container...
+			&& container.has(e.target).length === 0) // ... nor a descendant of the container
+		{
+			container.hide();
+		}
+	});
+
+	/* #single_datepicker */
+
+	$('#single_datepicker').DatePicker({
+		flat: true,
+		date: '2015-09-10',
+		current: '2015-09-16',
+		calendars: 1,
+		mode: 'single',
+		starts: 1,
+		onChange: function(formated, dates){
+			console.log(formated);
+			$('#date').html(formated);
+		}
+	});
+
+	$( "#single_datepicker" ).css("display", "none");
+
+	$(".choose_one_day").click(
+	function() {
+		$( "#single_datepicker" ).css("display", "block");
+	});
+
+	$(document).on("mouseup touchend", function (e)
+	{
+		var container = $("#single_datepicker");
 
 		if (!container.is(e.target) // if the target of the click isn't the container...
 			&& container.has(e.target).length === 0) // ... nor a descendant of the container
