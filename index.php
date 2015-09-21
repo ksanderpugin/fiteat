@@ -212,19 +212,37 @@ $r_html = render(__DIR__ . "/views/mr_slide.php",["recipes" => $r_data]);
 				<div class="sidebar_menu_button"><a href="diary.html">Дневник питания</a></div>
 				<div class="sidebar_menu_button"><a>Мой стол</a></div>
 
-				<span>
+				<span class="not_logged_in" style="padding-left: 10px;">
+					Войти с помощью:
+				</span>
+
+				<div class="sidebar_menu_form_soc_button not_logged_in">
+					<a href="" class="sidebar_menu_form_soc_block">
+						<span>Facebook</span>
+						<div id="fb_side">&nbsp;</div>
+					</a>
+				</div>
+				<div class="sidebar_menu_form_soc_button not_logged_in">
+					<a href="<?=$vk_url?>" class="sidebar_menu_form_soc_block">
+						<span style="margin-right:1px;">Вконтакте</span>
+						<div id="vk_side">&nbsp;</div>
+					</a>
+				</div>
+				<div class="sidebar_menu_form_soc_button not_logged_in">
+					<a href="" class="sidebar_menu_form_soc_block">
+						<span>Twitter</span>
+						<div id="tw_side">&nbsp;</div>
+					</a>
+				</div>
+
+				<span class="not_logged_in">
 					<input type="text" placeholder="example@mail.com" name="name">
 				</span>
-				<span>
+				<span class="not_logged_in">
 					<input type="password" placeholder="password" name="contacts">
 				</span>
 
-				<div class="sidebar_menu_form_soc_button"><a id="fb">&nbsp;</a></div>
-				<div class="sidebar_menu_form_soc_button"><a id="vk">&nbsp;</a></div>
-				<div class="sidebar_menu_form_soc_button"><a id="tw">&nbsp;</a></div>
-
-				<div class="sidebar_menu_button" onclick="logIn('in')"><a>Войти</a></div>
-
+				<div class="sidebar_menu_button not_logged_in" onclick="logIn('in')"><a>Войти</a></div>
 				<div class="sidebar_menu_button logged_in"><a>Настройки</a></div>
 				<div class="sidebar_menu_button logged_in" onclick="logIn('out')"><a>Выйти</a></div>
 

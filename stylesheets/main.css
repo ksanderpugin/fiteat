@@ -177,7 +177,7 @@ h2{
 
 .header_menu_search input:focus{
 	outline: 0;
-	color: #999;
+	color: #000;
 }
 
 /**/
@@ -266,7 +266,7 @@ h2{
 
 .login_form input:focus{
 	outline: 0;
-	color: #999;
+	color: #000;
 }
 
 #login_button_container{
@@ -971,12 +971,23 @@ q:after {
 	margin: 5px 0 0 10px;
 	height: 22px;
 	width: 80%;
+	padding: 0 7px 0 7px;
+	border-radius: 10px;
+	border: 1px solid #797979;
 }
 
 .sidebar_menu_body > span > input[type=password]{
 	margin: 5px 0 0 10px;
 	height: 22px;
 	width: 80%;
+	padding: 0 7px 0 7px;
+	border-radius: 10px;
+	border: 1px solid #797979;
+}
+
+.sidebar_menu_body input:focus{
+	outline: 0;
+	color: #000;
 }
 
 .sidebar_menu_body > p:hover{
@@ -990,21 +1001,50 @@ q:after {
 }
 
 .sidebar_menu_body a{
-	margin-left: 10px;
+	padding-left: 10px;
 }
 
-.sidebar_menu_form_soc_button a{
+.sidebar_menu_form_soc_block{
+	height: 100%;
+	width: 100%;
+	display: block;
+	padding-left: 25px !important;
+}
+
+.sidebar_menu_form_soc_block > span{
+	display: block;
+	float: left;
+}
+
+.sidebar_menu_form_soc_block > div{
 	width: 35px;
 	height: 35px;
 	display: block;
+	float: left;
 	background-position: top;
 	background-repeat: no-repeat;
 	background-color: transparent !important;
 }
 
+.sidebar_menu_form_soc_block:hover > div{
+	background-position: bottom;
+}
+
 .sidebar_menu_form_soc_button:hover a{
 	background-position: bottom;
 	background-color: #30ba8f !important;
+}
+
+#vk_side{
+	background-image: url(../images/icon_vk_side.png);
+}
+
+#fb_side{
+	background-image: url(../images/icon_fb_side.png);
+}
+
+#tw_side{
+	background-image: url(../images/icon_twitter_side.png);
 }
 
 .sidebar_menu_close{
