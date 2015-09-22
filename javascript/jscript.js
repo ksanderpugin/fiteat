@@ -124,6 +124,17 @@ function initDropDownBlocks(){
 	});
 }
 
+
+function DropDownBlockResize(){
+	$('.drop_down_block').each(function() {
+		if ( $(this).height() > "51"){
+			$(this).css('height', 'auto');
+			var autoHeight = $(this).height();
+			$(this).height(autoHeight);
+		}
+	});
+}
+
 function initSlider(prefix){
 
 	var interval;
@@ -227,6 +238,7 @@ function initResize(){
 	function doneResizing(){
 		CreatePieChart();  
 		CreateLineChart();
+		DropDownBlockResize();
 	}
 }
 
@@ -284,6 +296,7 @@ function datePickerInit(){
 
 	$(".choose_one_day").click(
 	function() {
+		calendarMerge();
 		$( "#single_datepicker" ).css("display", "block");
 	});
 
@@ -297,5 +310,32 @@ function datePickerInit(){
 			container.hide();
 		}
 	});
+
+	/* -------------------- */
+
+
+	function calendarMerge(){
+		$('.drop_down_block_calendar_date').each(function() {
+			if ( $(this).width() > "220"){
+				$(this).find('.drop_down_block_calendar_id').css({
+					'right' : '-25px'
+				});
+
+				$(this).find('.datepickerBorderTArrow').css({
+					'right': '10px'
+				});
+			}else{
+				var dif = 220 - $(this).width();
+				console.log(dif);
+				$(this).find('.drop_down_block_calendar_id').css({
+					'right' : dif + 'px'
+				});
+
+				$(this).find('.datepickerBorderTArrow').css({
+					'right': '10px'
+				});
+			}
+		});
+	}
 
 }

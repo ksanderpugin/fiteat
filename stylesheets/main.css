@@ -1169,7 +1169,7 @@ q:after {
 #single_datepicker{
 	position: absolute;
 	top: 27px;
-	right: -145px; /* right: -24px; */
+	right: -24px; /* right: -24px; */
 }
 
 #double_datepicker{

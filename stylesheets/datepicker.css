@@ -23,10 +23,10 @@ div.datepicker {
 	border-top: 1px solid lightgrey;
 	background-color: white;
 }
-.datepickerBorderT:after{
+.datepickerBorderTArrow{
 	position: absolute;
 	top: -14px;
-	right: 130px; /* right: 10px; */
+	right: 10px;
 	content: url('../images/calendar_triangle.png');
 }
 .datepickerBorderB {
