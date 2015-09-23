@@ -145,7 +145,8 @@
 				onHide: function(){return true;},
 				locale: {
 					days: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"],
-					daysShort: ["Вск", "Пон", "Втр", "Срд", "Чет", "Пят", "Суб", "Вск"],
+					//daysShort: ["Вск", "Пон", "Втр", "Срд", "Чет", "Пят", "Суб", "Вск"],
+					daysShort: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
 					daysMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
 					months: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
 					monthsShort: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
@@ -832,6 +833,12 @@
 					}
 				});
 			},
+			setDatePage: function(){
+				var cal = $('#' + $(this).data('datepickerId'));
+				var options = cal.data('datepicker');
+				options.onChange.apply(this, prepareDate(options));
+				return (0);
+			},
 			fixLayout: function(){
 				return this.each(function(){
 					if ($(this).data('datepickerId')) {
@@ -852,6 +859,7 @@
 		DatePickerSetDate: DatePicker.setDate,
 		DatePickerGetDate: DatePicker.getDate,
 		DatePickerClear: DatePicker.clear,
+		DatePickerFirstPut: DatePicker.setDatePage,
 		DatePickerLayout: DatePicker.fixLayout
 	});
 })(jQuery);

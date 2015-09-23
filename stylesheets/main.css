@@ -1318,6 +1318,15 @@ q:after {
 	height: 140px;
 }
 
+.circle_box .circle{
+	float: left;
+}
+
+.circle_box .circle_text{
+	text-align: left;
+}
+
+/*
 .circle_box:nth-child(even) .circle{
 	float: right;
 }
@@ -1333,6 +1342,7 @@ q:after {
 .circle_box:nth-child(odd) .circle_text{
 	text-align: left;
 }
+*/
 
 .circle{
 	float: left;

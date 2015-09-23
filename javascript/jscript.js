@@ -98,6 +98,8 @@ function initDropDownBlocks(){
 
 			$(this).removeClass('box_rotate');
 
+			drop_down_block.find('.drop_down_block_title').css('white-space','nowrap');
+
 			drop_down_block.animate({
 				height: "50"
 			}, 400, function() {
@@ -114,6 +116,8 @@ function initDropDownBlocks(){
 			drop_down_block.height(curHeight);
 
 			$(this).addClass('box_rotate');
+
+			drop_down_block.find('.drop_down_block_title').css('white-space','normal');
 
 			drop_down_block.animate({
 				height: autoHeight
@@ -239,103 +243,251 @@ function initResize(){
 		CreatePieChart();  
 		CreateLineChart();
 		DropDownBlockResize();
+		if($('.drop_down_block_calendar_id')){calendarMerge();}
 	}
 }
 
 function datePickerInit(){
 
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth()+1; //January is 0!
+	var yyyy = today.getFullYear();
+
+	var weekBefore = new Date();
+	weekBefore.setDate(weekBefore.getDate() - 6);
+	var wbdd = weekBefore.getDate();
+	var wbmm = weekBefore.getMonth()+1; //January is 0!
+	var wbyyyy = weekBefore.getFullYear();
+
+	if(dd<10) {dd='0'+dd}
+	if(mm<10) {mm='0'+mm}
+	if(wbdd<10) {wbdd='0'+dd}
+	if(wbmm<10) {wbmm='0'+wbmm}
+
+	today = yyyy+'-'+mm+'-'+dd
+	weekBefore = wbyyyy+'-'+wbmm+'-'+wbdd
+
 	/* #double_datepicker */
 
-	$('#double_datepicker').DatePicker({
-		flat: true,
-		date: ['2015-09-10','2015-09-16'],
-		current: '2015-09-16',
-		calendars: 1,
-		mode: 'range',
-		starts: 1,
-		onChange: function(formated, dates){
-			console.log(formated);
-			$('#date').html(formated);
-		}
-	});
+	var double_datepicker = document.getElementById("double_datepicker");
+	if (double_datepicker){
+		$('#double_datepicker').DatePicker({
+			flat: true,
+			date: [weekBefore,today],
+			current: today,
+			calendars: 1,
+			mode: 'range',
+			starts: 1,
+			format: 'Y-m-d-a-e',
+			onShow: function(formated, dates){
+				var drop_down_block_calendar_date = double_datepicker.closest('.drop_down_block_calendar_date');
+				console.log(formated);
+				var temp, pos, result;
+				var mon = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
+				$(drop_down_block_calendar_date).find('.datePart').each(function(i){
+					switch (i) {
+						case 0:
 
-	$( "#double_datepicker" ).css("display", "none");
+							temp = formated[0];
+							result = temp.slice(11,13);
+							$(this).html(result);
 
-	$(".choose_period").click(
-	function() {
-		$( "#double_datepicker" ).css("display", "block");
-	});
+							break;
+						case 1:
 
-	$(document).on("mouseup touchend", function (e)
-	{
-		var container = $("#double_datepicker");
+							temp = formated[0];
 
-		if (!container.is(e.target) // if the target of the click isn't the container...
-			&& container.has(e.target).length === 0) // ... nor a descendant of the container
+							pos = 5; //Позиция месяца.
+							temp = temp.slice(pos); //09-02-Ср-2
+							result = " -";
+
+							result = " "+mon[(temp.slice(0, temp.indexOf('-')))-1] + result;
+							// Месяца -
+							pos = 9; //
+							temp = temp.slice(pos); //Ср-2
+
+							result = ", " + temp + result;
+							$(this).html(result);
+
+							break;
+						case 2:
+
+							temp = formated[1];
+							result = temp.slice(11,13);
+							$(this).html(result);
+
+							break;
+						case 3:
+
+							temp = formated[1];
+
+							pos = 5; //Позиция месяца.
+							temp = temp.slice(pos); //09-02-Ср-2
+
+							result = " "+mon[(temp.slice(0, temp.indexOf('-')))-1];
+							// Месяца
+							pos = 9; //
+							temp = temp.slice(pos); //Ср-2
+
+							result = ", " + temp + result;
+
+							$(this).html(result);
+
+							break;
+
+						default:
+					}
+				});
+				calendarMerge();
+			},
+			onChange: function(formated, dates){
+				var drop_down_block_calendar_date = double_datepicker.closest('.drop_down_block_calendar_date');
+				console.log(formated);
+				var temp, pos, result;
+				var mon = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
+				$(drop_down_block_calendar_date).find('.datePart').each(function(i){
+					switch (i) {
+						case 0:
+
+							temp = formated[0];
+							result = temp.slice(11,13);
+							$(this).html(result);
+
+							break;
+						case 1:
+
+							temp = formated[0];
+
+							pos = 5; //Позиция месяца.
+							temp = temp.slice(pos); //09-02-Ср-2
+							result = " -";
+
+							result = " "+mon[(temp.slice(0, temp.indexOf('-')))-1] + result;
+							// Месяца -
+							pos = 9; //
+							temp = temp.slice(pos); //Ср-2
+
+							result = ", " + temp + result;
+							$(this).html(result);
+
+							break;
+						case 2:
+
+							temp = formated[1];
+							result = temp.slice(11,13);
+							$(this).html(result);
+
+							break;
+						case 3:
+
+							temp = formated[1];
+
+							pos = 5; //Позиция месяца.
+							temp = temp.slice(pos); //09-02-Ср-2
+
+							result = " "+mon[(temp.slice(0, temp.indexOf('-')))-1];
+							// Месяца
+							pos = 9; //
+							temp = temp.slice(pos); //Ср-2
+
+							result = ", " + temp + result;
+
+							$(this).html(result);
+
+							break;
+
+						default:
+					}
+				});
+				calendarMerge();
+			}
+		});
+
+		$('#double_datepicker').DatePickerFirstPut();
+
+		$( "#double_datepicker" ).css("display", "none");
+
+		$(".choose_period").click(
+		function() {
+			calendarMerge();
+			$( "#double_datepicker" ).css("display", "block");
+		});
+
+		$(document).on("mouseup touchend", function (e)
 		{
-			container.hide();
-		}
-	});
+			var container = $("#double_datepicker");
 
-	/* #single_datepicker */
-
-	$('#single_datepicker').DatePicker({
-		flat: true,
-		date: '2015-09-10',
-		current: '2015-09-16',
-		calendars: 1,
-		mode: 'single',
-		starts: 1,
-		onChange: function(formated, dates){
-			console.log(formated);
-			$('#date').html(formated);
-		}
-	});
-
-	$( "#single_datepicker" ).css("display", "none");
-
-	$(".choose_one_day").click(
-	function() {
-		calendarMerge();
-		$( "#single_datepicker" ).css("display", "block");
-	});
-
-	$(document).on("mouseup touchend", function (e)
-	{
-		var container = $("#single_datepicker");
-
-		if (!container.is(e.target) // if the target of the click isn't the container...
-			&& container.has(e.target).length === 0) // ... nor a descendant of the container
-		{
-			container.hide();
-		}
-	});
-
-	/* -------------------- */
-
-
-	function calendarMerge(){
-		$('.drop_down_block_calendar_date').each(function() {
-			if ( $(this).width() > "220"){
-				$(this).find('.drop_down_block_calendar_id').css({
-					'right' : '-25px'
-				});
-
-				$(this).find('.datepickerBorderTArrow').css({
-					'right': '10px'
-				});
-			}else{
-				var dif = 220 - $(this).width();
-				console.log(dif);
-				$(this).find('.drop_down_block_calendar_id').css({
-					'right' : dif + 'px'
-				});
-
-				$(this).find('.datepickerBorderTArrow').css({
-					'right': '10px'
-				});
+			if (!container.is(e.target) // if the target of the click isn't the container...
+				&& container.has(e.target).length === 0) // ... nor a descendant of the container
+			{
+				container.hide();
 			}
 		});
 	}
 
+	/* #single_datepicker */
+
+	var single_datepicker = document.getElementById("single_datepicker");
+	if (single_datepicker){
+		$('#single_datepicker').DatePicker({
+			flat: true,
+			date: today,
+			current: today,
+			calendars: 1,
+			mode: 'single',
+			starts: 1,
+			format: 'Y-m-d-a-e',
+			onChange: function(formated, dates){
+				console.log(formated);
+				console.log(dates);
+				time_X = new Date(dates);
+				console.log(time_X.getMonth());
+			}
+		});
+
+		$( "#single_datepicker" ).css("display", "none");
+
+		$(".choose_one_day").click(
+		function() {
+			calendarMerge();
+			$( "#single_datepicker" ).css("display", "block");
+		});
+
+		$(document).on("mouseup touchend", function (e)
+		{
+			var container = $("#single_datepicker");
+
+			if (!container.is(e.target) // if the target of the click isn't the container...
+				&& container.has(e.target).length === 0) // ... nor a descendant of the container
+			{
+				container.hide();
+			}
+		});
+	}
+
+	/* -------------------- */
+}
+
+function calendarMerge(){
+	$('.drop_down_block_calendar').each(function() {
+		if ( $(this).find('.drop_down_block_calendar_date').width() > 220){
+			$(this).find('.drop_down_block_calendar_id').css({
+				'right' : '-25px'
+			});
+
+			$(this).find('.datepickerBorderTArrow').css({
+				'right': '10px'
+			});
+		}else{
+			var dif = 240 - $(this).find('.drop_down_block_calendar_date').width();
+			$(this).find('.drop_down_block_calendar_id').css({
+				'right' : - (parseInt(dif)) + 'px'
+			});
+
+			$(this).find('.datepickerBorderTArrow').css({
+				'right': (parseInt(dif)) - 15 + 'px'
+			});
+		}
+	});
 }
