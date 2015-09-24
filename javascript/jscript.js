@@ -255,7 +255,7 @@ function datePickerInit(){
 	var yyyy = today.getFullYear();
 
 	var weekBefore = new Date();
-	weekBefore.setDate(weekBefore.getDate() - 6);
+	weekBefore.setDate(weekBefore.getDate() - 7);
 	var wbdd = weekBefore.getDate();
 	var wbmm = weekBefore.getMonth()+1; //January is 0!
 	var wbyyyy = weekBefore.getFullYear();
@@ -342,7 +342,7 @@ function datePickerInit(){
 				calendarMerge();
 			},
 			onChange: function(formated, dates){
-				var drop_down_block_calendar_date = double_datepicker.closest('.drop_down_block_calendar_date');
+				var drop_down_block_calendar_date = $(double_datepicker).closest('.drop_down_block_calendar_date');
 				console.log(formated);
 				var temp, pos, result;
 				var mon = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
@@ -438,11 +438,103 @@ function datePickerInit(){
 			mode: 'single',
 			starts: 1,
 			format: 'Y-m-d-a-e',
-			onChange: function(formated, dates){
+			onShow: function(formated, dates){
+				var drop_down_block_calendar_date = single_datepicker.closest('.drop_down_block_calendar_date');
 				console.log(formated);
-				console.log(dates);
-				time_X = new Date(dates);
-				console.log(time_X.getMonth());
+				var temp, pos, result;
+				var mon = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
+				$(drop_down_block_calendar_date).find('.datePart').each(function(i){
+					switch (i) {
+						case 0:
+
+							temp = formated[0];
+							result = temp.slice(11,13);
+							$(this).html(result);
+
+							break;
+						case 1:
+
+							temp = formated[0];
+
+							pos = 5; //Позиция месяца.
+							temp = temp.slice(pos); //09-02-Ср-2
+							result = " -";
+
+							result = " "+mon[(temp.slice(0, temp.indexOf('-')))-1] + result;
+							// Месяца -
+							pos = 9; //
+							temp = temp.slice(pos); //Ср-2
+
+							result = ", " + temp + result;
+							$(this).html(result);
+
+							break;
+						case 2:
+
+							temp = formated[1];
+							result = temp.slice(11,13);
+							$(this).html(result);
+
+							break;
+						case 3:
+
+							temp = formated[1];
+
+							pos = 5; //Позиция месяца.
+							temp = temp.slice(pos); //09-02-Ср-2
+
+							result = " "+mon[(temp.slice(0, temp.indexOf('-')))-1];
+							// Месяца
+							pos = 9; //
+							temp = temp.slice(pos); //Ср-2
+
+							result = ", " + temp + result;
+
+							$(this).html(result);
+
+							break;
+
+						default:
+					}
+				});
+				calendarMerge();
+			},
+			onChange: function(formated, dates){
+				var drop_down_block_calendar_date = $(single_datepicker).closest('.drop_down_block_calendar_date');
+				console.log(formated);
+				var temp, pos, result;
+				var mon = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
+				$(drop_down_block_calendar_date).find('.datePart').each(function(i){
+					switch (i) {
+						case 0:
+
+							temp = formated;
+							result = temp.slice(11,13);
+							$(this).html(result);
+
+							break;
+						case 1:
+
+							temp = formated;
+
+							pos = 5; //Позиция месяца.
+							temp = temp.slice(pos); //09-02-Ср-2
+
+							result = " "+mon[(temp.slice(0, temp.indexOf('-')))-1];
+							// Месяца
+							pos = 9; //
+							temp = temp.slice(pos); //Ср-2
+
+							result = ", " + temp + result;
+
+							$(this).html(result);
+
+							break;
+
+						default:
+					}
+				});
+				calendarMerge();
 			}
 		});
 
@@ -465,6 +557,8 @@ function datePickerInit(){
 			}
 		});
 	}
+
+	$('#single_datepicker').DatePickerFirstPut();
 
 	/* -------------------- */
 }
