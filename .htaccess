@@ -1,0 +1,6 @@
+RewriteEngine on
+
+RewriteRule ^recipe/(.*)/(.*)$ test.php?class=recipe&group=$1&name=$2
+RewriteRule ^recipe/(.*)$ test.php?class=recipe&group=$1
+
+RewriteRule ^login/.* php/login.php
