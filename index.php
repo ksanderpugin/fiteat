@@ -60,18 +60,18 @@ $r_html = render(__DIR__ . "/views/mr_slide.php",["recipes" => $r_data]);
 					<form class="not_logged_in login_form">
 
 						<p>Email</p>
-						<span id="">
-							<input type="text" placeholder="example@mail.com" name="name">
+						<span>
+							<input id="username" type="text" placeholder="example@mail.com" name="name">
 						</span>
 
 						<p>Пароль</p>
-						<span id="">
-							<input type="password" placeholder="password" name="contacts">
+						<span>
+							<input id="password" type="password" placeholder="password" name="contacts">
 						</span>
 
 						<div id="login_form_buttons">
 							<div>
-								<a id="login_button_container" onclick="logIn('in')">Войти</a>
+								<a id="login_button_container">Войти</a><!--onclick="logIn('in')"-->
 								<a class="login_form_soc_button" id="fb">&nbsp;</a>
 								<a class="login_form_soc_button" href="<?=$vk_url?>" id="vk">&nbsp;</a>
 								<a class="login_form_soc_button" id="tw">&nbsp;</a>

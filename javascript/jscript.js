@@ -5,6 +5,35 @@ function init(){
 	CreateLineChart();
 	datePickerInit();
 	initResize();
+	loginInit();
+}
+
+function init(){
+	$("#login_button_container").click(function(){
+		username=$("#username").val();
+		password=$("#password").val();
+		$.ajax({
+			type: "POST",
+			url: "login/",
+			//dateType: "json",
+			data:
+				{
+					mail: username,
+					pass: password,
+					auth: 'Nikolay'
+				},
+			success: function(html){    
+				if(html=='true'){
+					logIn('in');
+				}else{
+					console.log(html);
+				}
+			},
+			beforeSend:function(){
+			}
+		});
+	return false;
+	});
 }
 
 function CreatePieChart(){
