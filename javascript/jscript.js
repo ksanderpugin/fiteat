@@ -556,9 +556,9 @@ function datePickerInit(){
 				container.hide();
 			}
 		});
-	}
 
-	$('#single_datepicker').DatePickerFirstPut();
+		$('#single_datepicker').DatePickerFirstPut();
+	}
 
 	/* -------------------- */
 }

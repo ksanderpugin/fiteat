@@ -86,7 +86,7 @@ h2{
 	background-color: transparent;
 	color: white;
 	font-size: 14px;
-	z-index: 1;
+	z-index: 2;
 }
 
 .header_mobile_menu{
@@ -1072,7 +1072,7 @@ q:after {
 }
 
 .drop_down_block{
-    height: 50px;
+    /*height: 50px;*/
     width: 100%;
     border-top: 1px solid #999999;
     position: relative;
@@ -1133,8 +1133,8 @@ q:after {
 }
 
 .drop_down_block_content{
-    margin: 20px 20px 60px 20px;
-    min-height: 150px;  
+	margin: 5px 20px 60px 20px;
+	min-height: 150px;  
 }
 
 .drop_down_block_calendar{
@@ -1142,6 +1142,10 @@ q:after {
 	float: left;
 	line-height: 30px;
 	margin-left: 20px;
+}
+
+.drop_down_block_calendar_id{
+	z-index: 1;
 }
 
 .drop_down_block_calendar_date{
@@ -1177,6 +1181,139 @@ q:after {
 	top: 27px;
 	right: -145px; /* right: -24px; */
 }
+
+.drop_down_block_add_record{
+	margin: 0 0 15px 30px;
+	max-width: 80%;
+
+}
+
+.drop_down_block_add_record a{
+	margin: 0 0 0 30px;
+	font-size: 14px;
+	position: relative;
+	overflow: hidden;
+	white-space: nowrap;
+	-ms-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+}
+
+.drop_down_block_add_record a:before{
+	content: '+';
+	min-width: 15px;
+	color: #62ddb7;
+	font-size: 20px;
+	position: absolute;
+	left: -15px;
+	top: -4px;
+}
+
+.food_list_records{
+	width: 100%;
+	display: table;
+}
+
+.food_list_record{
+	width: 100%;
+	display: block;
+	-webkit-transform: scaleY(-1);
+	transform: scaleY(-1);
+}
+
+.food_list_record:nth-child(odd){
+	background-color: #fffded;
+}
+
+.food_list_record_float_width{
+	display: block;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	background-color: rgba(100,255,255,0.025);
+	-webkit-transform: scaleY(-1);
+	transform: scaleY(-1);
+	vertical-align: top;
+}
+
+.food_list_record_static_width{
+	display: block;
+	margin: 0;
+	padding: 0;
+	min-width: 100%;
+	background-color: rgba(255,255,100,0.025);
+	-webkit-transform: scaleY(-1);
+	transform: scaleY(-1);
+	vertical-align: top;
+}
+
+/* ------------------------------------------------------------------------------------ */
+
+
+.record_time{
+	color:#c82915;
+	font-size: 24px;
+	margin: 5px 0 5px 10px;
+}
+
+.record_name{
+	font-size: 14px;
+	margin: 5px 0 5px 20px;
+	/*
+	overflow: hidden;
+	white-space: nowrap;
+	-ms-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+	*/
+}
+
+.bullet{
+	color:#c82915;
+	font-family: Verdana, Geneva, sans-serif;
+}
+
+.record_weight{
+
+}
+
+.record_nutrients{
+
+}
+
+.record_nutrients_input{
+	max-width: 100px;
+	position: relative;
+}
+
+.record_nutrients_input input{
+	width: 100%;
+}
+
+.record_image{
+	height: 140px;
+	width: 100%;
+	margin: 5px 0 5px 0;
+	background-color: rgba(100,100,100,0.1);
+}
+
+.record_delete{
+	width: 40px;
+	height: 40px;
+	font-size: 36px;
+	line-height: 36px;
+	text-align: center;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	cursor: pointer;
+}
+
+.record_delete:hover{
+	color: #c82915;
+}
+
+/* ------------------------------------------------------------------------------------ */
 
 .diary_chart_left_part{
 	width: 100%;
@@ -1434,6 +1571,66 @@ q:after {
 	width: 45%;
 }
 
+.food_list_record{
+	display: table-row;
+}
+
+.food_list_record_float_width{
+    display: table-cell;
+    width: 100%;
+}
+
+.food_list_record_static_width{
+	display: table-cell;
+	min-width: 195px;
+}
+
+.food_list_record{
+	-webkit-transform: scaleY(1);
+	transform: scaleY(1);
+}
+
+.food_list_record_float_width{
+	-webkit-transform: scaleY(1);
+	transform: scaleY(1);
+}
+
+.food_list_record_static_width{
+	-webkit-transform: scaleY(1);
+	transform: scaleY(1);
+}
+
+/* ------------------------------------------------------------------------------------ */
+
+
+.record_time{
+}
+
+.record_name{
+}
+
+.bullet{
+}
+
+.record_weight{
+}
+
+.record_nutrients{
+}
+
+.record_image{
+	height: 140px;
+	width: 140px;
+	margin: 5px 0 5px 0;
+}
+
+.record_delete{
+	top: 55px;
+	right: 5px;
+}
+
+/* ------------------------------------------------------------------------------------ */
+
 }
 
 @media screen and (min-width: 961px) {
@@ -1601,6 +1798,11 @@ q:after {
 
 .drop_down_block_calendar{
 	margin-left: 60px;
+}
+
+.food_list_record{
+	width: 50%;
+	float: left;
 }
 
 }
