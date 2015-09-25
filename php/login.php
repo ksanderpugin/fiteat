@@ -16,8 +16,8 @@ require_once 'user.php';
 
 switch($type) {
     case "mail":
-        $mail = array_key_exists("mail",$_POST) ? $_POST["mail"] : exit;
-        $pass = array_key_exists("pass",$_POST) ? $_POST["pass"] : exit;
+        $mail = array_key_exists("mail",$_POST) ? $_POST["mail"] : exit("No login");
+        $pass = array_key_exists("pass",$_POST) ? $_POST["pass"] : exit("No pass");
         $user = User::getInst();
         $request = $user->requestAuth($mail,$pass);
         echo json_encode($request);
