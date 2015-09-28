@@ -8,7 +8,7 @@ function init(){
 	loginInit();
 }
 
-function init(){
+function loginInit(){
 	$("#login_button_container").click(function(){
 		username=$("#username").val();
 		password=$("#password").val();
