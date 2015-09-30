@@ -10,6 +10,8 @@
     <script type="text/JavaScript" src="javascript/jquery-2.1.0.js"></script>
     <script type="text/JavaScript" src="javascript/jquery-ui.js"></script>
     <script type="text/javascript" src="javascript/datepicker.js"></script>
+    <script type="text/javascript" src="javascript/jquery.mask.js"></script>
+    <!--<script type="text/javascript" src="javascript/modernizr-custom.min.js"></script>-->
     <script type="text/JavaScript" src="javascript/jscript.js"></script>
 </head>
 
@@ -153,60 +155,189 @@
 				<div class="clearfix"></div>
 				<div class="drop_down_block_content">
 					<div class="drop_down_block_add_record">
-						<a>Новая запись</a>
-						<a>Запись из списка покупок</a>
+						<a class="add_new_record">Новая запись</a>
+						<a class="add_new_record_from_list">Запись из списка покупок</a>
 					</div>
 					<div class="food_list_records">
-						<div class="food_list_record">
-							<div class="food_list_record_float_width">
-								<div class="record_time"><span style="color:#c82915;">11:26</span></div>
-								<div class="record_name"><span class="bullet">•</span> Овощной суп с горошком и цветной капустой</div>
-								<div class="record_weight">Вес<input type="text" size="40"></div>
-								<div class="record_nutrients">
-									<span>Б</span><span class="record_nutrients_input"><input type="text"></span>
-									<span>Ж</span><span class="record_nutrients_input"><input type="text"></span>
-									<span>У</span><span class="record_nutrients_input"><input type="text"></span>
+
+						<div class="food_list_record_container">
+							<div class="food_list_record">
+								<div class="food_list_record_float_width">
+									<div class="record_time_box">
+										<input class="record_time" maxlength="5" type="time" value="10:21" onkeypress="">
+									</div>
+									<div class="record_name"><span class="bullet">• </span>Новая запись</div>
+									<div class="record_weight">
+										<span>Вес</span><span class="record_weight_input"><input type="number" value="100" step="5"></span>
+									</div>
+									<div class="record_nutrients">
+										<span>Б</span><span class="record_nutrients_input"><input type="number" step="0.1"></span>
+										<span>Ж</span><span class="record_nutrients_input"><input type="number" step="0.1"></span>
+										<span>У</span><span class="record_nutrients_input"><input type="number" step="0.1"></span>
+									</div>
+									<div class="clearfix"></div>
+									<a class="record_recipe_link" href="">посмотреть рецепт</a>
 								</div>
-							</div>
-							<div class="food_list_record_static_width">
-								<div class="record_image">
-									<div class="record_delete">✖</div>
+								<div class="food_list_record_static_width">
+									<div class="record_image" style="background-image:url(images/WP_20150909_14_25_53_Pro.jpg)">
+										<div class="record_delete">✖</div>
+									</div>
 								</div>
 							</div>
 						</div>
 
-						<div class="food_list_record">
-							<div class="food_list_record_float_width">
-								<div class="record_time"><span style="color:#c82915;">11:26</span></div>
-								<div class="record_name"><span class="bullet">•</span> Овощной суп с горошком и цветной капустой</div>
-								<div class="record_weight">Вес<input type="text" size="40"></div>
-								<div class="record_nutrients">
-									<span>Б</span><span class="record_nutrients_input"><input type="text"></span>
-									<span>Ж</span><span class="record_nutrients_input"><input type="text"></span>
-									<span>У</span><span class="record_nutrients_input"><input type="text"></span>
+						<div class="food_list_record_container">
+							<div class="food_list_record from_shopping_list">
+								<div class="food_list_record_float_width">
+									<div class="record_time_box">
+										<input class="record_time" maxlength="5" type="time" value="10:21" onkeypress="">
+									</div>
+									<div class="record_name"><span class="bullet">• </span>Запись из списка покупок</div>
+									<div class="record_weight">
+										<span>Вес</span><span class="record_weight_input"><input type="number" value="225" step="5"></span>
+									</div>
+									<div class="record_nutrients">
+										<span>Б</span><span class="record_nutrients_input"><input type="number" value="63.48" readonly></span>
+										<span>Ж</span><span class="record_nutrients_input"><input type="number" value="31.10" readonly></span>
+										<span>У</span><span class="record_nutrients_input"><input type="number" value="1.23" readonly></span>
+									</div>
+									<div class="clearfix"></div>
+									<a class="record_recipe_link" href="">посмотреть рецепт</a>
 								</div>
-							</div>
-							<div class="food_list_record_static_width">
-								<div class="record_image">
-									<div class="record_delete">✖</div>
+								<div class="food_list_record_static_width">
+									<div class="record_image" style="background-image:url(images/WP_20150628_001.jpg)">
+										<div class="record_delete">✖</div>
+									</div>
 								</div>
 							</div>
 						</div>
 
-						<div class="food_list_record">
-							<div class="food_list_record_float_width">
-								<div class="record_time"><span style="color:#c82915;">11:26</span></div>
-								<div class="record_name"><span class="bullet">•</span> Овощной суп с горошком и цветной капустой</div>
-								<div class="record_weight">Вес<input type="text" size="40"></div>
-								<div class="record_nutrients">
-									<span>Б</span><span class="record_nutrients_input"><input type="text"></span>
-									<span>Ж</span><span class="record_nutrients_input"><input type="text"></span>
-									<span>У</span><span class="record_nutrients_input"><input type="text"></span>
+						<div class="food_list_record_container">
+							<div class="food_list_record">
+								<div class="food_list_record_float_width">
+									<div class="record_time_box">
+										<input class="record_time" maxlength="5" type="time" value="13:58" onkeypress="">
+									</div>
+									<div class="record_name"><span class="bullet">•</span> Овощной суп с горошком и цветной капустой</div>
+									<div class="record_weight">
+										<span>Вес</span><span class="record_weight_input"><input type="number"></span>
+									</div>
+									<div class="record_nutrients">
+										<span>Б</span><span class="record_nutrients_input"><input type="number"></span>
+										<span>Ж</span><span class="record_nutrients_input"><input type="number"></span>
+										<span>У</span><span class="record_nutrients_input"><input type="number"></span>
+									</div>
+									<div class="clearfix"></div>
+									<a class="record_recipe_link" href="">посмотреть рецепт</a>
+								</div>
+								<div class="food_list_record_static_width">
+									<div class="record_image" style="background-image:url(images/Share2015-09-03-d5ec0ddeb18e0d87320feda11740de5121093bca53975996dda9106f46383991-Picture.jpg)">
+										<div class="record_delete">✖</div>
+									</div>
 								</div>
 							</div>
-							<div class="food_list_record_static_width">
-								<div class="record_image">
-									<div class="record_delete">✖</div>
+						</div>
+
+						<div class="food_list_record_container">
+							<div class="food_list_record">
+								<div class="food_list_record_float_width">
+									<div class="record_time_box">
+										<input class="record_time" maxlength="5" type="time" value="17:07" onkeypress="">
+									</div>
+									<div class="record_name"><span class="bullet">•</span> Овощной суп с горошком и цветной капустой</div>
+									<div class="record_weight">
+										<span>Вес</span><span class="record_weight_input"><input type="number"></span>
+									</div>
+									<div class="record_nutrients">
+										<span>Б</span><span class="record_nutrients_input"><input type="number"></span>
+										<span>Ж</span><span class="record_nutrients_input"><input type="number"></span>
+										<span>У</span><span class="record_nutrients_input"><input type="number"></span>
+									</div>
+									<div class="clearfix"></div>
+									<a class="record_recipe_link" href="">посмотреть рецепт</a>
+								</div>
+								<div class="food_list_record_static_width">
+									<div class="record_image" style="background-image:url(images/WP_20150909_14_25_53_Pro.jpg)">
+										<div class="record_delete">✖</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="food_list_record_container">
+							<div class="food_list_record">
+								<div class="food_list_record_float_width">
+									<div class="record_time_box">
+										<input class="record_time" maxlength="5" type="time" value="10:21" onkeypress="">
+									</div>
+									<div class="record_name"><span class="bullet">• </span>Голубцы с грибами</div>
+									<div class="record_weight">
+										<span>Вес</span><span class="record_weight_input"><input type="text"></span>
+									</div>
+									<div class="record_nutrients">
+										<span>Б</span><span class="record_nutrients_input"><input type="text"></span>
+										<span>Ж</span><span class="record_nutrients_input"><input type="text"></span>
+										<span>У</span><span class="record_nutrients_input"><input type="text"></span>
+									</div>
+									<div class="clearfix"></div>
+									<a class="record_recipe_link" href="">посмотреть рецепт</a>
+								</div>
+								<div class="food_list_record_static_width">
+									<div class="record_image" style="background-image:url(images/WP_20150628_001.jpg)">
+										<div class="record_delete">✖</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="food_list_record_container">
+							<div class="food_list_record">
+								<div class="food_list_record_float_width">
+									<div class="record_time_box">
+										<input class="record_time" maxlength="5" type="time" value="13:58" onkeypress="">
+									</div>
+									<div class="record_name"><span class="bullet">•</span> Овощной суп с горошком и цветной капустой</div>
+									<div class="record_weight">
+										<span>Вес</span><span class="record_weight_input"><input type="text"></span>
+									</div>
+									<div class="record_nutrients">
+										<span>Б</span><span class="record_nutrients_input"><input type="text"></span>
+										<span>Ж</span><span class="record_nutrients_input"><input type="text"></span>
+										<span>У</span><span class="record_nutrients_input"><input type="text"></span>
+									</div>
+									<div class="clearfix"></div>
+									<a class="record_recipe_link" href="">посмотреть рецепт</a>
+								</div>
+								<div class="food_list_record_static_width">
+									<div class="record_image" style="background-image:url(images/Share2015-09-03-d5ec0ddeb18e0d87320feda11740de5121093bca53975996dda9106f46383991-Picture.jpg)">
+										<div class="record_delete">✖</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="food_list_record_container">
+							<div class="food_list_record">
+								<div class="food_list_record_float_width">
+									<div class="record_time_box">
+										<input class="record_time" maxlength="5" type="time" value="17:07" onkeypress="">
+									</div>
+									<div class="record_name"><span class="bullet">• </span>Пирожное с ягодным желе</div>
+									<div class="record_weight">
+										<span>Вес</span><span class="record_weight_input"><input type="text"></span>
+									</div>
+									<div class="record_nutrients">
+										<span>Б</span><span class="record_nutrients_input"><input type="text"></span>
+										<span>Ж</span><span class="record_nutrients_input"><input type="text"></span>
+										<span>У</span><span class="record_nutrients_input"><input type="text"></span>
+									</div>
+									<div class="clearfix"></div>
+									<a class="record_recipe_link" href="">посмотреть рецепт</a>
+								</div>
+								<div class="food_list_record_static_width">
+									<div class="record_image" style="background-image:url(images/WP_20150909_14_25_53_Pro.jpg)">
+										<div class="record_delete">✖</div>
+									</div>
 								</div>
 							</div>
 						</div>

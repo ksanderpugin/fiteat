@@ -6,6 +6,44 @@ function init(){
 	datePickerInit();
 	initResize();
 	loginInit();
+	diaryEventsInit();
+}
+
+function diaryEventsInit(){
+
+	$('.record_delete').on("mouseup touchend", function (e){
+		console.log('delete element');
+		var container = $(this).closest('.food_list_record_container');
+			$(container).remove();
+			DropDownBlockResize();
+			/*if (!container.is(e.target) // if the target of the click isn't the container...
+				&& container.has(e.target).length === 0) // ... nor a descendant of the container
+			{
+				container.hide();
+			}*/
+
+	});
+
+	/*
+	if (Modernizr.inputtypes.time) {
+		alert('input time доступен');
+	} else {
+		alert('input time не доступен');
+	}
+	*/
+
+	// record time
+
+	$('.record_time').mask('Z0:z0', {
+		translation: {
+			'Z': {
+				pattern: /[0-2]/, optional: 0
+			},
+			'z': {
+				pattern: /[0-5]/, optional: 0
+			}
+		}
+	});
 }
 
 function loginInit(){
@@ -132,7 +170,7 @@ function initDropDownBlocks(){
 			drop_down_block.animate({
 				height: "50"
 			}, 400, function() {
-			// Animation complete.
+				console.log('animation complete');
 			});
 
 		}else{
@@ -151,12 +189,11 @@ function initDropDownBlocks(){
 			drop_down_block.animate({
 				height: autoHeight
 			}, 400, function() {
-			// Animation complete.
+			console.log('animation complete');
 			});
 		}
 	});
 }
-
 
 function DropDownBlockResize(){
 	$('.drop_down_block').each(function() {
@@ -311,7 +348,6 @@ function datePickerInit(){
 			format: 'Y-m-d-a-e',
 			onShow: function(formated, dates){
 				var drop_down_block_calendar_date = double_datepicker.closest('.drop_down_block_calendar_date');
-				console.log(formated);
 				var temp, pos, result;
 				var mon = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
 				$(drop_down_block_calendar_date).find('.datePart').each(function(i){
@@ -372,7 +408,6 @@ function datePickerInit(){
 			},
 			onChange: function(formated, dates){
 				var drop_down_block_calendar_date = $(double_datepicker).closest('.drop_down_block_calendar_date');
-				console.log(formated);
 				var temp, pos, result;
 				var mon = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
 				$(drop_down_block_calendar_date).find('.datePart').each(function(i){
@@ -469,7 +504,6 @@ function datePickerInit(){
 			format: 'Y-m-d-a-e',
 			onShow: function(formated, dates){
 				var drop_down_block_calendar_date = single_datepicker.closest('.drop_down_block_calendar_date');
-				console.log(formated);
 				var temp, pos, result;
 				var mon = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
 				$(drop_down_block_calendar_date).find('.datePart').each(function(i){
@@ -530,7 +564,6 @@ function datePickerInit(){
 			},
 			onChange: function(formated, dates){
 				var drop_down_block_calendar_date = $(single_datepicker).closest('.drop_down_block_calendar_date');
-				console.log(formated);
 				var temp, pos, result;
 				var mon = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
 				$(drop_down_block_calendar_date).find('.datePart').each(function(i){
@@ -614,3 +647,9 @@ function calendarMerge(){
 		}
 	});
 }
+
+/*
+function printFoodDiaryRecord(recTime, recName, recType, recWeight, recLink, recPro, recFat, recCar){
+
+}
+*/

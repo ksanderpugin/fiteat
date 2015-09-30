@@ -37,7 +37,12 @@ $r_html = render(__DIR__ . "/views/mr_slide.php",["recipes" => $r_data]);
 <head>
     <title>FitEat</title>
     <link rel="StyleSheet" type="text/css" href="stylesheets/main.css"/>
+    <link rel="StyleSheet" type="text/css" href="stylesheets/datepicker.css"/>
     <script type="text/JavaScript" src="javascript/jquery-2.1.0.js"></script>
+    <script type="text/JavaScript" src="javascript/jquery-ui.js"></script>
+    <script type="text/javascript" src="javascript/datepicker.js"></script>
+    <script type="text/javascript" src="javascript/jquery.mask.js"></script>
+    <!--<script type="text/javascript" src="javascript/modernizr-custom.min.js"></script>-->
     <script type="text/JavaScript" src="javascript/jscript.js"></script>
 </head>
 
