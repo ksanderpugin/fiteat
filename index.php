@@ -5,7 +5,6 @@ include_once 'php/basic.php';
 include_once 'php/sql.php';
 include_once 'php/recipe.php';
 
-
 $fb_url = 'https://www.facebook.com/dialog/oauth?' .
 	urldecode(http_build_query([
 		'client_id' => Config::FB_APP_ID,
