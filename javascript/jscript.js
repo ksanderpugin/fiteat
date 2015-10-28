@@ -46,6 +46,36 @@ function diaryEventsInit(){
 			}
 		}
 	});
+
+	$(".calCount").bind("keydown", function(event){
+
+		$("#invisible").html(this.value);
+		this.style.width = $("#invisible").outerWidth()+ 13 + 'px';
+
+		if (event.keyCode == 8){
+		}else if((event.keyCode >= 37) && (event.keyCode <= 40)){
+			return(event.keyCode);
+		}
+
+		var charCode = event.which;
+		if (charCode <= 13) return true;
+
+		var keyChar = String.fromCharCode(charCode);
+		if (this.value.length < 10){
+			return /[0-9]/.test(keyChar);
+		}else{return false}
+
+	});
+
+	$(".calCount").bind("keyup", function(event){
+		$("#invisible").html(this.value);
+		this.style.width = $("#invisible").outerWidth()+ 13 + 'px';
+	});
+
+	$(".calCount").each(function(){
+		$("#invisible").html(this.value);
+		this.style.width = $("#invisible").outerWidth()+ 13 + 'px';
+	});
 }
 
 function loginInit(){
@@ -656,50 +686,14 @@ function calendarMerge(){
 
 function getFoodDiaryRecords(){
 
-	// use diary.json as input;
-	/*if($('.food_list_records')){
-		printFoodDiaryRecord('fromList', '10:15', 'Название блюда', 150, '1234567890', '/1234567890.jpg', 63.48, 31.10, 1.23, 230);
-		printFoodDiaryRecord('users', '11:15', 'Название блюда', 240, '1234567890', '/1234567890.jpg', 63.48, 31.10, 1.23, 10900);
-		printFoodDiaryRecord('users', '12:15', 'Название блюда', 255, '1234567890', '/1234567890.jpg', 63.48, 31.10, 1.23, 610);
-	}*/
-
 	if($('.food_list_records')){
-		$.getJSON('http://localhost/fiteat/diary.js', function(data){
+		$.getJSON('http://localhost/fiteat/diary.json', function(data){
 			$.each(data.list, function (i) {
 				printFoodDiaryRecord(data.list[i].type, data.list[i].time, data.list[i].name, data.list[i].weight, data.list[i].link, data.list[i].image, data.list[i].pro, data.list[i].fat, data.list[i].car, data.list[i].kcal);
 			});
+			diaryEventsInit();
 		});
 	}
-
-	$(".calCount").bind("keydown", function(event){
-
-	$("#invisible").html(this.value);
-	this.style.width = $("#invisible").outerWidth()+ 13 + 'px';
-
-	if (event.keyCode == 8){
-	}else if((event.keyCode >= 37) && (event.keyCode <= 40)){
-		return(event.keyCode);
-	}
-
-	var charCode = event.which;
-	if (charCode <= 13) return true;
-
-	var keyChar = String.fromCharCode(charCode);
-	if (this.value.length < 10){
-		return /[0-9]/.test(keyChar);
-	}else{return false}
-	});
-
-	$(".calCount").bind("keyup", function(event){
-		$("#invisible").html(this.value);
-		this.style.width = $("#invisible").outerWidth()+ 13 + 'px';
-	});
-
-	$(".calCount").each(function(){
-		$("#invisible").html(this.value);
-		this.style.width = $("#invisible").outerWidth()+ 13 + 'px';
-	});
-
 }
 
 function printFoodDiaryRecord(recType, recTime, recName, recWeight, recLink, recImg, recPro, recFat, recCar, recCal){
