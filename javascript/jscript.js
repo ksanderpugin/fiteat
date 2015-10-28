@@ -1,5 +1,6 @@
 function init(){
 	initSlider('mr'); // init mainpage recipes slider
+	initSlider('pr'); // init recipes page slider
 	initDropDownBlocks(); // itit dropdown blocks
 	CreatePieChart();
 	CreateLineChart();
@@ -7,6 +8,7 @@ function init(){
 	initResize();
 	loginInit();
 	diaryEventsInit();
+	getFoodDiaryRecords();
 }
 
 function diaryEventsInit(){
@@ -167,6 +169,8 @@ function initDropDownBlocks(){
 
 			drop_down_block.find('.drop_down_block_title').css('white-space','nowrap');
 
+			//drop_down_block.removeClass('fullsize');
+
 			drop_down_block.animate({
 				height: "50"
 			}, 400, function() {
@@ -185,6 +189,8 @@ function initDropDownBlocks(){
 			$(this).addClass('box_rotate');
 
 			drop_down_block.find('.drop_down_block_title').css('white-space','normal');
+
+			//drop_down_block.addClass('fullsize');
 
 			drop_down_block.animate({
 				height: autoHeight
@@ -209,7 +215,7 @@ function initSlider(prefix){
 
 	var interval;
 	var slideCount = $('.' + prefix + '_slide').length;
-	var slideWidth = $('.' + prefix + '_slide').width();
+	var slideWidth = $('.' + prefix + '_slide').outerWidth(true);
 	var slideHeight = $('.' + prefix + '_slide').height();
 	var sliderSlidesWidth = slideCount * slideWidth;
 	var viewportWidth = $('.' + prefix + '_slider_visor').width(); 
@@ -648,8 +654,86 @@ function calendarMerge(){
 	});
 }
 
-/*
-function printFoodDiaryRecord(recTime, recName, recType, recWeight, recLink, recPro, recFat, recCar){
+function getFoodDiaryRecords(){
+
+	// use diary.json as input;
+	/*if($('.food_list_records')){
+		printFoodDiaryRecord('fromList', '10:15', 'Название блюда', 150, '1234567890', '/1234567890.jpg', 63.48, 31.10, 1.23, 230);
+		printFoodDiaryRecord('users', '11:15', 'Название блюда', 240, '1234567890', '/1234567890.jpg', 63.48, 31.10, 1.23, 10900);
+		printFoodDiaryRecord('users', '12:15', 'Название блюда', 255, '1234567890', '/1234567890.jpg', 63.48, 31.10, 1.23, 610);
+	}*/
+
+	if($('.food_list_records')){
+		$.getJSON('http://localhost/fiteat/diary.js', function(data){
+			$.each(data.list, function (i) {
+				printFoodDiaryRecord(data.list[i].type, data.list[i].time, data.list[i].name, data.list[i].weight, data.list[i].link, data.list[i].image, data.list[i].pro, data.list[i].fat, data.list[i].car, data.list[i].kcal);
+			});
+		});
+	}
+
+	$(".calCount").bind("keydown", function(event){
+
+	$("#invisible").html(this.value);
+	this.style.width = $("#invisible").outerWidth()+ 13 + 'px';
+
+	if (event.keyCode == 8){
+	}else if((event.keyCode >= 37) && (event.keyCode <= 40)){
+		return(event.keyCode);
+	}
+
+	var charCode = event.which;
+	if (charCode <= 13) return true;
+
+	var keyChar = String.fromCharCode(charCode);
+	if (this.value.length < 10){
+		return /[0-9]/.test(keyChar);
+	}else{return false}
+	});
+
+	$(".calCount").bind("keyup", function(event){
+		$("#invisible").html(this.value);
+		this.style.width = $("#invisible").outerWidth()+ 13 + 'px';
+	});
+
+	$(".calCount").each(function(){
+		$("#invisible").html(this.value);
+		this.style.width = $("#invisible").outerWidth()+ 13 + 'px';
+	});
 
 }
-*/
+
+function printFoodDiaryRecord(recType, recTime, recName, recWeight, recLink, recImg, recPro, recFat, recCar, recCal){
+	// Функция для создания записи.
+
+	var edit = "";
+	if (recType == "fromList"){ edit = " readonly"; }
+
+	listRecords = $('.food_list_records');
+
+	listRecords.prepend('<div class="food_list_record_container">'+
+							'<div class="food_list_record">'+
+								'<div class="food_list_record_float_width">'+
+									'<div class="record_time_box">'+
+										'<input class="record_time" maxlength="5" type="time" value="'+recTime+'" onkeypress="">'+
+									'</div>'+
+									'<div class="record_name"><span class="bullet">• </span>'+recName+' <b>( <input class="calCount" type="number" value="'+recCal+'"/> ккал )</b></div>'+
+									'<div class="record_weight">'+
+										'<span>Вес</span><span class="record_weight_input"><input type="number" value="'+recWeight+'" step="5"></span>'+
+									'</div>'+
+									'<div class="record_nutrients">'+
+										'<span>Б</span><span class="record_nutrients_input'+edit+'"><input type="number" value="'+recPro+'" step="0.1"'+edit+'></span>'+
+										'<span>Ж</span><span class="record_nutrients_input'+edit+'"><input type="number" value="'+recFat+'" step="0.1"'+edit+'></span>'+
+										'<span>У</span><span class="record_nutrients_input'+edit+'"><input type="number" value="'+recCar+'" step="0.1"'+edit+'></span>'+
+									'</div>'+
+									'<div class="clearfix"></div>'+
+									'<a class="record_recipe_link" href="'+recLink+'">посмотреть рецепт</a>'+
+								'</div>'+
+								'<div class="food_list_record_static_width">'+
+									'<div class="record_image" style="background-image:url('+recImg+')">'+
+										'<div class="record_delete">✖</div>'+
+									'</div>'+
+								'</div>'+
+							'</div>'+
+						'</div>');
+
+}

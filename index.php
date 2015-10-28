@@ -50,7 +50,7 @@ $r_html = render(__DIR__ . "/views/mr_slide.php",["recipes" => $r_data]);
 		<div class="header_container">
 			<a class="header_mobile_menu" onclick="sidebarMenu('show')"></a>
 			<div class="header_button header_left_button logo"><!--Fiteat--></div>
-			<div class="header_button header_left_button"><a href="#">Рецепты</a></div>
+			<div class="header_button header_left_button"><a href="recipes.html">Рецепты</a></div>
 			<div class="header_button header_left_button"><a href="diary.html">Дневник питания</a></div>
 			<div class="header_button header_left_button"><a href="#">Мой стол</a></div>
 			<div class="header_button header_right_button header_menu_login">
@@ -212,7 +212,7 @@ $r_html = render(__DIR__ . "/views/mr_slide.php",["recipes" => $r_data]);
 		<div id="sidebar_menu">
 			<div class="sidebar_menu_body">
 				<div class="sidebar_menu_button logo">Fiteat</div>
-				<div class="sidebar_menu_button"><a>Рецепты</a></div>
+				<div class="sidebar_menu_button"><a href="recipes.html">Рецепты</a></div>
 				<div class="sidebar_menu_button"><a href="diary.html">Дневник питания</a></div>
 				<div class="sidebar_menu_button"><a>Мой стол</a></div>
 

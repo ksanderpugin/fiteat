@@ -1,0 +1,629 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<head>
+    <title>FitEat Recipes</title>
+    <link rel="StyleSheet" type="text/css" href="stylesheets/main.css"/>
+    <script type="text/JavaScript" src="javascript/jquery-2.1.0.js"></script>
+    <script type="text/JavaScript" src="javascript/jquery-ui.js"></script>
+    <script type="text/JavaScript" src="javascript/jscript.js"></script>
+</head>
+
+<body onload="init()">
+	<div class="header">
+		<div class="header_container">
+			<a class="header_mobile_menu" onclick="sidebarMenu('show')"></a>
+			<div class="header_button header_left_button logo"><!--Fiteat--></div>
+			<div class="header_button header_left_button"><a href="recipes.html">Рецепты</a></div>
+			<div class="header_button header_left_button"><a href="diary.html">Дневник питания</a></div>
+			<div class="header_button header_left_button"><a href="#">Мой стол</a></div>
+			<div class="header_button header_right_button header_menu_login">
+				<div class="not_logged_in header_menu_name">Вход</div>
+				<div class="logged_in header_menu_name" onclick="">Ryzhova Olga</div>
+				<div class="header_menu_user_settings">
+					<div class="logged_in" onclick="">Настройки</div>
+					<div class="logged_in" onclick="logIn('out')">Выйти</div>
+				</div>
+				<div class="header_menu_user_settings">
+					<form class="not_logged_in login_form">
+
+						<p>Email</p>
+						<span id="">
+							<input type="text" placeholder="example@mail.com" name="name">
+						</span>
+
+						<p>Пароль</p>
+						<span id="">
+							<input type="password" placeholder="password" name="contacts">
+						</span>
+
+						<div id="login_form_buttons">
+							<div>
+								<a id="login_button_container" onclick="logIn('in')">Войти</a>
+								<a class="login_form_soc_button" id="fb">&nbsp;</a>
+								<a class="login_form_soc_button" href="<?=$vk_url?>" id="vk">&nbsp;</a>
+								<a class="login_form_soc_button" id="tw">&nbsp;</a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="header_button header_right_button header_menu_search">
+				<img src="images/searchicon.png" alt="Search Icon">
+				<form>
+					<input type="text" placeholder="Поиск по сайту..." name="search">
+				</form>
+			</div>
+			<div class="header_button header_right_button"><a href="#">О проекте</a></div>
+		</div>
+	</div>
+
+	<div class="page_container">
+
+		<h1 class="recipes_header">Рецепты</h1>
+
+		<div class="recipes_header_image_block">
+			<div class="recipes_header_image_block_filter"></div>
+			<div class="phrase">Стол - единственное место, где люди не скучают с первой же минуты</div>
+		</div>
+
+		<div class="recipes_body">
+
+			<div class="recipes_personal_recommendations">
+				<h2>Персональные рекомендации</h2>
+				<div class="personal_recommendations_slider">
+					<div class="pr_slider_visor">
+						<div class="pr_slides_container">
+
+							<div class="pr_slide">
+								<div class="pr_slide_pic" style="background-image: url(images/gre_240x175.jpg);"></div>
+								<div class="pr_slide_text">
+									<p class="pr_slide_name">Ризотто с гибами</p>
+									<div><a><span>+</span>добавить в меню</a></div>
+									<div><a>посмотреть рецепт</a></div>
+								</div>
+							</div>
+
+							<div class="pr_slide">
+								<div class="pr_slide_pic" style="background-image: url(images/gre_240x175.jpg);"></div>
+								<div class="pr_slide_text">
+									<p class="pr_slide_name">Ризотто с гибами</p>
+									<div><a><span>+</span>добавить в меню</a></div>
+									<div><a>посмотреть рецепт</a></div>
+								</div>
+							</div>
+
+							<div class="pr_slide">
+								<div class="pr_slide_pic" style="background-image: url(images/gre_240x175.jpg);"></div>
+								<div class="pr_slide_text">
+									<p class="pr_slide_name">Ризотто с гибами</p>
+									<div><a><span>+</span>добавить в меню</a></div>
+									<div><a>посмотреть рецепт</a></div>
+								</div>
+							</div>
+
+							<div class="pr_slide">
+								<div class="pr_slide_pic" style="background-image: url(images/gre_240x175.jpg);"></div>
+								<div class="pr_slide_text">
+									<p class="pr_slide_name">Ризотто с гибами</p>
+									<div><a><span>+</span>добавить в меню</a></div>
+									<div><a>посмотреть рецепт</a></div>
+								</div>
+							</div>
+
+							<div class="pr_slide">
+								<div class="pr_slide_pic" style="background-image: url(images/gre_240x175.jpg);"></div>
+								<div class="pr_slide_text">
+									<p class="pr_slide_name">Ризотто с гибами</p>
+									<div><a><span>+</span>добавить в меню</a></div>
+									<div><a>посмотреть рецепт</a></div>
+								</div>
+							</div>
+
+							<div class="pr_slide">
+								<div class="pr_slide_pic" style="background-image: url(images/gre_240x175.jpg);"></div>
+								<div class="pr_slide_text">
+									<p class="pr_slide_name">Ризотто с гибами</p>
+									<div><a><span>+</span>добавить в меню</a></div>
+									<div><a>посмотреть рецепт</a></div>
+								</div>
+							</div>
+
+							<div class="pr_slide">
+								<div class="pr_slide_pic" style="background-image: url(images/gre_240x175.jpg);"></div>
+								<div class="pr_slide_text">
+									<p class="pr_slide_name">Ризотто с гибами</p>
+									<div><a><span>+</span>добавить в меню</a></div>
+									<div><a>посмотреть рецепт</a></div>
+								</div>
+							</div>
+
+							<div class="pr_slide">
+								<div class="pr_slide_pic" style="background-image: url(images/gre_240x175.jpg);"></div>
+								<div class="pr_slide_text">
+									<p class="pr_slide_name">Ризотто с гибами</p>
+									<div><a><span>+</span>добавить в меню</a></div>
+									<div><a>посмотреть рецепт</a></div>
+								</div>
+							</div>
+
+							<div class="pr_slide">
+								<div class="pr_slide_pic" style="background-image: url(images/gre_240x175.jpg);"></div>
+								<div class="pr_slide_text">
+									<p class="pr_slide_name">Ризотто с гибами</p>
+									<div><a><span>+</span>добавить в меню</a></div>
+									<div><a>посмотреть рецепт</a></div>
+								</div>
+							</div>
+
+							<div class="pr_slide">
+								<div class="pr_slide_pic" style="background-image: url(images/gre_240x175.jpg);"></div>
+								<div class="pr_slide_text">
+									<p class="pr_slide_name">Ризотто с гибами</p>
+									<div><a><span>+</span>добавить в меню</a></div>
+									<div><a>посмотреть рецепт</a></div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<a class="pr_control_prev"></a>
+					<a class="pr_control_next"></a>
+				</div>
+			</div>
+
+			<div class="block_close"></div>
+
+			<div class="recipe_cards">
+				
+				<div class="recipe_card_container">
+					<div class="recipe_card">
+						<div class="recipe_card_pic" style="background-image: url('images/gre_350x175.jpg');"></div>
+						<div class="recipe_card_text">
+							<p class="recipe_card_name">Ризотто с грибами</p>
+							<p>На 100 грамм: <span>235 ккал</span></p>
+							<div class="recipe_card_nutrients">
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#ffa371;"></div>
+										<div class="recipe_card_nutrients_item_name">Белки</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#ffa371;">15</div>
+								</div>
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#fff571;"></div>
+										<div class="recipe_card_nutrients_item_name">Жиры</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#eed406;">20</div>
+								</div>
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#62ddb7;"></div>
+										<div class="recipe_card_nutrients_item_name">Углеводы</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#62ddb7;">30</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="recipe_card_icons">
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_tomato.png);"></div>
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_che.png);"></div>
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_olive.png);"></div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="recipe_card_price">
+								<a>
+									<span class="recipe_card_price_label">Цена за продукты: </span>
+									<span>65.70 - 121.46 грн.</span>
+								</a>
+							</div>
+							<div class="recipe_card_add_to_menu"><a><span class="recipe_card_text_turquoise">+</span>добавить в меню</a></div>
+							<div class="recipe_card_link"><a><span class="recipe_card_link_label">посмотреть</span> <span>рецепт</span> <span class="recipe_card_text_turquoise">>></span></a></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="recipe_card_container">
+					<div class="recipe_card">
+						<div class="recipe_card_pic" style="background-image: url('images/gre_350x175.jpg');"></div>
+						<div class="recipe_card_text">
+							<p class="recipe_card_name">Ризотто с грибами</p>
+							<p>На 100 грамм: <span>235 ккал</span></p>
+							<div class="recipe_card_nutrients">
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#ffa371;"></div>
+										<div class="recipe_card_nutrients_item_name">Белки</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#ffa371;">15</div>
+								</div>
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#fff571;"></div>
+										<div class="recipe_card_nutrients_item_name">Жиры</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#eed406;">20</div>
+								</div>
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#62ddb7;"></div>
+										<div class="recipe_card_nutrients_item_name">Углеводы</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#62ddb7;">30</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="recipe_card_icons">
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_tomato.png);"></div>
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_che.png);"></div>
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_olive.png);"></div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="recipe_card_price">
+								<a>
+									<span class="recipe_card_price_label">Цена за продукты: </span>
+									<span>65.70 - 121.46 грн.</span>
+								</a>
+							</div>
+							<div class="recipe_card_add_to_menu"><a><span class="recipe_card_text_turquoise">+</span>добавить в меню</a></div>
+							<div class="recipe_card_link"><a><span class="recipe_card_link_label">посмотреть</span> <span>рецепт</span> <span class="recipe_card_text_turquoise">>></span></a></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="recipe_card_container">
+					<div class="recipe_card">
+						<div class="recipe_card_pic" style="background-image: url('images/gre_350x175.jpg');"></div>
+						<div class="recipe_card_text">
+							<p class="recipe_card_name">Ризотто с грибами</p>
+							<p>На 100 грамм: <span>235 ккал</span></p>
+							<div class="recipe_card_nutrients">
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#ffa371;"></div>
+										<div class="recipe_card_nutrients_item_name">Белки</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#ffa371;">15</div>
+								</div>
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#fff571;"></div>
+										<div class="recipe_card_nutrients_item_name">Жиры</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#eed406;">20</div>
+								</div>
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#62ddb7;"></div>
+										<div class="recipe_card_nutrients_item_name">Углеводы</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#62ddb7;">30</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="recipe_card_icons">
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_tomato.png);"></div>
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_che.png);"></div>
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_olive.png);"></div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="recipe_card_price">
+								<a>
+									<span class="recipe_card_price_label">Цена за продукты: </span>
+									<span>65.70 - 121.46 грн.</span>
+								</a>
+							</div>
+							<div class="recipe_card_add_to_menu"><a><span class="recipe_card_text_turquoise">+</span>добавить в меню</a></div>
+							<div class="recipe_card_link"><a><span class="recipe_card_link_label">посмотреть</span> <span>рецепт</span> <span class="recipe_card_text_turquoise">>></span></a></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="recipe_card_container">
+					<div class="recipe_card">
+						<div class="recipe_card_pic" style="background-image: url('images/gre_350x175.jpg');"></div>
+						<div class="recipe_card_text">
+							<p class="recipe_card_name">Ризотто с грибами</p>
+							<p>На 100 грамм: <span>235 ккал</span></p>
+							<div class="recipe_card_nutrients">
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#ffa371;"></div>
+										<div class="recipe_card_nutrients_item_name">Белки</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#ffa371;">15</div>
+								</div>
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#fff571;"></div>
+										<div class="recipe_card_nutrients_item_name">Жиры</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#eed406;">20</div>
+								</div>
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#62ddb7;"></div>
+										<div class="recipe_card_nutrients_item_name">Углеводы</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#62ddb7;">30</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="recipe_card_icons">
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_tomato.png);"></div>
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_che.png);"></div>
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_olive.png);"></div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="recipe_card_price"><a><a class="recipe_card_price_label">Цена за продукты: </a><a>65.70 - 121.46 грн.</a></a></div>
+							<div class="recipe_card_add_to_menu"><a><span class="recipe_card_text_turquoise">+</span>добавить в меню</a></div>
+							<div class="recipe_card_link"><a><span class="recipe_card_link_label">посмотреть</span> <span>рецепт</span> <span class="recipe_card_text_turquoise">>></span></a></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="recipe_card_container">
+					<div class="recipe_card">
+						<div class="recipe_card_pic" style="background-image: url('images/gre_350x175.jpg');"></div>
+						<div class="recipe_card_text">
+							<p class="recipe_card_name">Ризотто с грибами</p>
+							<p>На 100 грамм: <span>235 ккал</span></p>
+							<div class="recipe_card_nutrients">
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#ffa371;"></div>
+										<div class="recipe_card_nutrients_item_name">Белки</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#ffa371;">15</div>
+								</div>
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#fff571;"></div>
+										<div class="recipe_card_nutrients_item_name">Жиры</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#eed406;">20</div>
+								</div>
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#62ddb7;"></div>
+										<div class="recipe_card_nutrients_item_name">Углеводы</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#62ddb7;">30</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="recipe_card_icons">
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_tomato.png);"></div>
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_che.png);"></div>
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_olive.png);"></div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="recipe_card_price"><a><a class="recipe_card_price_label">Цена за продукты: </a><a>65.70 - 121.46 грн.</a></a></div>
+							<div class="recipe_card_add_to_menu"><a><span class="recipe_card_text_turquoise">+</span>добавить в меню</a></div>
+							<div class="recipe_card_link"><a><span class="recipe_card_link_label">посмотреть</span> <span>рецепт</span> <span class="recipe_card_text_turquoise">>></span></a></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="recipe_card_container">
+					<div class="recipe_card">
+						<div class="recipe_card_pic" style="background-image: url('images/gre_350x175.jpg');"></div>
+						<div class="recipe_card_text">
+							<p class="recipe_card_name">Ризотто с грибами</p>
+							<p>На 100 грамм: <span>235 ккал</span></p>
+							<div class="recipe_card_nutrients">
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#ffa371;"></div>
+										<div class="recipe_card_nutrients_item_name">Белки</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#ffa371;">15</div>
+								</div>
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#fff571;"></div>
+										<div class="recipe_card_nutrients_item_name">Жиры</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#eed406;">20</div>
+								</div>
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#62ddb7;"></div>
+										<div class="recipe_card_nutrients_item_name">Углеводы</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#62ddb7;">30</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="recipe_card_icons">
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_tomato.png);"></div>
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_che.png);"></div>
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_olive.png);"></div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="recipe_card_price"><a><a class="recipe_card_price_label">Цена за продукты: </a><a>65.70 - 121.46 грн.</a></a></div>
+							<div class="recipe_card_add_to_menu"><a><span class="recipe_card_text_turquoise">+</span>добавить в меню</a></div>
+							<div class="recipe_card_link"><a><span class="recipe_card_link_label">посмотреть</span> <span>рецепт</span> <span class="recipe_card_text_turquoise">>></span></a></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="recipe_card_container">
+					<div class="recipe_card">
+						<div class="recipe_card_pic" style="background-image: url('images/gre_350x175.jpg');"></div>
+						<div class="recipe_card_text">
+							<p class="recipe_card_name">Ризотто с грибами</p>
+							<p>На 100 грамм: <span>235 ккал</span></p>
+							<div class="recipe_card_nutrients">
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#ffa371;"></div>
+										<div class="recipe_card_nutrients_item_name">Белки</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#ffa371;">15</div>
+								</div>
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#fff571;"></div>
+										<div class="recipe_card_nutrients_item_name">Жиры</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#eed406;">20</div>
+								</div>
+								<div class="recipe_card_nutrients_item">
+									<div class="recipe_card_nutrients_item_top">
+										<div class="recipe_card_nutrients_item_box" style="background-color:#62ddb7;"></div>
+										<div class="recipe_card_nutrients_item_name">Углеводы</div>
+										<div class="clearfix"></div>
+									</div>
+									<div class="recipe_card_nutrients_item_bottom" style="color:#62ddb7;">30</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="recipe_card_icons">
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_tomato.png);"></div>
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_che.png);"></div>
+								<div class="recipe_card_icon" style="background-image:url(images/20x20_olive.png);"></div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="recipe_card_price"><a><a class="recipe_card_price_label">Цена за продукты: </a><a>65.70 - 121.46 грн.</a></a></div>
+							<div class="recipe_card_add_to_menu"><a><span class="recipe_card_text_turquoise">+</span>добавить в меню</a></div>
+							<div class="recipe_card_link"><a><span class="recipe_card_link_label">посмотреть</span> <span>рецепт</span> <span class="recipe_card_text_turquoise">>></span></a></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="clearfix"></div>
+
+			</div>
+
+			<div class="clearfix"></div>
+
+		</div>
+
+		<div class="footer">
+			<div class="footer_part">
+				<h2>Специальные рецепты</h2>
+				<div class="footer_recipes_columns_container">
+					<div class="footer_recipes_columns">
+						<a href="#">Рецепты из лука</a>
+						<a href="#">Простые рецепты</a>
+						<a href="#">50 рецептов для мивины</a>
+						<a href="#">Есть стакан и топор, что делать?</a>
+						<a href="#">Холостяцкая яичница</a>
+						<a href="#">Микроменю</a>
+						<a href="#">Макроменю</a>
+						<a href="#">Рыбка-фиш</a>
+						<a href="#">Сто рецептов красоты</a>
+						<a href="#">Рецепты из лука</a>
+						<a href="#">Простые рецепты</a>
+						<a href="#">Быстро приготовить</a>
+						<a href="#">50 рецептов для мивины</a>
+						<a href="#">Холостяцкая яичница</a>
+						<a href="#">Микроменю</a>
+						<a href="#">Макроменю</a>
+						<a href="#">Рыбка-фиш</a>
+						<a href="#">Сто рецептов красоты</a>
+						<a href="#">Рецепты из лука</a>
+						<a href="#">Простые рецепты</a>
+						<a href="#">Быстро приготовить</a>
+						<a href="#">50 рецептов для мивины</a>
+						<a href="#">Есть стакан и топор, что делать?</a>
+						<a href="#">Холостяцкая яичница</a>
+						<a href="#">Микроменю</a>
+						<a href="#">Макроменю</a>
+						<a href="#">Рыбка-фиш</a>
+						<a href="#">Сто рецептов красоты</a>
+					</div>
+				</div>
+			</div>
+			<div class="footer_part">
+				<div class="footer_form_container">
+					<p>Мы открыты к сотрудничеству :</p>
+					<form>
+						<p>Ваше имя</p>
+						<span id="name_span"><input type="text" placeholder="" name="name"></span>
+						<p>Предпочитаемый способ связи</p>
+						<span id="contacts_span"><input type="text" placeholder="Ваш имейл или телефон" name="contacts"></span>
+						<p>Сообщение</p>
+						<span id="message_span"><input type="text" placeholder="" name="message"></span>
+						<input type="submit" class="footerSendButton" name="mysubmit" value="Отправить" />
+					</form>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		<div class="footer_footer">2015 ©FITEAT Все права защищены</div>
+		</div>
+
+		<div id="sidebar_menu">
+			<div class="sidebar_menu_body">
+				<div class="sidebar_menu_button logo">Fiteat</div>
+				<div class="sidebar_menu_button"><a>Рецепты</a></div>
+				<div class="sidebar_menu_button"><a href="diary.html">Дневник питания</a></div>
+				<div class="sidebar_menu_button"><a>Мой стол</a></div>
+
+				<span class="not_logged_in" style="padding-left: 10px;">
+					Войти с помощью:
+				</span>
+
+				<div class="sidebar_menu_form_soc_button not_logged_in">
+					<a href="" class="sidebar_menu_form_soc_block">
+						<span>Facebook</span>
+						<div id="fb_side">&nbsp;</div>
+					</a>
+				</div>
+				<div class="sidebar_menu_form_soc_button not_logged_in">
+					<a href="<?=$vk_url?>" class="sidebar_menu_form_soc_block">
+						<span style="margin-right:1px;">Вконтакте</span>
+						<div id="vk_side">&nbsp;</div>
+					</a>
+				</div>
+				<div class="sidebar_menu_form_soc_button not_logged_in">
+					<a href="" class="sidebar_menu_form_soc_block">
+						<span>Twitter</span>
+						<div id="tw_side">&nbsp;</div>
+					</a>
+				</div>
+
+				<span class="not_logged_in">
+					<input type="text" placeholder="example@mail.com" name="name">
+				</span>
+				<span class="not_logged_in">
+					<input type="password" placeholder="password" name="contacts">
+				</span>
+
+				<div class="sidebar_menu_button not_logged_in" onclick="logIn('in')"><a>Войти</a></div>
+				<div class="sidebar_menu_button logged_in"><a>Настройки</a></div>
+				<div class="sidebar_menu_button logged_in" onclick="logIn('out')"><a>Выйти</a></div>
+
+				<p class="sidebar_menu_close" onclick="sidebarMenu('hide')">✖</p>
+			</div>
+			<div class="sidebar_page_background" onclick="sidebarMenu('hide')"></div>
+		</div>
+
+	</div>
+</body>
+</html>

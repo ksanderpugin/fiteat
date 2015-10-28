@@ -6,6 +6,8 @@
  * Time: 17:20
  */
 
+ini_set ("display_error", true);
+
 $arr_uri = explode("/",$_SERVER['REQUEST_URI']);
 array_shift($arr_uri);
 $type = $arr_uri[1] == "" ? array_key_exists("auth",$_POST) ? "mail" : "test" : $arr_uri[1];
