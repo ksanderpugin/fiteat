@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <head>
-    <title>FitEat Diary</title>
+    <title>FitEat Food List</title>
     <link rel="StyleSheet" type="text/css" href="stylesheets/main.css"/>
     <link rel="StyleSheet" type="text/css" href="stylesheets/datepicker.css"/>
     <script type="text/JavaScript" src="javascript/jquery-2.1.0.js"></script>
@@ -69,7 +69,7 @@
 
 		<div class="diary_body">
 
-			<h1>Дневник питания</h1>
+			<h1>Расчеты по выбранным блюдам</h1>
 
 			<div class="diary_chart_block">
 				<div class="diary_chart_left_part">
@@ -108,7 +108,7 @@
 				</div>
 
 				<div class="diary_chart_right_part">
-					<h2>Статистика за сегодня</h2>
+					<h2>Всего в меню</h2>
 					<div class="diary_chart_column diary_chart_column1">
 						<p>Б</p>
 						<p>Ж</p>
@@ -132,42 +132,44 @@
 						<p>31%</p>
 						<p>69%</p>
 					</div>
+					<div>Количество людей</div>
+					<div>Перейти к дневнику питания</div>
+					<div>* - значения указаны для человека в среднем, без учета пола, телосложения и образа жизни.</div>
 					<div class="clearfix"></div>
 				</div>
 				<div class="clearfix"></div>
 			</div>
 
 			<div class="drop_down_block">
-				<div class="drop_down_block_title">Список еды за день</div>
-				<div class="drop_down_block_calendar choose_one_day">
-					<div class="drop_down_block_calendar_date">
-						<div style="display:inline-block;">
-							<div style="display:inline-block;">
-								<span class="datePart" style="color: #c82915;">Сб</span>
-								<span class="datePart">, 15 Августа</span>
-							</div>
-							<div class="drop_down_block_calendar_icon_block">
-								<p id="single_datepicker" class="drop_down_block_calendar_id"></p>
-							</div>
-						</div>
-					</div>
-				</div>
+				<div class="drop_down_block_title">Список блюд</div>
 				<div class="clearfix"></div>
 				<div class="drop_down_block_content">
-					<div class="drop_down_block_add_record">
-						<a class="add_new_record">Новая запись</a>
-						<a class="add_new_record_from_list">Запись из списка покупок</a>
-					</div>
-					<div class="food_list_records">
 
-						<span id="invisible"></span>
+					<div class="food_list_item">
+
+						<div class="food_list_item_part">
+							<span class="bullet">• </span><span class="food_list_item_name">Овощной суп с горошком и цветной капустой</span>
+						</div>
+
+						<div class="food_list_item_part">
+							<input class="food_list_item_weight" type="text" value="450"/>
+							<a><span class="recipe_card_link_label">посмотреть</span> <span>рецепт</span> <span class="recipe_card_text_turquoise">►</span></a>
+						</div>
+						
+						<div class="clearfix"></div>
+
+					</div>
+
+					<div class="drop_down_block_options">
+						<a class="add_record_to_diary"><span class="drop_down_block_options_plus">+</span> Добавить блюдо из списка в дневник питания</a>
+						<a class="get_recommendations_for_day"><span class="drop_down_block_options_plus">+</span> Получить рекомендации блюд на день</a>
 					</div>
 				</div>
 				<div class="drop_down_block_point"></div>
 			</div>
 
 			<div class="drop_down_block">
-				<div class="drop_down_block_title">Статистика питания за период</div>
+				<div class="drop_down_block_title">Список продуктов</div>
 				<div class="drop_down_block_calendar choose_period">
 					<div class="drop_down_block_calendar_date">
 						<div style="display:inline-block;">
@@ -188,6 +190,31 @@
 				<div class="clearfix"></div>
 				<div class="drop_down_block_content">
 
+				</div>
+				<div class="drop_down_block_point"></div>
+			</div>
+
+			<div class="drop_down_block">
+				<div class="drop_down_block_title">Рецепты</div>
+				<div class="drop_down_block_calendar choose_one_day">
+					<div class="drop_down_block_calendar_date">
+						<div style="display:inline-block;">
+							<div style="display:inline-block;">
+								<span class="datePart" style="color: #c82915;">Сб</span>
+								<span class="datePart">, 15 Августа</span>
+							</div>
+							<div class="drop_down_block_calendar_icon_block">
+								<p id="single_datepicker" class="drop_down_block_calendar_id"></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				<div class="drop_down_block_content">
+					<div class="drop_down_block_add_record">
+						<a class="add_new_record">Новая запись</a>
+						<a class="add_new_record_from_list">Запись из списка покупок</a>
+					</div>
 				</div>
 				<div class="drop_down_block_point"></div>
 			</div>

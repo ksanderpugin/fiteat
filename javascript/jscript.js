@@ -9,6 +9,7 @@ function init(){
 	loginInit();
 	diaryEventsInit();
 	getFoodDiaryRecords();
+	settingsFormInit();
 }
 
 function diaryEventsInit(){
@@ -729,5 +730,39 @@ function printFoodDiaryRecord(recType, recTime, recName, recWeight, recLink, rec
 								'</div>'+
 							'</div>'+
 						'</div>');
+
+}
+
+function settingsFormInit(){
+
+	var i;
+
+	for(i=1; i<=91; i++){
+		$('#year').append($('<option>', {
+			value: i,
+			text: 1919+i
+		}));
+	}
+
+	$('#year').val('66');
+
+	for(i=1; i<=31; i++){
+		$('#day').append($('<option>', {
+			value: i,
+			text: i
+		}));
+	}
+
+	$('#day').val('1');
+
+	$('.settings_field_cal_checkbox').click(function() {
+		if (this.checked){
+			console.log('readonly');
+			$("#settings_field_cal").attr('readonly','readonly');
+		}else{
+			console.log('smth');
+			$("#settings_field_cal").removeAttr('readonly');
+		}
+	});
 
 }

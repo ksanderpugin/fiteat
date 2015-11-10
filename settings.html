@@ -4,15 +4,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <head>
-    <title>FitEat Diary</title>
-    <link rel="StyleSheet" type="text/css" href="stylesheets/main.css"/>
-    <link rel="StyleSheet" type="text/css" href="stylesheets/datepicker.css"/>
-    <script type="text/JavaScript" src="javascript/jquery-2.1.0.js"></script>
-    <script type="text/JavaScript" src="javascript/jquery-ui.js"></script>
-    <script type="text/javascript" src="javascript/datepicker.js"></script>
-    <script type="text/javascript" src="javascript/jquery.mask.js"></script>
-    <!--<script type="text/javascript" src="javascript/modernizr-custom.min.js"></script>-->
-    <script type="text/JavaScript" src="javascript/jscript.js"></script>
+	<title>FitEat Settings</title>
+	<link rel="StyleSheet" type="text/css" href="stylesheets/main.css"/>
+	<link rel="StyleSheet" type="text/css" href="stylesheets/datepicker.css"/>
+	<script type="text/JavaScript" src="javascript/jquery-2.1.0.js"></script>
+	<script type="text/JavaScript" src="javascript/jquery-ui.js"></script>
+	<script type="text/javascript" src="javascript/datepicker.js"></script>
+	<script type="text/javascript" src="javascript/jquery.mask.js"></script>
+	<!--<script type="text/javascript" src="javascript/modernizr-custom.min.js"></script>-->
+	<script type="text/JavaScript" src="javascript/jscript.js"></script>
 </head>
 
 <body onload="init()">
@@ -69,122 +69,139 @@
 
 		<div class="diary_body">
 
-			<h1>Дневник питания</h1>
+			<h1>Персональные данные</h1>
 
-			<div class="diary_chart_block">
-				<div class="diary_chart_left_part">
+			<div class="settings_fields">
+				
+			<div class="settings_field">
+				<div class="settings_field_block_left settings_field_block">Имя</div>
+				<div class="settings_field_block_right settings_field_block">
+					<div class="settings_field_input_name"><input placeholder="Имя"/></div>
+					<div class="settings_field_input_name"><input placeholder="Фамилия"/></div>
+				</div>
+			</div>
 
-					<div class="diary_chart_pie">
-						<canvas id="piechart"></canvas>
-					</div>
+			<div class="settings_field">
+				<div class="settings_field_block_left settings_field_block">Пол</div>
+				<div class="settings_field_block_right settings_field_block">
+					<div><input type="radio" name="gender" value="male" checked>Мужской</div>
+					<div><input type="radio" name="gender" value="female">Женский</div>
+				</div>
+			</div>
 
-					<div class="diary_chart_info">
-						<div class="diary_chart_labels">
-							<div class="diary_chart_label">
-								<!--<div class="diary_chart_colored_box" style="background-color: #ffa371;"></div>-->
-								<span>Белки</span>
-							</div>
-							<div class="diary_chart_label">
-								<!--<div class="diary_chart_colored_box" style="background-color: #fff571;"></div>-->
-								<span>Жиры</span>
-							</div>
-							<div class="diary_chart_label">
-								<!--<div class="diary_chart_colored_box" style="background-color: #62ddb7;"></div>-->
-								<span>Углеводы</span>
-							</div>
-							<div class="clearfix"></div>
+			<div class="settings_field">
+				<div class="settings_field_block_left settings_field_block">Дата рождения</div>
+				<div class="settings_field_block_right settings_field_block">
+					<div>
+
+						<div>
+							<select id="day" name="day">
+							</select>
+							/
+							<select id="month" name="month">
+								<option value="1">Января</option>
+								<option value="2">Февраля</option>
+								<option value="3">Марта</option>
+								<option value="4">Апреля</option>
+								<option value="5">Мая</option>
+								<option value="6">Июня</option>
+								<option value="7">Июля</option>
+								<option value="8">Августа</option>
+								<option value="9">Сентября</option>
+								<option value="10">Октября</option>
+								<option value="11">Ноября</option>
+								<option value="12">Декабря</option>
+							</select>
+							/
+							<select id="year" name="year">
+							</select>	
 						</div>
 
-						<div class="diary_chart_numbers">
-							<div class="diary_chart_number" style="color: #ffa371;">18%</div>
-							<div class="diary_chart_number" style="color: #eed406;">40%</div>
-							<div class="diary_chart_number" style="color: #62ddb7;">42%</div>
-							<div class="clearfix"></div>
+					<!--
+						<div class="drop_down_block_calendar choose_one_day">
+							<div class="drop_down_block_calendar_date">
+								<div style="display:inline-block;">
+									<div style="display:inline-block;">
+										<span class="datePart" style="color: #c82915;">Сб</span>
+										<span class="datePart">, 15 Августа</span>
+									</div>
+									<div class="drop_down_block_calendar_icon_block">
+										<p id="single_datepicker" class="drop_down_block_calendar_id"></p>
+									</div>
+								</div>
+							</div>
 						</div>
+					-->
 					</div>
-
-					<div class="clearfix"></div>
-
 				</div>
+			</div>
 
-				<div class="diary_chart_right_part">
-					<h2>Статистика за сегодня</h2>
-					<div class="diary_chart_column diary_chart_column1">
-						<p>Б</p>
-						<p>Ж</p>
-						<p>У</p>
-						<p>ккал</p>
-					</div>
-					<div class="diary_chart_line">
-						<canvas id="linechart"></canvas>
-					</div>
-					<div class="diary_chart_column diary_chart_column2">
-						<p>Всего</p>
-						<p>26.16</p>
-						<p>59.21</p>
-						<p>63.33</p>
-						<p>870.88</p>
-					</div>
-					<div class="diary_chart_column diary_chart_column3">
-						<p>От нормы на день*</p>
-						<p>18%</p>
-						<p>169%</p>
-						<p>31%</p>
-						<p>69%</p>
-					</div>
-					<div class="clearfix"></div>
+			<div class="settings_field">
+				<div class="settings_field_block_left settings_field_block">Рост</div>
+				<div class="settings_field_block_right settings_field_block">
+					<div><input id="settings_field_height" type="number" min="30" max="300" step="1" value="165"/>см</div>
 				</div>
+			</div>
+
+			<div class="settings_field">
+				<div class="settings_field_block_left settings_field_block">Вес</div>
+				<div class="settings_field_block_right settings_field_block">
+					<div><input id="settings_field_weight" type="number" min="5" max="500" step="1" value="65"/>кг</div>
+				</div>
+			</div>
+
+			<div class="settings_field">
+				<div class="settings_field_block_left settings_field_block">Образ жизни</div>
+				<div class="settings_field_block_right settings_field_block">
+					<select id="lifestyle" name="lifestyle">
+						<option value="1">Минимальные нагрузки (сидячая работа)</option>
+						<option value="2">Необременительные тренировки 2-3 раза в неделю</option>
+						<option value="3">Тренировки 4-5 раз в неделю (или работа средней тяжести)</option>
+						<option value="4">Интенсивные тренировки 4-5 раз в неделю</option>
+						<option value="5">Ежедневные тренировки</option>
+						<option value="6">Ежедневные интенсивные тренировки или тренировки 2 раза в день</option>
+						<option value="7">Тяжелая физическая работа или интенсивные тренировки 2 раза в день</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="settings_field">
+				<div class="settings_field_block_left settings_field_block">Норма ккалорий</div>
+				<div class="settings_field_block_right settings_field_block">
+					<div><input type="checkbox" class="settings_field_cal_checkbox" checked>Рассчитать</div>
+					<div><input id="settings_field_cal" type="number" min="100" max="5000" step="10" value="2200" readonly/>ккал</div>
+				</div>
+			</div>
+
+
 				<div class="clearfix"></div>
 			</div>
 
 			<div class="drop_down_block">
-				<div class="drop_down_block_title">Список еды за день</div>
-				<div class="drop_down_block_calendar choose_one_day">
-					<div class="drop_down_block_calendar_date">
-						<div style="display:inline-block;">
-							<div style="display:inline-block;">
-								<span class="datePart" style="color: #c82915;">Сб</span>
-								<span class="datePart">, 15 Августа</span>
-							</div>
-							<div class="drop_down_block_calendar_icon_block">
-								<p id="single_datepicker" class="drop_down_block_calendar_id"></p>
-							</div>
-						</div>
-					</div>
-				</div>
+				<div class="drop_down_block_title">Мои блюда</div>
 				<div class="clearfix"></div>
 				<div class="drop_down_block_content">
-					<div class="drop_down_block_add_record">
-						<a class="add_new_record">Новая запись</a>
-						<a class="add_new_record_from_list">Запись из списка покупок</a>
-					</div>
-					<div class="food_list_records">
 
-						<span id="invisible"></span>
+
+
+					<div class="drop_down_block_options">
+						<a class="add_record_to_diary"><span class="drop_down_block_options_plus">+</span> Добавить блюдо из списка в дневник питания</a>
+						<a class="get_recommendations_for_day"><span class="drop_down_block_options_plus">+</span> Создать новое блюдо</a>
 					</div>
+
 				</div>
 				<div class="drop_down_block_point"></div>
 			</div>
 
 			<div class="drop_down_block">
-				<div class="drop_down_block_title">Статистика питания за период</div>
-				<div class="drop_down_block_calendar choose_period">
-					<div class="drop_down_block_calendar_date">
-						<div style="display:inline-block;">
-							<span class="datePart" style="color: #c82915;"></span>
-							<span class="datePart"></span>
-						</div>
-						<div style="display:inline-block;">
-							<div style="display:inline-block;">
-								<span class="datePart" style="color: #c82915;"></span>
-								<span class="datePart"></span>
-							</div>
-							<div class="drop_down_block_calendar_icon_block">
-								<p id="double_datepicker" class="drop_down_block_calendar_id"></p>
-							</div>
-						</div>
+				<div class="drop_down_block_title">Мои продукты</div>
+
+
+
+					<div class="drop_down_block_options">
+						<a class="add_record_to_diary"><span class="drop_down_block_options_plus">+</span> Добавить новый продукт в базу</a>
 					</div>
-				</div>
+
 				<div class="clearfix"></div>
 				<div class="drop_down_block_content">
 
