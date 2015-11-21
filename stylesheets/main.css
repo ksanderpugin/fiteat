@@ -1292,6 +1292,26 @@ q:after {
 	vertical-align: top;
 }
 
+.diary_linechart{
+    height:175px;
+    width: 90%;
+    margin: 35px 5% 10px 5%;
+    float: left;
+}
+
+.diary_linechart_name{
+    height: 30px;
+}
+
+.diary_linechart_chart_container{
+    height: 145px;
+    width: 100%;
+}
+
+.diary_linechart_name{
+	padding-left: 20px;
+}
+
 /* ------------------------------------------------------------------------------------ */
 
 /* recipes */
@@ -2336,6 +2356,11 @@ input[type="radio"] {
 
 #lifestyle{
 	width: 455px;
+}
+
+.diary_linechart{
+    width: 45%;
+    margin: 35px 2.5% 10px 2.5%;
 }
 
 }

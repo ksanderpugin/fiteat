@@ -4,6 +4,7 @@ function init(){
 	initDropDownBlocks(); // itit dropdown blocks
 	CreatePieChart();
 	CreateLineChart();
+	CreateSmoothLineChart();
 	datePickerInit();
 	initResize();
 	loginInit();
@@ -184,6 +185,116 @@ function CreateLineChart(){
 			}
 		}
 	}
+}
+
+function CreateSmoothLineChart(){
+
+	var elementExists = $('.diary_linechart').length;
+
+	if( elementExists ){
+
+		$.getJSON('diaryChart.json', function(data){
+			document.cookie = "diaryChartsData"+"="+JSON.stringify(data)+"; path=/";
+		});
+
+		drawSmoothLineChart();
+
+	}
+
+}
+
+function drawSmoothLineChart(){
+
+var diaryChartsData;
+diaryChartsData = JSON.parse( getCookie("diaryChartsData") );
+
+console.log(diaryChartsData.list[0].values[0].val);
+
+var data1 = {
+    labels : ['11.11','12.11','13.11','14.11','15.11','16.11','17.11'],
+    datasets : [
+        {
+            fillColor : "rgba(100,100,100,0)",
+            strokeColor : "rgba(100,100,100,0.15)",
+            data : [100,100,100,100,100,100,100],
+            pointColor : "rgba(0,0,0,0)",
+            pointStrokeColor : "transparent"
+        },
+        {
+            fillColor : "rgba(255, 163, 113, 0.15)",
+            strokeColor : "rgba(255, 163, 113, 1)",
+            data : [82,48,140,169,96,177,103],
+            pointColor : 'white',//"rgba(255, 163, 113, 1)",
+            pointStrokeColor : "rgba(255, 163, 113, 1)"
+        }
+    ]
+};
+
+var data2 = {
+    labels : ['11.11','12.11','13.11','14.11','15.11','16.11','17.11'],
+    datasets : [
+        {
+            fillColor : "rgba(100,100,100,0)",
+            strokeColor : "rgba(100,100,100,0.15)",
+            data : [100,100,100,100,100,100,100],
+            pointColor : "rgba(0,0,0,0)",
+            pointStrokeColor : "transparent"
+        },
+        {
+            fillColor : "rgba(238, 212, 6, 0.15)",
+            strokeColor : "rgba(238, 212, 6, 1)",
+            data : [102,78,110,120,106,97,101],
+            pointColor : 'white',//"rgba(238, 212, 6, 1)",
+            pointStrokeColor : "rgba(238, 212, 6, 1)"
+        }
+    ]
+};
+
+var data3 = {
+    labels : ['11.11','12.11','13.11','14.11','15.11','16.11','17.11'],
+    datasets : [
+        {
+            fillColor : "rgba(100,100,100,0)",
+            strokeColor : "rgba(100,100,100,0.15)",
+            data : [100,100,100,100,100,100,100],
+            pointColor : "rgba(0,0,0,0)",
+            pointStrokeColor : "transparent"
+        },
+        {
+            fillColor : "rgba(98, 221, 183, 0.15)",
+            strokeColor : "rgba(98, 221, 183, 1)",
+            data : [182,98,106,119,99,80,91],
+            pointColor : 'white',//"rgba(98, 221, 183, 1)",
+            pointStrokeColor : "rgba(98, 221, 183, 1)"
+        }
+    ]
+};
+
+var data4 = {
+    labels : ['11.11','12.11','13.11','14.11','15.11','16.11','17.11'],
+    datasets : [
+        {
+            fillColor : "rgba(100,100,100,0)",
+            strokeColor : "rgba(100,100,100,0.15)",
+            data : [100,100,100,100,100,100,100],
+            pointColor : "rgba(0,0,0,0)",
+            pointStrokeColor : "transparent"
+        },
+        {
+            fillColor : "rgba(179, 139, 222, 0.15)",
+            strokeColor : "rgba(179, 139, 222, 1)",
+            data : [102,118,96,79,99,110,101],
+            pointColor : 'white',//"rgba(179, 139, 222, 1)",
+            pointStrokeColor : "rgba(179, 139, 222, 1)"
+        }
+    ]
+};
+
+	respChart($(".diarySmoothChart1"),data1);
+	respChart($(".diarySmoothChart2"),data2);
+	respChart($(".diarySmoothChart3"),data3);
+	respChart($(".diarySmoothChart4"),data4);
+
 }
 
 function initDropDownBlocks(){
@@ -765,4 +876,62 @@ function settingsFormInit(){
 		}
 	});
 
+}
+
+function respChart(selector, data, options){
+
+	// Define default option for line chart
+	var option = {
+        showScale: false,
+       	scaleLineColor : "rgba(0,0,0,0)",
+		scaleShowLabels : false,
+        scaleBeginAtZero: false,
+		scaleFontColor : "transparent",	
+		scaleShowGridLines : false,
+		bezierCurve : true,
+		pointDot : true,
+		pointDotRadius : 3,
+		pointDotStrokeWidth : 2,
+		datasetStroke : false,
+		datasetFill : true,
+		animation : true,
+		animationSteps : 60,
+		animationEasing : "easeOutQuart",
+		onAnimationComplete : null
+	}
+
+	// check if the option is override to exact options 
+	// (bar, pie and other)
+	if (options == false || options == null){
+		options = option;
+	} 
+
+	// get selector by context
+	var ctx = selector.get(0).getContext("2d");
+	// pointing parent container to make chart js inherit its width
+	var container = $(selector).parent();
+
+	// enable resizing matter
+	$(window).resize( generateChart );
+
+	// this function produce the responsive Chart JS
+	function generateChart(){
+		// make chart width fit with its container
+		var ww = selector.attr('width', $(container).width() );
+        // make chart height fit with its container
+        var wh = selector.attr('height', $(container).height() );
+		// Initiate new chart or Redraw
+		new Chart(ctx).Line(data, options);
+	};
+
+	// run function - render chart at first load
+	generateChart();
+
+}
+
+function getCookie(name) {
+	var matches = document.cookie.match(new RegExp(
+		"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+	));
+	return matches ? decodeURIComponent(matches[1]) : undefined;
 }

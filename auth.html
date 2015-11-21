@@ -181,7 +181,11 @@
 	<script>
 
 		function login(){
-			android.login(login, password);
+			var login_input = document.getElementById('login_input').value,
+			password_input = document.getElementById('password_input').value;
+
+			console.log(login_input, password_input);
+			//android.login(login_input, password_input);
 		}
 
 	</script>
@@ -190,13 +194,13 @@
 		<div id="logo"></div>
 		<div id="login">
 			<div id="login_icon"></div>
-			<input type="text" placeholder="Логин или имейл"/>
+			<input id="login_input" type="text" placeholder="Логин или имейл"/>
 		</div>
 		<div id="password">
 			<div id="password_icon"></div>
-			<input type="password" placeholder="Пароль"/>
+			<input id="password_input" type="password" placeholder="Пароль"/>
 		</div>
-		<div id="enter"><a>Войти</a></div>
+		<div id="enter"><a onclick="login();">Войти</a></div>
 		<div id="soc_enter">
 			<a id="google_enter"></a>
 			<a id="facebook_enter"></a>
