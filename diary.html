@@ -11,7 +11,7 @@
     <script type="text/JavaScript" src="javascript/jquery-ui.js"></script>
     <script type="text/javascript" src="javascript/datepicker.js"></script>
     <script type="text/javascript" src="javascript/jquery.mask.js"></script>
-    <script type="text/javascript" src="javascript/Chart.my.js"></script>
+    <script type="text/javascript" src="javascript/Chart.min.js"></script>
     <!--<script type="text/javascript" src="javascript/modernizr-custom.min.js"></script>-->
     <script type="text/JavaScript" src="javascript/jscript.js"></script>
 </head>
@@ -28,7 +28,7 @@
 				<div class="not_logged_in header_menu_name">Вход</div>
 				<div class="logged_in header_menu_name" onclick="">Ryzhova Olga</div>
 				<div class="header_menu_user_settings">
-					<div class="logged_in" onclick="">Настройки</div>
+					<div class="logged_in" onclick="window.location.href = 'settings.html'">Настройки</div>
 					<div class="logged_in" onclick="logIn('out')">Выйти</div>
 				</div>
 				<div class="header_menu_user_settings">
@@ -156,7 +156,7 @@
 				<div class="clearfix"></div>
 				<div class="drop_down_block_content">
 					<div class="drop_down_block_add_record">
-						<a class="add_new_record">Новая запись</a>
+						<a class="add_new_record" onclick="addFoodDiaryRecord()">Новая запись</a>
 						<a class="add_new_record_from_list">Запись из списка покупок</a>
 					</div>
 					<div class="food_list_records">
@@ -208,6 +208,10 @@
 						<div class="diary_linechart_name"><span class="bullet" style="color:#b38bde;">• </span>Килокалории</div>
 						<div class="diary_linechart_chart_container"><canvas class="diarySmoothChart4"></canvas></div>
 					</div>
+
+					<div id="chartjs-tooltip"></div>
+
+					<div style="height:40px;width:100%;float:left;"></div>
 
 				</div>
 				<div class="drop_down_block_point"></div>
@@ -308,7 +312,7 @@
 				</span>
 
 				<div class="sidebar_menu_button not_logged_in" onclick="logIn('in')"><a>Войти</a></div>
-				<div class="sidebar_menu_button logged_in"><a>Настройки</a></div>
+				<div class="sidebar_menu_button logged_in"><a href="settings.html">Настройки</a></div>
 				<div class="sidebar_menu_button logged_in" onclick="logIn('out')"><a>Выйти</a></div>
 
 				<p class="sidebar_menu_close" onclick="sidebarMenu('hide')">✖</p>

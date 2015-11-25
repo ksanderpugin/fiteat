@@ -39,6 +39,11 @@ input:focus{
 	color: #000;
 }
 
+input[placeholder] {text-overflow:ellipsis;}
+input::-moz-placeholder {text-overflow:ellipsis;}
+input:-moz-placeholder {text-overflow:ellipsis;}
+input:-ms-input-placeholder {text-overflow:ellipsis;}
+
 /*
 * {
   background: #000 !important;
@@ -1791,6 +1796,13 @@ input:focus{
 	background-position: center;
 }
 
+.no_image{
+	background-image: url(../images/no_photo.png);
+	background-size: auto;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
 .record_delete{
 	width: 40px;
 	height: 40px;
@@ -1951,6 +1963,26 @@ input:focus{
     font-size: 14px;
     font-family: Arial;
     display: none;
+}
+
+#chartjs-tooltip {
+	opacity: 0;
+	position: absolute;
+	background: rgba(255, 255, 255, .85);
+	color: rgba(0, 0, 0, 1);
+	padding: 4px 8px;
+	border-radius: 5px;
+	border: 2px solid rgba(0, 0, 0, .15);
+	font-size: 16px;
+	pointer-events: none;
+	-webkit-transform: translate(-50%, 0);
+	transform: translate(-50%, 0);
+}
+
+.chartjs-tooltip-key{
+	display:inline-block;
+	width:10px;
+	height:10px;
 }
 
 /**/
@@ -2295,6 +2327,12 @@ input[type="radio"] {
 
 #lifestyle{
 	width: 305px;
+}
+
+.no_image{
+	-webkit-box-shadow: inset 0px 0px 0px 1px rgba(116,116,116,0.5);
+	-moz-box-shadow: inset 0px 0px 0px 1px rgba(116,116,116,0.5);
+	box-shadow: inset 0px 0px 0px 1px rgba(116,116,116,0.5);
 }
 
 /* ------------------------------------------------------------------------------------ */

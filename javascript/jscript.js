@@ -4,7 +4,7 @@ function init(){
 	initDropDownBlocks(); // itit dropdown blocks
 	CreatePieChart();
 	CreateLineChart();
-	CreateSmoothLineChart();
+	//CreateSmoothLineChart(); // this fuction call is in double_data_picker init method
 	datePickerInit();
 	initResize();
 	loginInit();
@@ -195,106 +195,79 @@ function CreateSmoothLineChart(){
 
 		$.getJSON('diaryChart.json', function(data){
 			document.cookie = "diaryChartsData"+"="+JSON.stringify(data)+"; path=/";
+			drawSmoothLineChart();
 		});
 
-		drawSmoothLineChart();
+	}
+}
 
+function getSmoothData(index){
+
+	var color;
+
+	switch(index){
+		case 0:
+				color="255,163,113";
+			break;
+		case 1:
+				color="238,212,6";
+			break;
+		case 2:
+				color="98,221,183";
+			break;
+		case 3:
+				color="179,139,222";
+			break;
+		default:
+
+			break;
 	}
 
+	var data = {
+	    labels : [],
+    	datasets : [
+        {
+            fillColor : "rgba(100,100,100,0)",
+            strokeColor : "rgba(100,100,100,0.15)",
+            data : [],
+            pointColor : "rgba(0,0,0,0)",
+            pointStrokeColor : "transparent"
+        },
+        {
+            fillColor : "rgba("+color+", 0.15)",
+            strokeColor : "rgba("+color+", 1)",
+            data : [],
+            pointColor : 'white',
+            pointStrokeColor : "rgba("+color+", 1)",
+            pointHighlightFill: "rgba("+color+",1)",
+            pointHighlightStroke: "rgba("+color+",1)"
+        }
+    ]
+	};
+
+	var diaryChartsData, j, temp;
+	diaryChartsData = JSON.parse( getCookie("diaryChartsData") );
+
+	for (j=0; j<diaryChartsData.list[index].values.length; j++){
+		data.labels.push(j+13+" ноября");
+		data.datasets[0].data.push(100);
+		data.datasets[1].data.push(parseInt(diaryChartsData.list[index].values[j].val));
+	}
+
+	return data;
 }
 
 function drawSmoothLineChart(){
 
-var diaryChartsData;
-diaryChartsData = JSON.parse( getCookie("diaryChartsData") );
+	var diaryChartsData, i,j;
+	diaryChartsData = JSON.parse( getCookie("diaryChartsData") );
 
-console.log(diaryChartsData.list[0].values[0].val);
+	var myData1 = getSmoothData(0), myData2 = getSmoothData(1), myData3 = getSmoothData(2), myData4 = getSmoothData(3);
 
-var data1 = {
-    labels : ['11.11','12.11','13.11','14.11','15.11','16.11','17.11'],
-    datasets : [
-        {
-            fillColor : "rgba(100,100,100,0)",
-            strokeColor : "rgba(100,100,100,0.15)",
-            data : [100,100,100,100,100,100,100],
-            pointColor : "rgba(0,0,0,0)",
-            pointStrokeColor : "transparent"
-        },
-        {
-            fillColor : "rgba(255, 163, 113, 0.15)",
-            strokeColor : "rgba(255, 163, 113, 1)",
-            data : [82,48,140,169,96,177,103],
-            pointColor : 'white',//"rgba(255, 163, 113, 1)",
-            pointStrokeColor : "rgba(255, 163, 113, 1)"
-        }
-    ]
-};
-
-var data2 = {
-    labels : ['11.11','12.11','13.11','14.11','15.11','16.11','17.11'],
-    datasets : [
-        {
-            fillColor : "rgba(100,100,100,0)",
-            strokeColor : "rgba(100,100,100,0.15)",
-            data : [100,100,100,100,100,100,100],
-            pointColor : "rgba(0,0,0,0)",
-            pointStrokeColor : "transparent"
-        },
-        {
-            fillColor : "rgba(238, 212, 6, 0.15)",
-            strokeColor : "rgba(238, 212, 6, 1)",
-            data : [102,78,110,120,106,97,101],
-            pointColor : 'white',//"rgba(238, 212, 6, 1)",
-            pointStrokeColor : "rgba(238, 212, 6, 1)"
-        }
-    ]
-};
-
-var data3 = {
-    labels : ['11.11','12.11','13.11','14.11','15.11','16.11','17.11'],
-    datasets : [
-        {
-            fillColor : "rgba(100,100,100,0)",
-            strokeColor : "rgba(100,100,100,0.15)",
-            data : [100,100,100,100,100,100,100],
-            pointColor : "rgba(0,0,0,0)",
-            pointStrokeColor : "transparent"
-        },
-        {
-            fillColor : "rgba(98, 221, 183, 0.15)",
-            strokeColor : "rgba(98, 221, 183, 1)",
-            data : [182,98,106,119,99,80,91],
-            pointColor : 'white',//"rgba(98, 221, 183, 1)",
-            pointStrokeColor : "rgba(98, 221, 183, 1)"
-        }
-    ]
-};
-
-var data4 = {
-    labels : ['11.11','12.11','13.11','14.11','15.11','16.11','17.11'],
-    datasets : [
-        {
-            fillColor : "rgba(100,100,100,0)",
-            strokeColor : "rgba(100,100,100,0.15)",
-            data : [100,100,100,100,100,100,100],
-            pointColor : "rgba(0,0,0,0)",
-            pointStrokeColor : "transparent"
-        },
-        {
-            fillColor : "rgba(179, 139, 222, 0.15)",
-            strokeColor : "rgba(179, 139, 222, 1)",
-            data : [102,118,96,79,99,110,101],
-            pointColor : 'white',//"rgba(179, 139, 222, 1)",
-            pointStrokeColor : "rgba(179, 139, 222, 1)"
-        }
-    ]
-};
-
-	respChart($(".diarySmoothChart1"),data1);
-	respChart($(".diarySmoothChart2"),data2);
-	respChart($(".diarySmoothChart3"),data3);
-	respChart($(".diarySmoothChart4"),data4);
-
+	respChart($(".diarySmoothChart1"),myData1);
+	respChart($(".diarySmoothChart2"),myData2);
+	respChart($(".diarySmoothChart3"),myData3);
+	respChart($(".diarySmoothChart4"),myData4);
 }
 
 function initDropDownBlocks(){
@@ -316,7 +289,7 @@ function initDropDownBlocks(){
 			drop_down_block.animate({
 				height: "50"
 			}, 400, function() {
-				console.log('animation complete');
+				//console.log('animation complete');
 			});
 
 		}else{
@@ -337,7 +310,7 @@ function initDropDownBlocks(){
 			drop_down_block.animate({
 				height: autoHeight
 			}, 400, function() {
-			console.log('animation complete');
+			//console.log('animation complete');
 			});
 		}
 	});
@@ -613,6 +586,7 @@ function datePickerInit(){
 					}
 				});
 				calendarMerge();
+				CreateSmoothLineChart();
 			}
 		});
 
@@ -799,7 +773,7 @@ function calendarMerge(){
 function getFoodDiaryRecords(){
 
 	if($('.food_list_records')){
-		$.getJSON('http://localhost/fiteat/diary.json', function(data){
+		$.getJSON('diary.json', function(data){
 			$.each(data.list, function (i) {
 				printFoodDiaryRecord(data.list[i].type, data.list[i].time, data.list[i].name, data.list[i].weight, data.list[i].link, data.list[i].image, data.list[i].pro, data.list[i].fat, data.list[i].car, data.list[i].kcal);
 			});
@@ -808,11 +782,18 @@ function getFoodDiaryRecords(){
 	}
 }
 
+function addFoodDiaryRecord(){
+	printFoodDiaryRecord('recType', 'recTime', '', '250', '', '', '', '', '', '');
+	diaryEventsInit();
+	DropDownBlockResize();
+}
+
 function printFoodDiaryRecord(recType, recTime, recName, recWeight, recLink, recImg, recPro, recFat, recCar, recCal){
 	// Функция для создания записи.
 
-	var edit = "";
+	var edit = "", no_image = "";
 	if (recType == "fromList"){ edit = " readonly"; }
+	if (recImg == ""){no_image = " no_image";}else{ recImg = "background-image:url('" + recImg + "')"; }
 
 	listRecords = $('.food_list_records');
 
@@ -835,13 +816,12 @@ function printFoodDiaryRecord(recType, recTime, recName, recWeight, recLink, rec
 									'<a class="record_recipe_link" href="'+recLink+'">посмотреть рецепт</a>'+
 								'</div>'+
 								'<div class="food_list_record_static_width">'+
-									'<div class="record_image" style="background-image:url('+recImg+')">'+
+									'<div class="record_image'+no_image+'" style="'+recImg+'">'+
 										'<div class="record_delete">✖</div>'+
 									'</div>'+
 								'</div>'+
 							'</div>'+
 						'</div>');
-
 }
 
 function settingsFormInit(){
@@ -875,58 +855,83 @@ function settingsFormInit(){
 			$("#settings_field_cal").removeAttr('readonly');
 		}
 	});
-
 }
 
 function respChart(selector, data, options){
 
-	// Define default option for line chart
-	var option = {
-        showScale: false,
-       	scaleLineColor : "rgba(0,0,0,0)",
-		scaleShowLabels : false,
-        scaleBeginAtZero: false,
-		scaleFontColor : "transparent",	
-		scaleShowGridLines : false,
-		bezierCurve : true,
-		pointDot : true,
-		pointDotRadius : 3,
-		pointDotStrokeWidth : 2,
-		datasetStroke : false,
-		datasetFill : true,
-		animation : true,
-		animationSteps : 60,
-		animationEasing : "easeOutQuart",
-		onAnimationComplete : null
-	}
+var ctx = selector.get(0).getContext("2d");
 
-	// check if the option is override to exact options 
-	// (bar, pie and other)
-	if (options == false || options == null){
-		options = option;
-	} 
+options = {
 
-	// get selector by context
-	var ctx = selector.get(0).getContext("2d");
-	// pointing parent container to make chart js inherit its width
-	var container = $(selector).parent();
+	responsive: true,
+	maintainAspectRatio: false,
+    scaleShowGridLines : false,
+    scaleGridLineColor : "rgba(0,0,0,.05)",
+    scaleGridLineWidth : 1,
+    scaleShowHorizontalLines: true,
+    scaleShowVerticalLines: true,
+    scaleBeginAtZero: false,
+    showScale: false,
+    bezierCurve : true,
+    bezierCurveTension : 0.4,
+    pointDot : true,
+    pointDotRadius : 3,
+    pointDotStrokeWidth : 2,
+    pointHitDetectionRadius : 5,
+    datasetStroke : true,
+    datasetStrokeWidth : 2,
+    datasetFill : true,
 
-	// enable resizing matter
-	$(window).resize( generateChart );
+    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=10; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
 
-	// this function produce the responsive Chart JS
-	function generateChart(){
-		// make chart width fit with its container
-		var ww = selector.attr('width', $(container).width() );
-        // make chart height fit with its container
-        var wh = selector.attr('height', $(container).height() );
-		// Initiate new chart or Redraw
-		new Chart(ctx).Line(data, options);
-	};
+	customTooltips: function(tooltip){
+        var tooltipEl = $('#chartjs-tooltip');
+        if (!tooltip) {
+            tooltipEl.css({
+                opacity: 0
+            });
+            return;
+        }
 
-	// run function - render chart at first load
-	generateChart();
+        tooltipEl.removeClass('above below');
+        tooltipEl.addClass(tooltip.yAlign);
+        var color;
+        var innerHtml = '';
+        for (var i = tooltip.labels.length - 1; i >= 1; i--) {
 
+        	// Add case for colors
+
+        	color = (tooltip.labels[i]);
+        	if (color < 101){
+        		color = "rgba(50,200,50,0.85);";
+        	}else if( color > 109 ){
+        		color = "rgba(200,50,50,0.85);";
+        	}else{
+        		color = "rgba(200,200,50,0.85);";
+        	}
+
+        	innerHtml += [
+        		'<div class="chartjs-tooltip-section">',
+        		'	<p class="chartjs-tooltip-value">' + tooltip.title + ' : </p>',
+        		'	<span class="chartjs-tooltip-key" style="background-color:' + color + '"></span>', //tooltip.legendColors[i].stroke
+        		'	<span class="chartjs-tooltip-value">' + tooltip.labels[i] + '&nbsp;%</span>',
+        		'</div>'
+        	].join('');
+        }
+        tooltipEl.html(innerHtml);
+        tooltipEl.css({
+            opacity: 1,
+            left: tooltip.chart.canvas.offsetLeft + tooltip.x + 27 + 'px',
+            top: tooltip.chart.canvas.offsetTop + tooltip.y + 'px',
+            fontFamily: tooltip.fontFamily,
+            fontSize: tooltip.fontSize,
+            fontStyle: tooltip.fontStyle,
+        });
+    }
+
+};
+
+var myLineChart = new Chart(ctx).Line(data, options);
 }
 
 function getCookie(name) {
