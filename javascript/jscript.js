@@ -16,10 +16,10 @@ function init(){
 function diaryEventsInit(){
 
 	$('.record_delete').on("mouseup touchend", function (e){
-		console.log('delete element');
 		var container = $(this).closest('.food_list_record_container');
 			$(container).remove();
 			DropDownBlockResize();
+			activateChanges(true);
 			/*if (!container.is(e.target) // if the target of the click isn't the container...
 				&& container.has(e.target).length === 0) // ... nor a descendant of the container
 			{
@@ -78,6 +78,23 @@ function diaryEventsInit(){
 		$("#invisible").html(this.value);
 		this.style.width = $("#invisible").outerWidth()+ 13 + 'px';
 	});
+
+	$('.food_list_records').change(function(){
+		activateChanges(true);
+	});
+
+	$('.save_changes_button').unbind().click(function(){
+		if( $(this).hasClass('active') ){
+			sendDiaryList();
+		}
+	});
+}
+
+function sendDiaryList(){
+
+	// sending data
+
+	activateChanges('false');
 }
 
 function loginInit(){
@@ -247,15 +264,45 @@ function getSmoothData(index){
 
 	var diaryChartsData, j, temp;
 	diaryChartsData = JSON.parse( getCookie("diaryChartsData") );
+	data.labels = JSON.parse( getCookie("diaryChartsTooltips") );
 
 	for (j=0; j<diaryChartsData.list[index].values.length; j++){
-		data.labels.push(j+13+" ноября");
 		data.datasets[0].data.push(100);
 		data.datasets[1].data.push(parseInt(diaryChartsData.list[index].values[j].val));
 	}
 
+	/* random data */
+
+	data.datasets[0].data = [];
+	data.datasets[1].data = [];
+
+	function getRandomInt(min, max){
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
+	for (j=0; j<data.labels.length; j++){
+		data.datasets[0].data.push(100);
+		data.datasets[1].data.push(parseInt( getRandomInt(80, 140) ));
+	}
+	/* ---------- */
+
 	return data;
 }
+
+function resetSmoothLineChartCanvas(){
+
+	var containers = document.getElementsByClassName("diary_linechart_chart_container");
+	var i;
+
+	for (i = 0; i < containers.length; i++){
+		$(containers[i]).children("canvas").remove();
+		$(containers[i]).append('<canvas class="diarySmoothChart'+ (i+1) +'"></canvas>');
+		canvas = document.querySelector('.diarySmoothChart'+(i+1));
+		ctx = canvas.getContext('2d');
+		ctx.canvas.width = $(containers[i]).width(); // resize to parent width
+		ctx.canvas.height = $(containers[i]).height(); // resize to parent height
+	}
+};
 
 function drawSmoothLineChart(){
 
@@ -263,6 +310,8 @@ function drawSmoothLineChart(){
 	diaryChartsData = JSON.parse( getCookie("diaryChartsData") );
 
 	var myData1 = getSmoothData(0), myData2 = getSmoothData(1), myData3 = getSmoothData(2), myData4 = getSmoothData(3);
+
+	resetSmoothLineChartCanvas();
 
 	respChart($(".diarySmoothChart1"),myData1);
 	respChart($(".diarySmoothChart2"),myData2);
@@ -421,9 +470,11 @@ function initResize(){
 
 	$(window).resize(function() {
 		CreatePieChart();
-		CreateLineChart(); 
+		CreateLineChart();
+		resetSmoothLineChartCanvas();
+		CreateSmoothLineChart();
 		clearTimeout(id);
-		id = setTimeout(doneResizing, 500);  
+		id = setTimeout(doneResizing, 500); 
 	});
 
 	function doneResizing(){
@@ -587,6 +638,7 @@ function datePickerInit(){
 				});
 				calendarMerge();
 				CreateSmoothLineChart();
+				createTooltips(dates);
 			}
 		});
 
@@ -719,6 +771,7 @@ function datePickerInit(){
 					}
 				});
 				calendarMerge();
+				activateChanges(false);
 			}
 		});
 
@@ -745,6 +798,31 @@ function datePickerInit(){
 	}
 
 	/* -------------------- */
+}
+
+function createTooltips(input){
+	var start = new Date(input[0]), end = new Date(input[1]);
+	var mon = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
+	var dates = getDates(start, end);
+
+	function getDates(start, end) {
+		var retVal = [];
+		var current = new Date(start);
+		while (current <= end){
+			retVal.push(new Date(current));
+			current.addDays(1);
+		}
+		return retVal;
+	}
+
+	dates.forEach(function(item,index){
+		day = item.getDate();
+		monthIndex = item.getMonth();
+		//year = item.getFullYear();
+		dates[index] = (day+" "+mon[monthIndex]);
+	});
+
+	document.cookie = "diaryChartsTooltips"+"="+JSON.stringify(dates)+"; path=/";
 }
 
 function calendarMerge(){
@@ -783,9 +861,18 @@ function getFoodDiaryRecords(){
 }
 
 function addFoodDiaryRecord(){
-	printFoodDiaryRecord('recType', 'recTime', '', '250', '', '', '', '', '', '');
+	printFoodDiaryRecord('recType', '00:00', '', '250', '', '', '', '', '', '');
 	diaryEventsInit();
 	DropDownBlockResize();
+	activateChanges(true);
+}
+
+function activateChanges(input){
+	if(input.toString() == 'true'){
+		$('.save_changes_button').addClass('active');
+	}else{
+		$('.save_changes_button').removeClass('active');
+	}
 }
 
 function printFoodDiaryRecord(recType, recTime, recName, recWeight, recLink, recImg, recPro, recFat, recCar, recCal){
@@ -859,84 +946,100 @@ function settingsFormInit(){
 
 function respChart(selector, data, options){
 
-var ctx = selector.get(0).getContext("2d");
+	var ctx = selector.get(0).getContext("2d");
 
-options = {
+	options = {
 
-	responsive: true,
-	maintainAspectRatio: false,
-    scaleShowGridLines : false,
-    scaleGridLineColor : "rgba(0,0,0,.05)",
-    scaleGridLineWidth : 1,
-    scaleShowHorizontalLines: true,
-    scaleShowVerticalLines: true,
-    scaleBeginAtZero: false,
-    showScale: false,
-    bezierCurve : true,
-    bezierCurveTension : 0.4,
-    pointDot : true,
-    pointDotRadius : 3,
-    pointDotStrokeWidth : 2,
-    pointHitDetectionRadius : 5,
-    datasetStroke : true,
-    datasetStrokeWidth : 2,
-    datasetFill : true,
+		responsive: false,
+		maintainAspectRatio: false,
+	    scaleShowGridLines : false,
+	    scaleGridLineColor : "rgba(0,0,0,.05)",
+	    scaleGridLineWidth : 1,
+	    scaleShowHorizontalLines: true,
+	    scaleShowVerticalLines: true,
+	    scaleBeginAtZero: false,
+	    showScale: false,
+	    bezierCurve : true,
+	    bezierCurveTension : 0.4,
+	    pointDot : true,
+	    pointDotRadius : 3,
+	    pointDotStrokeWidth : 2,
+	    pointHitDetectionRadius : 5,
+	    datasetStroke : true,
+	    datasetStrokeWidth : 2,
+	    datasetFill : true,
 
-    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=10; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+	    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=10; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
 
-	customTooltips: function(tooltip){
-        var tooltipEl = $('#chartjs-tooltip');
-        if (!tooltip) {
-            tooltipEl.css({
-                opacity: 0
-            });
-            return;
-        }
+		customTooltips: function(tooltip){
+	        var tooltipEl = $('#chartjs-tooltip');
+	        if (!tooltip) {
+	            tooltipEl.css({
+	                opacity: 0
+	            });
+	            return;
+	        }
 
-        tooltipEl.removeClass('above below');
-        tooltipEl.addClass(tooltip.yAlign);
-        var color;
-        var innerHtml = '';
-        for (var i = tooltip.labels.length - 1; i >= 1; i--) {
+	        tooltipEl.removeClass('above below');
+	        tooltipEl.addClass(tooltip.yAlign);
+	        var color;
+	        var innerHtml = '';
+	        for (var i = tooltip.labels.length - 1; i >= 1; i--) {
 
-        	// Add case for colors
+	        	// Add case for colors
 
-        	color = (tooltip.labels[i]);
-        	if (color < 101){
-        		color = "rgba(50,200,50,0.85);";
-        	}else if( color > 109 ){
-        		color = "rgba(200,50,50,0.85);";
-        	}else{
-        		color = "rgba(200,200,50,0.85);";
-        	}
+	        	color = (tooltip.labels[i]);
+	        	if (color < 101){
+	        		color = "happy.png";
+	        	}else if( color > 109 ){
+	        		color = "sad.png";
+	        	}else{
+	        		color = "normal.png";
+	        	}
 
-        	innerHtml += [
-        		'<div class="chartjs-tooltip-section">',
-        		'	<p class="chartjs-tooltip-value">' + tooltip.title + ' : </p>',
-        		'	<span class="chartjs-tooltip-key" style="background-color:' + color + '"></span>', //tooltip.legendColors[i].stroke
-        		'	<span class="chartjs-tooltip-value">' + tooltip.labels[i] + '&nbsp;%</span>',
-        		'</div>'
-        	].join('');
-        }
-        tooltipEl.html(innerHtml);
-        tooltipEl.css({
-            opacity: 1,
-            left: tooltip.chart.canvas.offsetLeft + tooltip.x + 27 + 'px',
-            top: tooltip.chart.canvas.offsetTop + tooltip.y + 'px',
-            fontFamily: tooltip.fontFamily,
-            fontSize: tooltip.fontSize,
-            fontStyle: tooltip.fontStyle,
-        });
-    }
+	        	innerHtml += [
+	        		'<div class="chartjs-tooltip-section">',
+	        		'	<p class="chartjs-tooltip-value">' + tooltip.title + ' : </p>',
+	        		'	<span class="chartjs-tooltip-key" style="background-image: url(images/' + color + ')"></span>', //tooltip.legendColors[i].stroke
+	        		'	<span class="chartjs-tooltip-value">' + tooltip.labels[i] + '&nbsp;%</span>',
+	        		'</div>'
+	        	].join('');
+	        }
+	        tooltipEl.html(innerHtml);
+	        tooltipEl.css({
+	            opacity: 1,
+	            left: tooltip.chart.canvas.offsetLeft + tooltip.x + 27 + 'px',
+	            top: tooltip.chart.canvas.offsetTop + tooltip.y + 'px',
+	            fontFamily: tooltip.fontFamily,
+	            fontSize: tooltip.fontSize,
+	            fontStyle: tooltip.fontStyle,
+	        });
+	    }
 
-};
+	};
 
-var myLineChart = new Chart(ctx).Line(data, options);
+	var myLineChart = new Chart(ctx).Line(data, options);
 }
 
-function getCookie(name) {
+function getCookie(name){
 	var matches = document.cookie.match(new RegExp(
 		"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
 	));
 	return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+function popupSearch(word){
+	//если поле поиска не пустое, производим AJAX запрос к файлу search.php
+	//и выводим результат в слой search_result
+		if ($('#search_field ').val()!='') {
+			$.post( "php/popupSearch.php", {word: word}, onSuccess); 
+			function onSuccess(data)
+			{
+				$('#search_result').html(data);
+			}
+		} 
+		//если поле поиска пустое, очищаем слой с результатами поиска
+		else {
+			$('#search_result').html('');
+		}
 }

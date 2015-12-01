@@ -1245,6 +1245,45 @@ q:after {
 	top: -4px;
 }
 
+.save_changes_container{
+	height: 60px;
+	width: 100%;
+	margin-left: 45px;
+}
+
+.save_changes_button{
+	height: 22px;
+	margin: 5px 0px;
+	padding: 10px;
+	border: 2px solid #eee;
+	color: #ccc;
+	font-size: 14px;
+	font-family: Verdana, Geneva, sans-serif;
+	line-height: 22px;
+	display: inline-block;
+	padding: 7px 25px;
+	text-align: center;
+	cursor: default;
+}
+
+.save_changes_button:hover{
+	border: 2px solid #eee;
+	color: #ccc;
+	cursor: default;
+}
+
+.save_changes_button.active{
+	border: 2px solid #62ddb7;
+	color: #62ddb7;
+	cursor: pointer;
+}
+
+.save_changes_button.active:hover{
+	border: 2px solid #62ddb7;
+	color: #62ddb7;
+	cursor: pointer;
+}
+
 .food_list_records{
 	width: 100%;
 	display: table;
@@ -1981,8 +2020,9 @@ input:focus{
 
 .chartjs-tooltip-key{
 	display:inline-block;
-	width:10px;
-	height:10px;
+	width:12px;
+	height:12px;
+	margin-bottom: -1px;
 }
 
 /**/

@@ -11,7 +11,7 @@
     <script type="text/JavaScript" src="javascript/jquery-ui.js"></script>
     <script type="text/javascript" src="javascript/datepicker.js"></script>
     <script type="text/javascript" src="javascript/jquery.mask.js"></script>
-    <script type="text/javascript" src="javascript/Chart.min.js"></script>
+    <script type="text/javascript" src="javascript/Chart.js"></script>
     <!--<script type="text/javascript" src="javascript/modernizr-custom.min.js"></script>-->
     <script type="text/JavaScript" src="javascript/jscript.js"></script>
 </head>
@@ -155,12 +155,17 @@
 				</div>
 				<div class="clearfix"></div>
 				<div class="drop_down_block_content">
+					<div class="save_changes_container"><a id="save_changes_button" class="save_changes_button" style="">Сохранить изменения</a></div>
 					<div class="drop_down_block_add_record">
 						<a class="add_new_record" onclick="addFoodDiaryRecord()">Новая запись</a>
 						<a class="add_new_record_from_list">Запись из списка покупок</a>
 					</div>
 					<div class="food_list_records">
 
+						<!--<div id="search">
+						<p>поиск: <input type="text" id="search_field"  onkeyup="popupSearch(this.value)" /></p>
+						<div id="search_result"></div>
+						</div>-->
 						<span id="invisible"></span>
 					</div>
 				</div>
