@@ -49,36 +49,6 @@ function diaryEventsInit(){
 		}
 	});
 
-	$(".calCount").bind("keydown", function(event){
-
-		$("#invisible").html(this.value);
-		this.style.width = $("#invisible").outerWidth()+ 13 + 'px';
-
-		if (event.keyCode == 8){
-		}else if((event.keyCode >= 37) && (event.keyCode <= 40)){
-			return(event.keyCode);
-		}
-
-		var charCode = event.which;
-		if (charCode <= 13) return true;
-
-		var keyChar = String.fromCharCode(charCode);
-		if (this.value.length < 10){
-			return /[0-9]/.test(keyChar);
-		}else{return false}
-
-	});
-
-	$(".calCount").bind("keyup", function(event){
-		$("#invisible").html(this.value);
-		this.style.width = $("#invisible").outerWidth()+ 13 + 'px';
-	});
-
-	$(".calCount").each(function(){
-		$("#invisible").html(this.value);
-		this.style.width = $("#invisible").outerWidth()+ 13 + 'px';
-	});
-
 	$('.food_list_records').change(function(){
 		activateChanges(true);
 	});
@@ -86,8 +56,32 @@ function diaryEventsInit(){
 	$('.save_changes_button').unbind().click(function(){
 		if( $(this).hasClass('active') ){
 			sendDiaryList();
+			console.log( localStorage.getItem('upload') );
 		}
 	});
+
+	$(".imageUpload").unbind().change(function(){
+		imagePreview(this);
+	});
+}
+
+function imagePreview(input){
+
+	imageId = $(input).attr('id');
+
+	if(input.files && input.files[0]){
+
+		var reader = new FileReader();
+
+		reader.onload = function (e){
+			$(input).parent().removeClass('no_image');
+			$(input).parent().css('background-image', 'url(' + e.target.result + ')');
+			localStorage.setItem( imageId, e.target.result );
+			console.log( e.target.result );
+		}
+
+		reader.readAsDataURL(input.files[0]);
+	}
 }
 
 function sendDiaryList(){
@@ -473,8 +467,9 @@ function initResize(){
 		CreateLineChart();
 		resetSmoothLineChartCanvas();
 		CreateSmoothLineChart();
+		diaryInputResize();
 		clearTimeout(id);
-		id = setTimeout(doneResizing, 500); 
+		id = setTimeout(doneResizing, 400); 
 	});
 
 	function doneResizing(){
@@ -483,6 +478,13 @@ function initResize(){
 		DropDownBlockResize();
 		if($('.drop_down_block_calendar_id')){calendarMerge();}
 	}
+}
+
+function diaryInputResize(){
+
+	$(".record_name_input").each(function(){
+		this.style.width = $(this).parent().outerWidth() - 50 + 'px';
+	});
 }
 
 function datePickerInit(){
@@ -850,10 +852,12 @@ function calendarMerge(){
 
 function getFoodDiaryRecords(){
 
+	localStorage.setItem( 'recordIds' , 0 );
+
 	if($('.food_list_records')){
 		$.getJSON('diary.json', function(data){
 			$.each(data.list, function (i) {
-				printFoodDiaryRecord(data.list[i].type, data.list[i].time, data.list[i].name, data.list[i].weight, data.list[i].link, data.list[i].image, data.list[i].pro, data.list[i].fat, data.list[i].car, data.list[i].kcal);
+				printFoodDiaryRecord(data.list[i].id, data.list[i].type, data.list[i].time, data.list[i].name, data.list[i].weight, data.list[i].link, data.list[i].image, data.list[i].pro, data.list[i].fat, data.list[i].car, data.list[i].kcal);
 			});
 			diaryEventsInit();
 		});
@@ -861,7 +865,13 @@ function getFoodDiaryRecords(){
 }
 
 function addFoodDiaryRecord(){
-	printFoodDiaryRecord('recType', '00:00', '', '250', '', '', '', '', '', '');
+	var currentdate = new Date(); 
+	var currentMinutes;
+	if(currentdate.getMinutes()<10){currentMinutes='0'+currentdate.getMinutes()}else{currentMinutes=currentdate.getMinutes()}
+	var currenttime = currentdate.getHours() + ":" + currentMinutes;
+	var newId = localStorage.getItem('recordIds');
+	localStorage.setItem( 'recordIds' , ++newId );
+	printFoodDiaryRecord(newId, 'recType', currenttime, '', '250', '', '', '0', '0', '0', '0');
 	diaryEventsInit();
 	DropDownBlockResize();
 	activateChanges(true);
@@ -875,7 +885,7 @@ function activateChanges(input){
 	}
 }
 
-function printFoodDiaryRecord(recType, recTime, recName, recWeight, recLink, recImg, recPro, recFat, recCar, recCal){
+function printFoodDiaryRecord(recId, recType, recTime, recName, recWeight, recLink, recImg, recPro, recFat, recCar, recCal){
 	// Функция для создания записи.
 
 	var edit = "", no_image = "";
@@ -884,26 +894,32 @@ function printFoodDiaryRecord(recType, recTime, recName, recWeight, recLink, rec
 
 	listRecords = $('.food_list_records');
 
+	var scriptRecId = "'"+recId+"'";
+
 	listRecords.prepend('<div class="food_list_record_container">'+
 							'<div class="food_list_record">'+
 								'<div class="food_list_record_float_width">'+
 									'<div class="record_time_box">'+
 										'<input class="record_time" maxlength="5" type="time" value="'+recTime+'" onkeypress="">'+
 									'</div>'+
-									'<div class="record_name"><span class="bullet">• </span>'+recName+' <b>( <input class="calCount" type="number" value="'+recCal+'"/> ккал )</b></div>'+
+									'<div class="record_name"><span class="bullet">• </span><input class="record_name_input" type="text" placeholder="Название блюда" value="'+recName+'"/></div>'+
 									'<div class="record_weight">'+
 										'<span>Вес</span><span class="record_weight_input"><input type="number" value="'+recWeight+'" step="5"></span>'+
 									'</div>'+
 									'<div class="record_nutrients">'+
-										'<span>Б</span><span class="record_nutrients_input'+edit+'"><input type="number" value="'+recPro+'" step="0.1"'+edit+'></span>'+
-										'<span>Ж</span><span class="record_nutrients_input'+edit+'"><input type="number" value="'+recFat+'" step="0.1"'+edit+'></span>'+
-										'<span>У</span><span class="record_nutrients_input'+edit+'"><input type="number" value="'+recCar+'" step="0.1"'+edit+'></span>'+
+										'<span style="color:#ffa371;">Б</span><span class="record_nutrients_input">'+recPro+'</span>'+
+										'<span style="color:#eed406;">Ж</span><span class="record_nutrients_input">'+recFat+'</span>'+
+										'<span style="color:#62ddb7;">У</span><span class="record_nutrients_input">'+recCar+'</span>'+
+									'</div>'+
+									'<div class="record_nutrients">'+
+										'<span style="color:#b38bde; padding-bottom:15px;">ккал</span><span class="record_nutrients_input">'+recCal+'</span>'+
 									'</div>'+
 									'<div class="clearfix"></div>'+
 									'<a class="record_recipe_link" href="'+recLink+'">посмотреть рецепт</a>'+
 								'</div>'+
 								'<div class="food_list_record_static_width">'+
-									'<div class="record_image'+no_image+'" style="'+recImg+'">'+
+									'<div class="record_image'+no_image+'" style="'+recImg+'" onclick="document.getElementById('+scriptRecId+').click();">'+
+										'<input type="file" class="imageUpload" id="'+recId+'" accept="image/*" style="display:none;" />'+
 										'<div class="record_delete">✖</div>'+
 									'</div>'+
 								'</div>'+
@@ -942,6 +958,10 @@ function settingsFormInit(){
 			$("#settings_field_cal").removeAttr('readonly');
 		}
 	});
+
+	var selectedElement = null;
+	document.onkeyup = setFocus;
+	document.onmouseup = setFocus;
 }
 
 function respChart(selector, data, options){
@@ -1041,5 +1061,24 @@ function popupSearch(word){
 		//если поле поиска пустое, очищаем слой с результатами поиска
 		else {
 			$('#search_result').html('');
+		}
+}
+
+function setFocus(e){
+
+		if( (window.getSelection().type) == "Range" ){
+			// Range was selected
+		}else{
+			selectedElement = window.getSelection().focusNode.parentNode;
+			
+			if ( ( $(selectedElement).hasClass("settings_recipes_item_part_name") )||( $(selectedElement).hasClass("inner") ) ){
+				if ( $(selectedElement).hasClass("inner") ) {
+					$(selectedElement).removeClass('ellipsisOnOverflow');
+				} else{
+					$(selectedElement).closest('.inner').removeClass('ellipsisOnOverflow');
+				}
+			}else{
+				$( ".inner" ).addClass('ellipsisOnOverflow');
+			}
 		}
 }
