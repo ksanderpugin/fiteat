@@ -496,13 +496,14 @@ function datePickerInit(){
 
 	var weekBefore = new Date();
 	weekBefore.setDate(weekBefore.getDate() - 7);
+
 	var wbdd = weekBefore.getDate();
 	var wbmm = weekBefore.getMonth()+1; //January is 0!
 	var wbyyyy = weekBefore.getFullYear();
 
 	if(dd<10) {dd='0'+dd}
 	if(mm<10) {mm='0'+mm}
-	if(wbdd<10) {wbdd='0'+dd}
+	if(wbdd<10) {wbdd='0'+wbdd}
 	if(wbmm<10) {wbmm='0'+wbmm}
 
 	today = yyyy+'-'+mm+'-'+dd
@@ -959,9 +960,11 @@ function settingsFormInit(){
 		}
 	});
 
-	var selectedElement = null;
-	document.onkeyup = setFocus;
-	document.onmouseup = setFocus;
+	$(".settings_recipes_item_part_delete").click(function(){
+		$(this).parent().parent().find('.settings_recipes_item_part_restore').css('display','table');
+		$(this).parent().css('display','none');
+	});
+
 }
 
 function respChart(selector, data, options){
@@ -1064,12 +1067,39 @@ function popupSearch(word){
 		}
 }
 
+/*
+function setEndOfContenteditable(contentEditableElement){
+	var range,selection;
+	if(document.createRange)//Firefox, Chrome, Opera, Safari, IE 9+
+    {
+		range = document.createRange();//Create a range (a range is a like the selection but invisible)
+		range.selectNodeContents(contentEditableElement);//Select the entire contents of the element with the range
+		range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
+		selection = window.getSelection();//get the selection object (allows you to change selection)
+		selection.removeAllRanges();//remove any selections already made
+		selection.addRange(range);//make the range you have just created the visible selection
+	}
+	else if(document.selection)//IE 8 and lower
+	{ 
+		range = document.body.createTextRange();//Create a range (a range is a like the selection but invisible)
+		range.moveToElementText(contentEditableElement);//Select the entire contents of the element with the range
+		range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
+		range.select();//Select the range (make it the visible selection
+	}
+}
+*/
+
 function setFocus(e){
+
+	selectedElement = window.getSelection().focusNode.parentNode;
 
 		if( (window.getSelection().type) == "Range" ){
 			// Range was selected
+			//console.log('range was selected');
+			//elem = document.getElementById('txt1');
+			setEndOfContenteditable( selectedElement );
 		}else{
-			selectedElement = window.getSelection().focusNode.parentNode;
+			//selectedElement = window.getSelection().focusNode.parentNode;
 			
 			if ( ( $(selectedElement).hasClass("settings_recipes_item_part_name") )||( $(selectedElement).hasClass("inner") ) ){
 				if ( $(selectedElement).hasClass("inner") ) {
@@ -1079,6 +1109,8 @@ function setFocus(e){
 				}
 			}else{
 				$( ".inner" ).addClass('ellipsisOnOverflow');
+				//Caret must be moved to the first position
+				//setEndOfContenteditable( selectedElement );
 			}
 		}
 }
