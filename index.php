@@ -41,7 +41,6 @@ $r_html = render(__DIR__ . "/views/mr_slide.php",["recipes" => $r_data]);
     <script type="text/JavaScript" src="javascript/jquery-ui.js"></script>
     <script type="text/javascript" src="javascript/datepicker.js"></script>
     <script type="text/javascript" src="javascript/jquery.mask.js"></script>
-    <!--<script type="text/javascript" src="javascript/modernizr-custom.min.js"></script>-->
     <script type="text/JavaScript" src="javascript/jscript.js"></script>
 </head>
 
@@ -72,6 +71,10 @@ $r_html = render(__DIR__ . "/views/mr_slide.php",["recipes" => $r_data]);
 						<span>
 							<input id="password" type="password" placeholder="password" name="contacts">
 						</span>
+
+						<div id="registration_form">
+							<a id="registration_button" href="registration.html">Регистрация</a><a id="forgot_password_button" href="#">Забыли пароль?</a>
+						</div>
 
 						<div id="login_form_buttons">
 							<div>

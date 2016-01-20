@@ -19,7 +19,7 @@ function diaryEventsInit(){
 		var container = $(this).closest('.food_list_record_container');
 			$(container).remove();
 			DropDownBlockResize();
-			activateChanges(true);
+			activateChanges(true, '#save_changes_button_diary_1');
 			/*if (!container.is(e.target) // if the target of the click isn't the container...
 				&& container.has(e.target).length === 0) // ... nor a descendant of the container
 			{
@@ -50,10 +50,12 @@ function diaryEventsInit(){
 	});
 
 	$('.food_list_records').change(function(){
-		activateChanges(true);
+		activateChanges(true, '#save_changes_button_diary_1');
 	});
 
-	$('.save_changes_button').unbind().click(function(){
+	// Send foodlist if this event was called.
+
+	$('#save_changes_button_diary_1').unbind().click(function(){
 		if( $(this).hasClass('active') ){
 			sendDiaryList();
 			console.log( localStorage.getItem('upload') );
@@ -88,7 +90,7 @@ function sendDiaryList(){
 
 	// sending data
 
-	activateChanges('false');
+	activateChanges('false', '#save_changes_button_diary_1');
 }
 
 function loginInit(){
@@ -774,7 +776,7 @@ function datePickerInit(){
 					}
 				});
 				calendarMerge();
-				activateChanges(false);
+				activateChanges(false, '#save_changes_button_diary_1');
 			}
 		});
 
@@ -875,14 +877,14 @@ function addFoodDiaryRecord(){
 	printFoodDiaryRecord(newId, 'recType', currenttime, '', '250', '', '', '0', '0', '0', '0');
 	diaryEventsInit();
 	DropDownBlockResize();
-	activateChanges(true);
+	activateChanges(true, '#save_changes_button_diary_1');
 }
 
-function activateChanges(input){
+function activateChanges(input, buttonClassName){
 	if(input.toString() == 'true'){
-		$('.save_changes_button').addClass('active');
+		$(buttonClassName).addClass('active');
 	}else{
-		$('.save_changes_button').removeClass('active');
+		$(buttonClassName).removeClass('active');
 	}
 }
 
@@ -950,7 +952,7 @@ function settingsFormInit(){
 
 	$('#day').val('1');
 
-	$('.settings_field_cal_checkbox').click(function() {
+	$('.settings_field_cal_checkbox').click(function(){
 		if (this.checked){
 			console.log('readonly');
 			$("#settings_field_cal").attr('readonly','readonly');
@@ -960,11 +962,142 @@ function settingsFormInit(){
 		}
 	});
 
-	$(".settings_recipes_item_part_delete").click(function(){
-		$(this).parent().parent().find('.settings_recipes_item_part_restore').css('display','table');
-		$(this).parent().css('display','none');
+	// Send foodlist if this event was called.
+
+	$('#save_changes_button_settings_1').unbind().click(function(){
+		if( $(this).hasClass('active') ){
+			console.log( 'Send settings 1 form' );
+			activateChanges('false', '#save_changes_button_settings_1');
+			cleanSettingsPage();
+		}
 	});
 
+	settingsFormEvents();
+	getPersonalRecipeRecords();
+}
+
+function settingsFormEvents(){
+
+	$(".settings_recipes_item_part_delete").unbind().click(function(){
+		cleanSettingsPage();
+		$(this).closest('.settings_recipes_item_container').find('.settings_recipes_item_part_restore').css('display','table');
+		$(this).closest('.settings_recipes_item_box').css('display','none');
+		activateChanges(true, '#save_changes_button_settings_1');
+
+		$(".settings_recipes_item_part_restore").unbind().click(function(){
+			console.log('restore');
+			$(this).css('display','none');
+			var container = $(this).closest(".settings_recipes_item_container");
+			container.children(".settings_recipes_item_box").css('display','table');
+		});
+	});
+
+	$('.settings_recipes_item').change(function(){
+		activateChanges(true, '#save_changes_button_settings_1');
+	});
+
+	$('.create_new_recipe').unbind().click(function(){
+		console.log('create new recipe');
+		printPersonalRecipeRecord(0,'Новое блюдо',[]);
+		activateChanges(true, '#save_changes_button_settings_1');
+		DropDownBlockResize();
+	});
+
+	$('.recipe_delete').unbind().click(function(){
+		console.log('delete this shit');
+		$(this).closest('#settings_recipes_items_container').remove();
+		activateChanges(true, '#save_changes_button_settings_1');
+		DropDownBlockResize();
+	});
+
+	$('.recipe_add_new_product').unbind().click(function(){
+		console.log('delete this little shit');
+		printRecipeRecordItem( $(this).closest('#settings_recipes_items_container') , 'Новый ингредиент', 100);
+		activateChanges(true, '#save_changes_button_settings_1');
+		DropDownBlockResize();
+		settingsFormEvents();
+	});
+}
+
+function cleanSettingsPage(){
+	$('.settings_recipes_item_box').each(function(){
+		if ($(this).css('display') == 'none'){
+			console.log( $(this).parent().find('input').val() + ' ....... delete');
+			$(this).parent().remove();
+		}
+	});
+}
+
+function getPersonalRecipeRecords(){
+
+	//localStorage.setItem( 'recordIds' , 0 );
+
+	if($('.food_list_records')){
+		$.getJSON('userRecipes.json', function(data){
+			var products = [];
+			$.each(data.recipes, function (i) {
+
+				products = [];
+
+				$.each(data.recipes[i].products, function (j) {
+					products.push(data.recipes[i].products[j]);
+				});
+
+				printPersonalRecipeRecord(data.recipes[i].recipeID, data.recipes[i].recipeName, products);
+			});
+		});
+
+		settingsFormEvents();
+	}
+}
+
+function printPersonalRecipeRecord(recId, recName, products){
+
+	// Функция для создания записи.
+
+	var innerHTHL_Code = '<div id="settings_recipes_items_container">'+
+							'<div class="settings_recipes_item settings_recipes_item_FH">'+
+								'<div class="settings_recipes_item_name" style="margin-bottom: 15px;">'+
+									'<input type="text" value="'+recName+'" />'+
+								'</div>'+
+								'<div class="settings_recipes_items_container">';
+
+
+	innerHTHL_Code = innerHTHL_Code + 
+							'</div>'+
+
+							'<a class="recipe_add_new_product">Добавить ингредиент</a>'+
+							'<a class="recipe_delete">Удалить блюдо</a>'+
+
+							'<div class="arrow" onclick="$(this).parent().toggleClass(&#39;settings_recipes_item_AH settings_recipes_item_FH&#39;);DropDownBlockResize();"></div>'+
+						'</div>';
+
+	var container = $('#settings_recipes_items_container');
+	container.append(innerHTHL_Code);
+
+	$.each(products, function (i) {
+		printRecipeRecordItem(container, products[i].productName, products[i].weight);
+	});
+
+	settingsFormEvents();
+}
+
+function printRecipeRecordItem(parentObject, productName, weight){
+	$(parentObject).find(".settings_recipes_items_container").last().append('<div class="settings_recipes_item_container">'+
+									'<div class="settings_recipes_item_box">'+
+										'<div class="settings_recipes_item_part_name_container">'+
+											'<div class="settings_recipes_item_part_name">'+
+												'<input class="" value="'+productName+'"/>'+
+											'</div>'+
+										'</div>'+
+										'<div class="settings_recipes_item_part_weight"><input type="number" value="'+weight+'" />(г)</div>'+
+										'<div class="settings_recipes_item_part_delete"></div>'+
+									'</div>'+
+									'<div class="settings_recipes_item_part_restore">'+
+									'<div class="settings_recipes_item_part_restore_text ellipsisOnOverflow"><div class="ellipsisOnOverflow">Восстановить ('+productName+')</div></div>'+
+										'<div class="settings_recipes_item_part_restore_button"></div>'+
+									'</div>'+
+								'</div>');
 }
 
 function respChart(selector, data, options){
@@ -1066,28 +1199,6 @@ function popupSearch(word){
 			$('#search_result').html('');
 		}
 }
-
-/*
-function setEndOfContenteditable(contentEditableElement){
-	var range,selection;
-	if(document.createRange)//Firefox, Chrome, Opera, Safari, IE 9+
-    {
-		range = document.createRange();//Create a range (a range is a like the selection but invisible)
-		range.selectNodeContents(contentEditableElement);//Select the entire contents of the element with the range
-		range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
-		selection = window.getSelection();//get the selection object (allows you to change selection)
-		selection.removeAllRanges();//remove any selections already made
-		selection.addRange(range);//make the range you have just created the visible selection
-	}
-	else if(document.selection)//IE 8 and lower
-	{ 
-		range = document.body.createTextRange();//Create a range (a range is a like the selection but invisible)
-		range.moveToElementText(contentEditableElement);//Select the entire contents of the element with the range
-		range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
-		range.select();//Select the range (make it the visible selection
-	}
-}
-*/
 
 function setFocus(e){
 

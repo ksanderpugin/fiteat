@@ -33,8 +33,12 @@
          style="stop-color:#000000;stop-opacity:1;" />
     </linearGradient>
   </defs>
-  <path
+  <polygon
      id="polygon4"
-     d="M 5 2 L 2 5 L 4.5 7.5 L 2 10 L 5 13 L 7.5 10.5 L 10 13 L 13 10 L 10.5 7.5 L 13 5 L 10 2 L 7.5 4.5 L 5 2 z "
+     points="4,4 11,11"
+     style="fill:none;fill-opacity:1;stroke:#c82915;stroke-opacity:1" />
+  <polygon
+     id="polygon5"
+     points="11,4 4,11"
      style="fill:none;fill-opacity:1;stroke:#c82915;stroke-opacity:1" />
 </svg>
