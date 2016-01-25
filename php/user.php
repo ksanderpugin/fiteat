@@ -22,7 +22,7 @@ class User
         if ($data === false) return ["state"=>false,"error"=>"System Error!","errno"=>666];
         if (empty($data)) return ["state"=>false,"error"=>"Mail not found","errno"=>101];
         if($data[0]["pass"] == $pass) {
-            $cookie_str = $data[0]["id"] . "_" . $data[0]["key"];
+            $cookie_str = $data[0]["id"] . "_" . $data[0]["ukey"];
             $cookie_code = $this->codeString($cookie_str);
             setcookie("uk",$cookie_code,time()+24*360000,"/");
             return [
@@ -32,6 +32,30 @@ class User
             ];
         }
         return ["state"=>false,"error"=>"Invalid password","errno"=>102];
+    }
+
+    public function registration($data) {
+        $key = rand(1,9)*1000000 +
+            rand(0,9)*100000 +
+            rand(0,9)*10000 +
+            rand(0,9)*1000 +
+            rand(0,9)*100 +
+            rand(0,9)*10 +
+            rand(0,9);
+        $sql = SQL::getInst();
+        if (!$sql->execute(
+            "INSERT INTO users (mail,pass,name,soname,ukey) VALUE (':mail',':pass',':name',':soname',ukey)",
+            [
+                ["name" => ":mail", "val" => $data[0], "type" => SQL::PARAM_STR],
+                ["name" => ":pass", "val" => $data[1], "type" => SQL::PARAM_STR],
+                ["name" => ":name", "val" => $data[2], "type" => SQL::PARAM_STR],
+                ["name" => ":soname", "val" => $data[3], "type" => SQL::PARAM_STR],
+                ["name" => ":ukey", "val" => $key, "type" => SQL::PARAM_INT]
+            ]
+        )) {
+            return false;
+        }
+        return true;
     }
 
     public function isAuthorized(){
@@ -58,7 +82,7 @@ class User
                 ["name" => ":id", "val" => $uk_arr[0], "type" => SQL::PARAM_INT]
             ]);
             if ($data !== false && !empty($data)) {
-                if ($data[0]["key"] == $uk_arr[1]) {
+                if ($data[0]["ukey"] == $uk_arr[1]) {
                     $this->auth = true;
                     $this->user_info = [
                         "id" => $data[0]["id"],

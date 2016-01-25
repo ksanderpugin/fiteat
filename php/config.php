@@ -13,4 +13,25 @@ class Config {
     const VK_APP_ID = '5073549';
     const VK_SECRET_CODE = 'aVk3AZyQUZcGUCLdfZz3';
     const VK_REDIRECT = 'http://fiteat.info/login/vk';
+
+    public static function getFbUrl() {
+        return 'https://www.facebook.com/dialog/oauth?' .
+        urldecode(http_build_query([
+            'client_id' => self::FB_APP_ID,
+            'redirect_uri' => self::FB_REDIRECT,
+            'response_type' => 'code',
+            'scope' => 'email'
+        ]));
+    }
+
+    public static function getVkUrl() {
+        return 'https://oauth.vk.com/authorize?' .
+        urldecode(http_build_query([
+            'client_id' => self::VK_APP_ID,
+            'redirect_uri' => self::VK_REDIRECT,
+            'display' => 'page',
+            'response_type' => 'code',
+            'scope' => 'email'
+        ]));
+    }
 } 
