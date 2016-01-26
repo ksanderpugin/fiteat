@@ -1,6 +1,6 @@
 <div id="sidebar_menu">
     <div class="sidebar_menu_body">
-        <div class="sidebar_menu_button logo"><!--Fiteat--></div>
+        <div class="sidebar_menu_button logo" onclick="document.location = 'http://<?=$_SERVER['SERVER_NAME']?>'"><!--Fiteat--></div>
         <div class="sidebar_menu_button"><a href="recipes.html">Рецепты</a></div>
         <div class="sidebar_menu_button"><a href="diary.html">Дневник питания</a></div>
         <div class="sidebar_menu_button"><a>Мой стол</a></div>

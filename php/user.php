@@ -35,7 +35,9 @@ class User
     }
 
     public function registration($data) {
-        $key = rand(1,9)*1000000 +
+        $key = rand(1,9)*100000000 +
+            rand(0,9)*10000000 +
+            rand(0,9)*1000000 +
             rand(0,9)*100000 +
             rand(0,9)*10000 +
             rand(0,9)*1000 +
@@ -44,7 +46,7 @@ class User
             rand(0,9);
         $sql = SQL::getInst();
         if (!$sql->execute(
-            "INSERT INTO users (mail,pass,name,soname,ukey) VALUE (':mail',':pass',':name',':soname',ukey)",
+            "INSERT INTO users (mail,pass,name,soname,ukey) VALUE (':mail',':pass',':name',':soname',:ukey)",
             [
                 ["name" => ":mail", "val" => $data[0], "type" => SQL::PARAM_STR],
                 ["name" => ":pass", "val" => $data[1], "type" => SQL::PARAM_STR],
@@ -55,6 +57,10 @@ class User
         )) {
             return false;
         }
+        $id = $sql->getInsertID();
+        $cookie = $id . "_" . $key;
+        $cookie_code = $this->codeString($cookie);
+        setcookie("uk",$cookie_code,time()+24*360000,"/");
         return true;
     }
 

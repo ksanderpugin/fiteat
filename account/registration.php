@@ -1,8 +1,13 @@
 <?php
+
     include_once "../php/basic.php";
     include_once "../php/config.php";
     include_once "../php/sql.php";
     include_once "../php/user.php";
+
+    $user_name = $user_soname = $mail = "";
+
+    $error = false;
 
     if (!empty($_POST) && strpos($_SERVER['HTTP_REFERER'],$_SERVER['SERVER_NAME']."/account/registration") !== false ) {
         $user_name = strlen($_POST["name"]) < 1 ? "Пользователь" : $_POST["name"];
@@ -13,6 +18,7 @@
             header("Location: http://" . $_SERVER["SERVER_NAME"] . "/account/settings.php");
             exit;
         }
+        $error = true;
     }
 
     $fb_url = Config::getFbUrl();
@@ -62,6 +68,9 @@
                     return false;
                 }
             });
+            <?php if($error) : ?>
+            alert('Пользователь с e-mail "<?=$mail?>" уже зарегистрирован.');
+            <?php endif ?>
         });
     </script>
 </head>
@@ -79,13 +88,13 @@
 				<div class="parameter">
 					<div class="parameter_name">Имя</div>
 					<div class="parameter_value">
-						<input type="text" placeholder="Имя" name="name"/>
-						<input type="text" placeholder="Фамилия" name="surname"/>
+						<input type="text" placeholder="Имя" name="name" value="<?=$user_name?>"/>
+						<input type="text" placeholder="Фамилия" name="surname" value="<?=$user_soname?>"/>
 					</div>
 				</div>
 				<div class="parameter">
 					<div class="parameter_name important_parameter">e-mail</div>
-					<div class="parameter_value"><input id="parameter_value_mail" type="text" name="mail" placeholder="example@mail.com"/></div>
+					<div class="parameter_value"><input id="parameter_value_mail" type="text" name="mail" placeholder="example@mail.com" value="<?=$mail?>"/></div>
 				</div>
 				<div class="parameter">
 					<div class="parameter_name important_parameter">Пароль</div>

@@ -1,7 +1,7 @@
 <div class="header">
     <div class="header_container">
         <a class="header_mobile_menu" onclick="sidebarMenu('show')"></a>
-        <div class="header_button header_left_button logo"><!--Fiteat--></div>
+        <div class="header_button header_left_button logo" onclick="document.location = 'http://<?=$_SERVER['SERVER_NAME']?>'"><!--Fiteat--></div>
         <div class="header_button header_left_button"><a href="recipes.html">Рецепты</a></div>
         <div class="header_button header_left_button"><a href="diary.html">Дневник питания</a></div>
         <div class="header_button header_left_button"><a href="#">Мой стол</a></div>
