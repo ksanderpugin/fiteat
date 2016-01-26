@@ -73,7 +73,7 @@
             <?php else : ?>
                 <div class="logged_in header_menu_name" onclick=""><?=$user?></div>
                 <div class="header_menu_user_settings">
-                    <div class="logged_in" onclick="">Настройки</div>
+                    <div class="logged_in" onclick="">Кабинет</div>
                     <div class="logged_in" onclick="logIn('out')">Выйти</div>
                 </div>
             <?php endif ?>

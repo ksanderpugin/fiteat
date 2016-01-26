@@ -44,6 +44,7 @@ class User
             rand(0,9)*100 +
             rand(0,9)*10 +
             rand(0,9);
+//        echo $key;
         $sql = SQL::getInst();
         if (!$sql->execute(
             "INSERT INTO users (mail,pass,name,soname,ukey) VALUE (':mail',':pass',':name',':soname',:ukey)",
