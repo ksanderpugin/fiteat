@@ -51,147 +51,97 @@
 
 			<div class="settings_fields">
 				
-			<div class="settings_field">
-				<div class="settings_field_block_left settings_field_block">Имя</div>
-				<div class="settings_field_block_right settings_field_block">
-					<div class="settings_field_input_name"><input placeholder="Имя"/></div>
-					<div class="settings_field_input_name"><input placeholder="Фамилия"/></div>
+				<div class="settings_field">
+					<div class="settings_field_block_left settings_field_block">Имя</div>
+					<div class="settings_field_block_right settings_field_block">
+						<div class="settings_field_input_name"><input placeholder="Имя"/></div>
+						<div class="settings_field_input_name"><input placeholder="Фамилия"/></div>
+					</div>
 				</div>
-			</div>
 
-			<div class="settings_field">
-				<div class="settings_field_block_left settings_field_block">Пол</div>
-				<div class="settings_field_block_right settings_field_block">
-					<div><input type="radio" name="gender" value="male" checked>Мужской</div>
-					<div><input type="radio" name="gender" value="female">Женский</div>
+				<div class="settings_field">
+					<div class="settings_field_block_left settings_field_block">Пол</div>
+					<div class="settings_field_block_right settings_field_block">
+						<div><input type="radio" name="gender" value="male" checked>Мужской</div>
+						<div><input type="radio" name="gender" value="female">Женский</div>
+					</div>
 				</div>
-			</div>
 
-			<div class="settings_field">
-				<div class="settings_field_block_left settings_field_block">Дата рождения</div>
-				<div class="settings_field_block_right settings_field_block">
-					<div>
-
+				<div class="settings_field">
+					<div class="settings_field_block_left settings_field_block">Дата рождения</div>
+					<div class="settings_field_block_right settings_field_block">
 						<div>
-							<select id="day" name="day">
-							</select>
-							/
-							<select id="month" name="month">
-								<option value="1">Января</option>
-								<option value="2">Февраля</option>
-								<option value="3">Марта</option>
-								<option value="4">Апреля</option>
-								<option value="5">Мая</option>
-								<option value="6">Июня</option>
-								<option value="7">Июля</option>
-								<option value="8">Августа</option>
-								<option value="9">Сентября</option>
-								<option value="10">Октября</option>
-								<option value="11">Ноября</option>
-								<option value="12">Декабря</option>
-							</select>
-							/
-							<select id="year" name="year">
-							</select>	
-						</div>
 
-					<!--
-						<div class="drop_down_block_calendar choose_one_day">
-							<div class="drop_down_block_calendar_date">
-								<div style="display:inline-block;">
-									<div style="display:inline-block;">
-										<span class="datePart" style="color: #c82915;">Сб</span>
-										<span class="datePart">, 15 Августа</span>
-									</div>
-									<div class="drop_down_block_calendar_icon_block">
-										<p id="single_datepicker" class="drop_down_block_calendar_id"></p>
-									</div>
-								</div>
+							<div>
+								<select id="day" name="day">
+								</select>
+								/
+								<select id="month" name="month">
+									<option value="1">Января</option><option value="2">Февраля</option><option value="3">Марта</option>
+									<option value="4">Апреля</option><option value="5">Мая</option><option value="6">Июня</option>
+									<option value="7">Июля</option><option value="8">Августа</option><option value="9">Сентября</option>
+									<option value="10">Октября</option><option value="11">Ноября</option><option value="12">Декабря</option>
+								</select>
+								/
+								<select id="year" name="year">
+								</select>	
 							</div>
+
 						</div>
-					-->
 					</div>
 				</div>
-			</div>
 
-			<div class="settings_field">
-				<div class="settings_field_block_left settings_field_block">Рост</div>
-				<div class="settings_field_block_right settings_field_block">
-					<div><input id="settings_field_height" type="number" min="30" max="300" step="1" value="165"/>см</div>
+				<div class="settings_field">
+					<div class="settings_field_block_left settings_field_block">Рост</div>
+					<div class="settings_field_block_right settings_field_block">
+						<div><input id="settings_field_height" type="number" min="30" max="300" step="1" value="165"/>см</div>
+					</div>
 				</div>
-			</div>
 
-			<div class="settings_field">
-				<div class="settings_field_block_left settings_field_block">Вес</div>
-				<div class="settings_field_block_right settings_field_block">
-					<div><input id="settings_field_weight" type="number" min="5" max="500" step="1" value="65"/>кг</div>
+				<div class="settings_field">
+					<div class="settings_field_block_left settings_field_block">Вес</div>
+					<div class="settings_field_block_right settings_field_block">
+						<div><input id="settings_field_weight" type="number" min="5" max="500" step="1" value="65"/>кг</div>
+					</div>
 				</div>
-			</div>
 
-			<div class="settings_field">
-				<div class="settings_field_block_left settings_field_block">Образ жизни</div>
-				<div class="settings_field_block_right settings_field_block">
-					<select id="lifestyle" name="lifestyle">
-						<option value="1">Минимальные нагрузки (сидячая работа)</option>
-						<option value="2">Необременительные тренировки 2-3 раза в неделю</option>
-						<option value="3">Тренировки 4-5 раз в неделю (или работа средней тяжести)</option>
-						<option value="4">Интенсивные тренировки 4-5 раз в неделю</option>
-						<option value="5">Ежедневные тренировки</option>
-						<option value="6">Ежедневные интенсивные тренировки или тренировки 2 раза в день</option>
-						<option value="7">Тяжелая физическая работа или интенсивные тренировки 2 раза в день</option>
-					</select>
+				<div class="settings_field">
+					<div class="settings_field_block_left settings_field_block">Образ жизни</div>
+					<div class="settings_field_block_right settings_field_block">
+						<select id="lifestyle" name="lifestyle">
+							<option value="1">Минимальные нагрузки (сидячая работа)</option>
+							<option value="2">Необременительные тренировки 2-3 раза в неделю</option>
+							<option value="3">Тренировки 4-5 раз в неделю (или работа средней тяжести)</option>
+							<option value="4">Интенсивные тренировки 4-5 раз в неделю</option>
+							<option value="5">Ежедневные тренировки</option>
+							<option value="6">Ежедневные интенсивные тренировки или тренировки 2 раза в день</option>
+							<option value="7">Тяжелая физическая работа или интенсивные тренировки 2 раза в день</option>
+						</select>
+					</div>
 				</div>
-			</div>
 
-			<div class="settings_field">
-				<div class="settings_field_block_left settings_field_block">Норма ккалорий</div>
-				<div class="settings_field_block_right settings_field_block">
-					<div><input type="checkbox" class="settings_field_cal_checkbox" checked>Рассчитать</div>
-					<div><input id="settings_field_cal" type="number" min="100" max="5000" step="10" value="2200" readonly/>ккал</div>
+				<div class="settings_field">
+					<div class="settings_field_block_left settings_field_block">Норма ккалорий</div>
+					<div class="settings_field_block_right settings_field_block">
+						<div><input type="checkbox" class="settings_field_cal_checkbox" checked>Рассчитать</div>
+						<div><input id="settings_field_cal" type="number" min="100" max="5000" step="10" value="2200" readonly/>ккал</div>
+					</div>
 				</div>
-			</div>
 
+				<div class="settings_field">
+					<div class="settings_field_block_left settings_field_block">Баланс Б/Ж/У</div>
+					<div class="settings_field_block_right settings_field_block">
+						<div><input type="checkbox" class="settings_field_pro_checkbox" checked>Рассчитать</div>
+						<div>
+							<input class="settings_fields_pro" id="settings_field_pro" type="number" min="0" max="100" step="1" value="25" readonly/>Б
+							<input class="settings_fields_pro" id="settings_field_fat" type="number" min="0" max="100" step="1" value="40" readonly/>Ж
+							<input class="settings_fields_pro" id="settings_field_car" type="number" min="0" max="100" step="1" value="35" readonly/>У
+						</div>
+					</div>
+				</div>
 
 				<div class="clearfix"></div>
 			</div>
-
-			<div class="drop_down_block">
-				<div class="drop_down_block_title">Мои блюда</div>
-				<div class="clearfix"></div>
-				<div class="drop_down_block_content">
-
-				<div class="save_changes_container"><a id="save_changes_button_settings_1" class="save_changes_button" style="">Сохранить изменения</a></div>
-
-					<div class="drop_down_block_options">
-						<!--<a class="add_record_to_diary"><span class="drop_down_block_options_plus">+</span> Добавить блюдо из списка в дневник питания</a>-->
-						<a class="create_new_recipe"><span class="drop_down_block_options_plus">+</span> Создать новое блюдо</a>
-					</div>
-
-					<div id="settings_recipes_items_container">						
-
-					</div>
-
-				</div>
-				<div class="drop_down_block_point"></div>
-			</div>
-
-			<div class="drop_down_block">
-				<div class="drop_down_block_title">Мои продукты</div>
-
-					<div class="drop_down_block_options">
-						<a class="add_record_to_diary"><span class="drop_down_block_options_plus">+</span> Добавить новый продукт в базу</a>
-					</div>
-
-				<div class="clearfix"></div>
-				<div class="drop_down_block_content">
-
-				<div class="save_changes_container"><a id="save_changes_button" class="save_changes_button" style="">Сохранить изменения</a></div>
-
-				</div>
-				<div class="drop_down_block_point"></div>
-			</div>
-
-			<div class="block_close"></div>
 		</div>
 
 		<div class="footer">

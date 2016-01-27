@@ -2235,6 +2235,66 @@ input:focus{
 
 /* ------------------------- */
 
+/* account/index */
+
+	#edit_personal_info{
+		height: 14px;
+		width: 14px;
+		display: inline-block;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: contain;
+		background-image: url(../images/edit.svg);
+		margin-left: 5px;
+	}
+
+	.settings_fields_showroom{
+		margin: 0px;
+	}
+
+	.settings_fields_showroom p, p span{
+		font-family: Verdana, Geneva, sans-serif;
+	}
+
+	#showroom_name{
+		font-size: 19px;
+		margin: 5px 0;
+	}
+
+	#showroom_name span{
+		position: relative;
+	}
+
+	#showroom_name span:before{
+		content: "";
+		height: 18px;
+		width: 18px;
+		position: absolute;
+		top: 1px;
+		right: -25px;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: contain;
+	}
+
+	#male:before{
+		background-image: url(../images/male.svg);
+	}
+
+	#female:before{
+		background-image: url(../images/female.svg);
+	}
+
+	#showroom_parameters{
+		font-size: 14px;
+	}
+
+	#showroom_goal{
+		font-size: 14px;
+	}
+
+/* ------------------------- */
+
 /* settings */
 
 .settings_body{
@@ -2334,6 +2394,16 @@ input[type="radio"] {
 	margin-right: 10px;
 }
 
+.settings_fields_pro{
+	width: 35px;
+	margin-left: 30px;
+}
+
+.settings_fields_pro:nth-child(1){
+	margin-left: 0;
+}
+
+
 #settings_field_cal{
 	width: 55px;
 }
@@ -2353,6 +2423,16 @@ input[type="radio"] {
 }
 
 #settings_field_cal:read-only { 
+    color: #999;
+    border-bottom: 1px solid transparent;
+}
+
+#settings_field_pro, #settings_field_fat, #settings_field_car { 
+    color: #999;
+    border-bottom: 1px dashed rgba(182,182,182,0.9);
+}
+
+#settings_field_pro:read-only, #settings_field_fat:read-only, #settings_field_car:read-only { 
     color: #999;
     border-bottom: 1px solid transparent;
 }
@@ -2476,6 +2556,48 @@ input[type="radio"] {
 	font-size: 13px;
 	padding-top: 3px;
 }
+
+/**/
+.settings_recipes_items_container_restore{
+	height: 42px;
+	width: 85%;
+	display: none;
+	margin: 0 7.5%;
+	padding: 0 1px;
+	background-color: #eaf9f4;
+	cursor: pointer;
+}
+
+.settings_recipes_items_container_restore_text{
+	display: table-cell;
+	height: 30px;
+	width: 100%;
+	padding: 5px 0 0 10px;
+	white-space: nowrap;
+	position: relative;
+}
+
+.settings_recipes_items_container_restore_text > div{
+	white-space: nowrap;
+	position: absolute;
+	width: 90%;
+	color: rgb(182, 182, 182);
+	font-size: 15px;
+	font-weight: bold;
+	padding-top: 6px;
+}
+
+.settings_recipes_items_container_restore_button{
+	display: table-cell;
+	height: 30px;
+	min-width: 25px;
+	background-image: url(../images/restore.svg);
+	background-position: center;
+	background-position-x: 1px;
+	background-repeat: no-repeat;
+	background-size: 18px;
+}
+/**/
 
 .settings_recipes_item_part_restore_button{
 	display: table-cell;
@@ -2879,6 +3001,10 @@ input[type="radio"] {
 .diary_linechart{
     width: 45%;
     margin: 35px 2.5% 10px 2.5%;
+}
+
+.settings_fields_showroom{
+	margin: 50px;
 }
 
 }
