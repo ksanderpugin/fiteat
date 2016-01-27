@@ -932,7 +932,12 @@ function printFoodDiaryRecord(recId, recType, recTime, recName, recWeight, recLi
 
 function settingsFormInit(){
 
-	var i;
+	/*var i;
+
+	var yearFrom = 1920, yearTo = 2015;
+
+	tempYear = $('#year').val();
+	console.log(tempYear);
 
 	for(i=1; i<=91; i++){
 		$('#year').append($('<option>', {
@@ -941,7 +946,7 @@ function settingsFormInit(){
 		}));
 	}
 
-	$('#year').val('66');
+	$('#year').val('66');*/
 
 	updateNumberOfDays();
 
@@ -951,22 +956,18 @@ function settingsFormInit(){
 
 	$('.settings_field_cal_checkbox').click(function(){
 		if (this.checked){
-			console.log('readonly1');
 			$("#settings_field_cal").attr('readonly','readonly');
 		}else{
-			console.log('smth1');
 			$("#settings_field_cal").removeAttr('readonly');
 		}
 	});
 
 	$('.settings_field_pro_checkbox').click(function(){
 		if (this.checked){
-			console.log('readonly2');
 			$("#settings_field_pro").attr('readonly','readonly');
 			$("#settings_field_fat").attr('readonly','readonly');
 			$("#settings_field_car").attr('readonly','readonly');
 		}else{
-			console.log('smth2');
 			$("#settings_field_pro").removeAttr('readonly');
 			$("#settings_field_fat").removeAttr('readonly');
 			$("#settings_field_car").removeAttr('readonly');
@@ -975,12 +976,12 @@ function settingsFormInit(){
 
 	// Send foodlist if this event was called.
 
-	$('#save_changes_button_settings_1').unbind().click(function(){
+	$('.save_changes_button').unbind().click(function(){
 		if( $(this).hasClass('active') ){
-			activateChanges('false', '#save_changes_button_settings_1');
+			activateChanges('false', '#'+$(this).attr('id') );
 			cleanSettingsPage();
 			DropDownBlockResize();
-			console.log( 'Send settings 1 form' );
+			console.log( 'Send form for: ' + $(this).attr('id') );
 		}
 	});
 
@@ -992,7 +993,7 @@ function updateNumberOfDays(){
 	tempDay = $('#day').val();
 	$('#day').html('');
 	month=$('#month').val();
-	year=parseInt($('#year').val()) + 1919;
+	year=parseInt($('#year').val());// + 1919;
 	days=daysInMonth(month, year);
 
 	for(i=1; i < days+1 ; i++){
@@ -1007,7 +1008,7 @@ function updateNumberOfDays(){
 
 function daysInMonth(month, year) {
 	var temp = $('#day').val();
-    return new Date(year, month, 0).getDate();
+	return new Date(year, month, 0).getDate();
 }
 
 function settingsFormEvents(){
@@ -1037,11 +1038,34 @@ function settingsFormEvents(){
 		DropDownBlockResize();
 	});
 
-	$('.recipe_delete').unbind().click(function(){
+	$('.add_record_to_diary').unbind().click(function(){
+		console.log('add new record to products list');
+		printPersonalProductsRecord(0,'Новый продукт',[]);
+		activateChanges(true, '#save_changes_button_settings_2');
+		DropDownBlockResize();
+	});
+
+	$('.settings_recipe_delete').unbind().click(function(){
 		cleanSettingsPage();
 		$(this).closest('.settings_recipes_items_main_container').find('.settings_recipes_items_container_restore').css('display','table');
 		$(this).closest('.settings_recipes_item').css('display','none');
 		activateChanges(true, '#save_changes_button_settings_1');
+		DropDownBlockResize();
+
+		$(".settings_recipes_items_container_restore").unbind().click(function(){
+			console.log('restore big');
+			var container = $(this).closest(".settings_recipes_items_main_container");
+			container.children(".settings_recipes_item").css('display','block');
+			$(this).css('display','none');
+			DropDownBlockResize();
+		});
+	});
+
+	$('.settings_product_delete').unbind().click(function(){
+		cleanSettingsPage();
+		$(this).closest('.settings_recipes_items_main_container').find('.settings_recipes_items_container_restore').css('display','table');
+		$(this).closest('.settings_recipes_item').css('display','none');
+		activateChanges(true, '#save_changes_button_settings_2');
 		DropDownBlockResize();
 
 		$(".settings_recipes_items_container_restore").unbind().click(function(){
@@ -1118,7 +1142,7 @@ function printPersonalRecipeRecord(recId, recName, products){
 							'</div>'+
 
 							'<a class="recipe_add_new_product">Добавить ингредиент</a>'+
-							'<a class="recipe_delete">Удалить блюдо</a>'+
+							'<a class="recipe_delete settings_recipe_delete">Удалить блюдо</a>'+
 
 							'<div class="arrow" onclick="$(this).parent().toggleClass(&#39;settings_recipes_item_AH settings_recipes_item_FH&#39;);DropDownBlockResize();"></div>'+
 						'</div>'+
@@ -1133,6 +1157,31 @@ function printPersonalRecipeRecord(recId, recName, products){
 	$.each(products, function (i) {
 		printRecipeRecordItem(container, products[i].productName, products[i].weight);
 	});
+
+	settingsFormEvents();
+}
+
+function printPersonalProductsRecord(recId, recName, products){
+
+	// Функция для создания записи.
+
+	var innerHTHL_Code = '<div class="settings_recipes_items_main_container">'+
+							'<div class="settings_recipes_item settings_recipes_item_FH">'+
+								'<div class="settings_recipes_item_name" style="margin-bottom: 15px;">'+
+									'<input type="text" value="'+recName+'" />'+
+									'<a class="recipe_delete settings_product_delete">Удалить продукт</a>'+
+								'</div>'+
+								//'<a class="recipe_delete settings_product_delete">Удалить продукт</a>'+
+
+								//'<div class="arrow" onclick="$(this).parent().toggleClass(&#39;settings_recipes_item_AH settings_recipes_item_FH&#39;);DropDownBlockResize();"></div>'+
+							'</div>'+
+							'<div class="settings_recipes_items_container_restore">'+
+								'<div class="settings_recipes_items_container_restore_text ellipsisOnOverflow"><div class="ellipsisOnOverflow">Восстановить ('+recName+')</div></div>'+
+								'<div class="settings_recipes_items_container_restore_button"></div>'+
+							'</div>';
+
+	var container = $('#settings_products_items_container');
+	container.append(innerHTHL_Code);
 
 	settingsFormEvents();
 }

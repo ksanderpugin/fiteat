@@ -84,14 +84,18 @@
 			<div class="drop_down_block">
 				<div class="drop_down_block_title">Мои продукты</div>
 
-					<div class="drop_down_block_options">
-						<a class="add_record_to_diary"><span class="drop_down_block_options_plus">+</span> Добавить новый продукт в базу</a>
-					</div>
-
 				<div class="clearfix"></div>
 				<div class="drop_down_block_content">
 
 				<div class="save_changes_container"><a id="save_changes_button_settings_2" class="save_changes_button" style="">Сохранить изменения</a></div>
+
+				<div class="drop_down_block_options">
+					<a class="add_record_to_diary"><span class="drop_down_block_options_plus">+</span> Добавить новый продукт в базу</a>
+				</div>
+
+				<div id="settings_products_items_container">						
+
+				</div>
 
 				</div>
 				<div class="drop_down_block_point"></div>

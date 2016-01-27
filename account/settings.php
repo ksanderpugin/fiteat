@@ -74,9 +74,11 @@
 
 							<div>
 								<select id="day" name="day">
+									<!--<option value="10" selected="selected"/>-->
 								</select>
 								/
 								<select id="month" name="month">
+									<!--<option value="1" selected="selected">Января</option>-->
 									<option value="1">Января</option><option value="2">Февраля</option><option value="3">Марта</option>
 									<option value="4">Апреля</option><option value="5">Мая</option><option value="6">Июня</option>
 									<option value="7">Июля</option><option value="8">Августа</option><option value="9">Сентября</option>
@@ -84,6 +86,13 @@
 								</select>
 								/
 								<select id="year" name="year">
+									<!--<option value="1990">1990</option>
+									<option value="1991">1991</option>
+									<option value="1992" selected="selected">1992</option>
+									<option value="1993">1993</option>
+									<option value="1994">1994</option>
+									<option value="1995">1995</option>
+									<option value="1996">1996</option>-->
 								</select>	
 							</div>
 
@@ -133,9 +142,9 @@
 					<div class="settings_field_block_right settings_field_block">
 						<div><input type="checkbox" class="settings_field_pro_checkbox" checked>Рассчитать</div>
 						<div>
-							<input class="settings_fields_pro" id="settings_field_pro" type="number" min="0" max="100" step="1" value="25" readonly/>Б
-							<input class="settings_fields_pro" id="settings_field_fat" type="number" min="0" max="100" step="1" value="40" readonly/>Ж
-							<input class="settings_fields_pro" id="settings_field_car" type="number" min="0" max="100" step="1" value="35" readonly/>У
+							<input class="settings_fields_pro" id="settings_field_pro" type="number" min="0" max="100" step="1" value="25" readonly/><span style="color:#ffa371;">Б</span>
+							<input class="settings_fields_pro" id="settings_field_fat" type="number" min="0" max="100" step="1" value="40" readonly/><span style="color:#eed406;">Ж</span>
+							<input class="settings_fields_pro" id="settings_field_car" type="number" min="0" max="100" step="1" value="35" readonly/><span style="color:#62ddb7;">У</span>
 						</div>
 					</div>
 				</div>
