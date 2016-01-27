@@ -95,7 +95,6 @@ class User
                         "id" => $data[0]["id"],
                         "name" => $data[0]["name"],
                         "mail" => $data[0]["c_mail"] ? $data[0]["mail"] : false,
-                        "phone" => $data[0]["phone"],
                         "subs" => $data[0]["subs"]
                     ];
                 }
