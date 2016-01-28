@@ -1,10 +1,34 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<?php
+    include_once "../php/basic.php";
+    include_once "../php/config.php";
+    include_once "../php/sql.php";
+    include_once "../php/user.php";
+
+    if (User::getInst()->isAuthorized()) {
+        header("Location: http://" . $_SERVER['SERVER_NAME'] . "/account/");
+        exit;
+    }
+
+    $error = false;
+    $mail = "";
+
+    if (!empty($_POST)) {
+        $mail = array_key_exists("mail", $_POST) ? $_POST["mail"] : exit;
+        $pass = array_key_exists("pass", $_POST) ? $_POST["pass"] : exit;
+        $result = User::getInst()->requestAuth($mail,$pass);
+        if ($result["state"]) {
+            header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit;
+        }
+        $error = $result["error"];
+    }
+?><!DOCTYPE html>
+<html lang="ru">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <head>
-	<title>FitEat</title>
+	<title>FitEat Login</title>
 </head>
 
 <body>
@@ -13,7 +37,7 @@
 			min-width:320px;
 			min-height:320px;
 			background-color: rgb(252,252,252);
-			margin: 0px;
+			margin: 0;
 		}
 
 		.container{
@@ -183,23 +207,38 @@
 		function login(){
 			var login_input = document.getElementById('login_input').value,
 			password_input = document.getElementById('password_input').value;
-
-			console.log(login_input, password_input);
+//
+//			console.log(login_input, password_input);
 			//android.login(login_input, password_input);
+
+            if (login_input == '') {
+                document.getElementById('login_input').focus();
+                return false;
+            }
+            if (password_input == '') {
+                document.getElementById('password_input').focus();
+                return false;
+            }
+            document.loginform.submit();
 		}
 
+        <?php if ($error !== false) : ?>
+        alert('<?=$error?>');
+        <?php endif ?>
 	</script>
 
 	<div class="container">
+        <form name="loginform" method="post">
 		<div id="logo"></div>
 		<div id="login">
 			<div id="login_icon"></div>
-			<input id="login_input" type="text" placeholder="Логин или имейл"/>
+			<input id="login_input" name="mail" type="text" placeholder="Логин или имейл" value="<?=$mail?>"/>
 		</div>
 		<div id="password">
 			<div id="password_icon"></div>
-			<input id="password_input" type="password" placeholder="Пароль"/>
+			<input id="password_input" name="pass" type="password" placeholder="Пароль"/>
 		</div>
+        </form>
 		<div id="enter"><a onclick="login();">Войти</a></div>
 		<div id="soc_enter">
 			<a id="google_enter"></a>

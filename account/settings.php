@@ -24,6 +24,7 @@
 
     $user_info = User::getInst()->getUserInfo();
     list($year,$month,$day) = explode("-",$user_info["birthday"]);
+    $month_arr = ["","Января","Февраля","Марта","Апреля","Мая","Июня","Июля","Августа","Сентября","Октября","Ноября","Декабря"];
 
 ?><!DOCTYPE html>
 <html lang="ru">
@@ -77,26 +78,22 @@
 
 							<div>
 								<select id="day" name="day">
-									<!--<option value="10" selected="selected"/>-->
+									<option value="<?=(int)$day?>" selected="selected"/>
 								</select>
 								/
 								<select id="month" name="month">
-									<!--<option value="1" selected="selected">Января</option>-->
-									<option value="1">Января</option><option value="2">Февраля</option><option value="3">Марта</option>
-									<option value="4">Апреля</option><option value="5">Мая</option><option value="6">Июня</option>
-									<option value="7">Июля</option><option value="8">Августа</option><option value="9">Сентября</option>
-									<option value="10">Октября</option><option value="11">Ноября</option><option value="12">Декабря</option>
+                                    <?php for ($i=1; $i <= 12; $i++) : ?>
+                                    <option value="<?=$i?>"<?php if ($i == $month) echo " selected=\"selected\"";?>><?=$month_arr[$i]?></option>
+                                    <?php endfor ?>
 								</select>
 								/
 								<select id="year" name="year">
-									<!--<option value="1990">1990</option>
-									<option value="1991">1991</option>
-									<option value="1992" selected="selected">1992</option>
-									<option value="1993">1993</option>
-									<option value="1994">1994</option>
-									<option value="1995">1995</option>
-									<option value="1996">1996</option>-->
-								</select>	
+                                    <?php
+                                    $year_max = date('Y') - 5;
+                                    for ($i = 1920; $i <= $year_max; $i++) : ?>
+                                    <option value="<?=$i?>"<?php if ($i == $year) echo " selected=\"selected\"";?>><?=$i?></option>
+                                    <?php endfor ?>
+								</select>
 							</div>
 
 						</div>
@@ -106,14 +103,14 @@
 				<div class="settings_field">
 					<div class="settings_field_block_left settings_field_block">Рост</div>
 					<div class="settings_field_block_right settings_field_block">
-						<div><input id="settings_field_height" type="number" min="30" max="300" step="1" value="165"/>см</div>
+						<div><input id="settings_field_height" type="number" min="30" max="300" step="1" value="<?=$user_info["growth"]?>"/>см</div>
 					</div>
 				</div>
 
 				<div class="settings_field">
 					<div class="settings_field_block_left settings_field_block">Вес</div>
 					<div class="settings_field_block_right settings_field_block">
-						<div><input id="settings_field_weight" type="number" min="5" max="500" step="1" value="65"/>кг</div>
+						<div><input id="settings_field_weight" type="number" min="5" max="500" step="1" value="<?=$user_info["weight"]?>"/>кг</div>
 					</div>
 				</div>
 
@@ -121,13 +118,9 @@
 					<div class="settings_field_block_left settings_field_block">Образ жизни</div>
 					<div class="settings_field_block_right settings_field_block">
 						<select id="lifestyle" name="lifestyle">
-							<option value="1">Минимальные нагрузки (сидячая работа)</option>
-							<option value="2">Необременительные тренировки 2-3 раза в неделю</option>
-							<option value="3">Тренировки 4-5 раз в неделю (или работа средней тяжести)</option>
-							<option value="4">Интенсивные тренировки 4-5 раз в неделю</option>
-							<option value="5">Ежедневные тренировки</option>
-							<option value="6">Ежедневные интенсивные тренировки или тренировки 2 раза в день</option>
-							<option value="7">Тяжелая физическая работа или интенсивные тренировки 2 раза в день</option>
+                            <?php for ($i = User::LIFESTYLE_MINIMUM; $i <= User::LIFESTYLE_HEAVY_PHYSICAL_WORK; $i++) : ?>
+							<option value="<?=$i?>"<?php if($i == $user_info["lifestyle"]) echo ' selected="selected"'; ?>><?=User::getLifestyleString($i)?></option>
+							<?php endfor ?>
 						</select>
 					</div>
 				</div>
@@ -135,19 +128,19 @@
 				<div class="settings_field">
 					<div class="settings_field_block_left settings_field_block">Норма ккалорий</div>
 					<div class="settings_field_block_right settings_field_block">
-						<div><input type="checkbox" class="settings_field_cal_checkbox" checked>Рассчитать</div>
-						<div><input id="settings_field_cal" type="number" min="100" max="5000" step="10" value="2200" readonly/>ккал</div>
+						<div><input type="checkbox" class="settings_field_cal_checkbox"<?php if($user_info["norm_auto"] >= 10) echo " checked"; ?>>Рассчитать</div>
+						<div><input id="settings_field_cal" type="number" min="100" max="5000" step="10" value="<?=$user_info["norm_k"]?>"<?php if($user_info["norm_auto"] >= 10) echo " readonly"; ?>/>ккал</div>
 					</div>
 				</div>
 
 				<div class="settings_field">
 					<div class="settings_field_block_left settings_field_block">Баланс Б/Ж/У</div>
 					<div class="settings_field_block_right settings_field_block">
-						<div><input type="checkbox" class="settings_field_pro_checkbox" checked>Рассчитать</div>
+						<div><input type="checkbox" class="settings_field_pro_checkbox"<?php if($user_info["norm_auto"] % 2 == 1) echo " checked"; ?>>Рассчитать</div>
 						<div>
-							<input class="settings_fields_pro" id="settings_field_pro" type="number" min="0" max="100" step="1" value="25" readonly/><span style="color:#ffa371;">Б</span>
-							<input class="settings_fields_pro" id="settings_field_fat" type="number" min="0" max="100" step="1" value="40" readonly/><span style="color:#eed406;">Ж</span>
-							<input class="settings_fields_pro" id="settings_field_car" type="number" min="0" max="100" step="1" value="35" readonly/><span style="color:#62ddb7;">У</span>
+							<input class="settings_fields_pro" id="settings_field_pro" type="number" min="0" max="100" step="1" value="<?=$user_info["norm_b"]?>"<?php if($user_info["norm_auto"] % 2 == 1) echo " readonly"; ?>/><span style="color:#ffa371;">Б</span>
+							<input class="settings_fields_pro" id="settings_field_fat" type="number" min="0" max="100" step="1" value="<?=$user_info["norm_z"]?>"<?php if($user_info["norm_auto"] % 2 == 1) echo " readonly"; ?>/><span style="color:#eed406;">Ж</span>
+							<input class="settings_fields_pro" id="settings_field_car" type="number" min="0" max="100" step="1" value="<?=$user_info["norm_u"]?>"<?php if($user_info["norm_auto"] % 2 == 1) echo " readonly"; ?>/><span style="color:#62ddb7;">У</span>
 						</div>
 					</div>
 				</div>

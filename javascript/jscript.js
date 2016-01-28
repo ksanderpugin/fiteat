@@ -451,12 +451,25 @@ function sidebarMenu(todo){
 
 function logIn(todo){
 	if (todo == 'in'){
-		$( ".not_logged_in" ).hide();
-		$( ".logged_in" ).show();
+        var login_input = document.getElementById('username').value,
+            password_input = document.getElementById('password').value;
+        if (login_input == '') {
+            document.getElementById('username').focus();
+            return false;
+        }
+        if (password_input == '') {
+            document.getElementById('password').focus();
+            return false;
+        }
+        document.loginform.submit();
+		//$( ".not_logged_in" ).hide();
+		//$( ".logged_in" ).show();
 	}else{
-		$( ".logged_in" ).hide();
-		$( ".not_logged_in" ).show();
-		$( ".logged_in" ).removeAttr('style');
+        document.cookie = "uk=; path=/";
+        document.location = document.location;
+		//$( ".logged_in" ).hide();
+		//$( ".not_logged_in" ).show();
+		//$( ".logged_in" ).removeAttr('style');
 	}
 }
 

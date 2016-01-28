@@ -105,7 +105,8 @@ class User
                         "norm_k" => $data[0]["norm_k"],
                         "norm_b" => $data[0]["norm_b"],
                         "norm_z" => $data[0]["norm_z"],
-                        "norm_u" => $data[0]["norm_u"]
+                        "norm_u" => $data[0]["norm_u"],
+                        "norm_auto" => $data[0]["norm_auto"]
                     ];
                 }
             }
@@ -160,5 +161,33 @@ class User
     const LIFESTYLE_EVERYDAY_INTENSIVE_TRAINING = 5;
     const LIFESTYLE_HEAVY_PHYSICAL_WORK = 6;
 
+    public static function getLifestyleString($lf_const) {
 
+        switch ($lf_const) {
+
+            case self::LIFESTYLE_MINIMUM:
+                return "Минимальные нагрузки (сидячая работа)";
+
+            case self::LIFESTYLE_UNHINDERED_TRAINING:
+                return "Необременительные тренировки 2-3 раза в неделю";
+
+            case self::LIFESTYLE_TRAINING:
+                return "Тренировки 4-5 раз в неделю (или работа средней тяжести)";
+
+            case self::LIFESTYLE_INTENSIVE_TRAINING:
+                return "Интенсивные тренировки 4-5 раз в неделю";
+
+            case self::LIFESTYLE_EVERYDAY_TRAINING:
+                return "Ежедневные тренировки";
+
+            case self::LIFESTYLE_EVERYDAY_INTENSIVE_TRAINING:
+                return "Ежедневные интенсивные тренировки или тренировки 2 раза в день";
+
+            case self::LIFESTYLE_HEAVY_PHYSICAL_WORK:
+                return "Тяжелая физическая работа или интенсивные тренировки 2 раза в день";
+
+        }
+
+        return false;
+    }
 }

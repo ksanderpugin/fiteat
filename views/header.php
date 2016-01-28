@@ -9,16 +9,16 @@
             <?php if($user === false) : ?>
             <div class="not_logged_in header_menu_name">Вход</div>
             <div class="header_menu_user_settings">
-                <form class="not_logged_in login_form">
+                <form class="not_logged_in login_form" name="loginform" method="post" action="/account/login.php">
 
                     <p>Email</p>
 						<span>
-							<input id="username" type="text" placeholder="example@mail.com" name="name">
+							<input id="username" type="text" placeholder="example@mail.com" name="mail">
 						</span>
 
                     <p>Пароль</p>
 						<span>
-							<input id="password" type="password" placeholder="password" name="contacts">
+							<input id="password" type="password" placeholder="password" name="pass">
 						</span>
 
                     <div id="registration_form">
@@ -73,7 +73,7 @@
             <?php else : ?>
                 <div class="logged_in header_menu_name" onclick=""><?=$user?></div>
                 <div class="header_menu_user_settings">
-                    <div class="logged_in" onclick="">Кабинет</div>
+                    <div class="logged_in" onclick="document.location = '/account/'">Кабинет</div>
                     <div class="logged_in" onclick="logIn('out')">Выйти</div>
                 </div>
             <?php endif ?>

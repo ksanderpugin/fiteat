@@ -5,8 +5,8 @@
     include_once "../php/user.php";
 
     if (!User::getInst()->isAuthorized()) {
-//        header("Location: http://" . $_SERVER['SERVER_NAME'] . "/account/login.php");
-//        exit;
+        header("Location: http://" . $_SERVER['SERVER_NAME'] . "/account/login.php");
+        exit;
     }
 
     $fb_url = Config::getFbUrl();
@@ -22,13 +22,34 @@
         "user" => User::getInst()->isAuthorized() ? User::getInst()->getUserInfo()["name"] : false
     ]);
 
+    $user_info = User::getInst()->getUserInfo();
+
+    list($year,$month,$day) = explode("-",$user_info["birthday"]);
+    list($year_t,$month_t,$day_t) = explode("-",date('Y-m-d'));
+    $old = $year_t - $year - 1;
+    if (mktime(0,0,0,$month_t,$day_t,$year_t) >= mktime(0,0,0,$month,$day,$year_t)) $old++;
+
+    $old_str = "лет";
+    if (floor($old/10)%10 != 1) {
+        switch ($old%10) {
+
+            case 1:
+                $old_str = "год";
+                break;
+
+            case 2:
+            case 3:
+            case 4:
+                $old_str = "года";
+        }
+    }
 ?><!DOCTYPE html>
 <html lang="ru">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <head>
-	<title>FitEat Settings</title>
+	<title>FitEat Cabinet</title>
 	<link rel="StyleSheet" type="text/css" href="../stylesheets/main.css"/>
 	<link rel="StyleSheet" type="text/css" href="../stylesheets/datepicker.css"/>
 	<script type="text/JavaScript" src="../javascript/jquery-2.1.0.js"></script>
@@ -47,14 +68,14 @@
 
 		<div class="diary_body">
 
-			<h1>Персональные данные <a id='edit_personal_info'></a></h1>
+			<h1>Персональные данные <a id="edit_personal_info" href="settings.php"></a></h1>
 
 			<div class="settings_fields">
 				
 				<div class="settings_fields_showroom">
-					<p id="showroom_name"><span id="male">Василий Пупкин</span></p>
-					<p id="showroom_parameters">27 лет, 176 см, 72 кг</p>
-					<p id="showroom_goal">цель <span style="color:#b38bde;">2200</span> ккал/день</p>
+					<p id="showroom_name"><span id="male"><?=$user_info["name"]." ".$user_info["soname"]?></span></p>
+					<p id="showroom_parameters"><?=$old." ".$old_str?>, <?=$user_info["growth"]?> см, <?=$user_info["weight"]?> кг</p>
+					<p id="showroom_goal">цель <span style="color:#b38bde;"><?=$user_info["norm_k"]?></span> ккал/день</p>
 				</div>
 
 
