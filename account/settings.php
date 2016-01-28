@@ -5,8 +5,8 @@
     include_once "../php/user.php";
 
     if (!User::getInst()->isAuthorized()) {
-//        header("Location: http://" . $_SERVER['SERVER_NAME'] . "/account/login.php");
-//        exit;
+        header("Location: http://" . $_SERVER['SERVER_NAME'] . "/account/login.php");
+        exit;
     }
 
     $fb_url = Config::getFbUrl();
@@ -21,6 +21,9 @@
         "vk_url" => $vk_url,
         "user" => User::getInst()->isAuthorized() ? User::getInst()->getUserInfo()["name"] : false
     ]);
+
+    $user_info = User::getInst()->getUserInfo();
+    list($year,$month,$day) = explode("-",$user_info["birthday"]);
 
 ?><!DOCTYPE html>
 <html lang="ru">
@@ -54,16 +57,16 @@
 				<div class="settings_field">
 					<div class="settings_field_block_left settings_field_block">Имя</div>
 					<div class="settings_field_block_right settings_field_block">
-						<div class="settings_field_input_name"><input placeholder="Имя"/></div>
-						<div class="settings_field_input_name"><input placeholder="Фамилия"/></div>
+						<div class="settings_field_input_name"><input placeholder="Имя" value="<?=$user_info["name"]?>"/></div>
+						<div class="settings_field_input_name"><input placeholder="Фамилия" value="<?=$user_info["soname"]?>"/></div>
 					</div>
 				</div>
 
 				<div class="settings_field">
 					<div class="settings_field_block_left settings_field_block">Пол</div>
 					<div class="settings_field_block_right settings_field_block">
-						<div><input type="radio" name="gender" value="male" checked>Мужской</div>
-						<div><input type="radio" name="gender" value="female">Женский</div>
+						<div><input type="radio" name="gender" value="male"<?php if($user_info["sex"] == User::SEX_MALE) echo " checked"; ?>>Мужской</div>
+						<div><input type="radio" name="gender" value="female"<?php if($user_info["sex"] == User::SEX_FEMALE) echo " checked"; ?>>Женский</div>
 					</div>
 				</div>
 

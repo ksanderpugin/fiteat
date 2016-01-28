@@ -94,8 +94,18 @@ class User
                     $this->user_info = [
                         "id" => $data[0]["id"],
                         "name" => $data[0]["name"],
+                        "soname" => $data[0]["soname"],
                         "mail" => $data[0]["c_mail"] ? $data[0]["mail"] : false,
-                        "subs" => $data[0]["subs"]
+                        "subs" => $data[0]["subs"],
+                        "sex" => $data[0]["sex"],
+                        "birthday" => $data[0]["birthday"],
+                        "growth" => $data[0]["growth"],
+                        "weight" => $data[0]["weight"],
+                        "lifestyle" => $data[0]["lifestyle"],
+                        "norm_k" => $data[0]["norm_k"],
+                        "norm_b" => $data[0]["norm_b"],
+                        "norm_z" => $data[0]["norm_z"],
+                        "norm_u" => $data[0]["norm_u"]
                     ];
                 }
             }
@@ -138,4 +148,17 @@ class User
         return $result;
     }
     private function __clone() {}
+
+    const SEX_MALE = 0;
+    const SEX_FEMALE = 1;
+
+    const LIFESTYLE_MINIMUM = 0;
+    const LIFESTYLE_UNHINDERED_TRAINING = 1;
+    const LIFESTYLE_TRAINING = 2;
+    const LIFESTYLE_INTENSIVE_TRAINING = 3;
+    const LIFESTYLE_EVERYDAY_TRAINING = 4;
+    const LIFESTYLE_EVERYDAY_INTENSIVE_TRAINING = 5;
+    const LIFESTYLE_HEAVY_PHYSICAL_WORK = 6;
+
+
 }
