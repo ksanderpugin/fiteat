@@ -60,8 +60,8 @@
 				<div class="settings_field">
 					<div class="settings_field_block_left settings_field_block">Имя</div>
 					<div class="settings_field_block_right settings_field_block">
-						<div class="settings_field_input_name"><input placeholder="Имя" value="<?=$user_info["name"]?>"/></div>
-						<div class="settings_field_input_name"><input placeholder="Фамилия" value="<?=$user_info["soname"]?>"/></div>
+						<div class="settings_field_input_name"><input name="name" placeholder="Имя" enctype="multipart/form-data" value="<?=$user_info["name"]?>"/></div>
+						<div class="settings_field_input_name"><input name="surname" placeholder="Фамилия" value="<?=$user_info["soname"]?>"/></div>
 					</div>
 				</div>
 
@@ -105,14 +105,14 @@
 				<div class="settings_field">
 					<div class="settings_field_block_left settings_field_block">Рост</div>
 					<div class="settings_field_block_right settings_field_block">
-						<div><input id="settings_field_height" type="number" min="30" max="300" step="1" value="<?=$user_info["growth"]?>"/>см</div>
+						<div><input name="height" id="settings_field_height" type="number" min="30" max="300" step="1" value="<?=$user_info["growth"]?>"/>см</div>
 					</div>
 				</div>
 
 				<div class="settings_field">
 					<div class="settings_field_block_left settings_field_block">Вес</div>
 					<div class="settings_field_block_right settings_field_block">
-						<div><input id="settings_field_weight" type="number" min="5" max="500" step="1" value="<?=$user_info["weight"]?>"/>кг</div>
+						<div><input name="weight" id="settings_field_weight" type="number" min="5" max="500" step="1" value="<?=$user_info["weight"]?>"/>кг</div>
 					</div>
 				</div>
 
@@ -130,19 +130,19 @@
 				<div class="settings_field">
 					<div class="settings_field_block_left settings_field_block">Норма ккалорий</div>
 					<div class="settings_field_block_right settings_field_block">
-						<div><input type="checkbox" class="settings_field_cal_checkbox"<?php if($user_info["norm_auto"] >= 10) echo " checked"; ?>>Рассчитать</div>
-						<div><input id="settings_field_cal" type="number" min="100" max="5000" step="10" value="<?=$user_info["norm_k"]?>"<?php if($user_info["norm_auto"] >= 10) echo " readonly"; ?>/>ккал</div>
+						<div><input name="calculate_calories" type="checkbox" class="settings_field_cal_checkbox"<?php if($user_info["norm_auto"] >= 10) echo " checked"; ?>>Рассчитать</div>
+						<div><input name="calories" id="settings_field_cal" type="number" min="100" max="5000" step="10" value="<?=$user_info["norm_k"]?>"<?php if($user_info["norm_auto"] >= 10) echo " readonly"; ?>/>ккал</div>
 					</div>
 				</div>
 
 				<div class="settings_field">
 					<div class="settings_field_block_left settings_field_block">Баланс Б/Ж/У</div>
 					<div class="settings_field_block_right settings_field_block">
-						<div><input type="checkbox" class="settings_field_pro_checkbox"<?php if($user_info["norm_auto"] % 2 == 1) echo " checked"; ?>>Рассчитать</div>
+						<div><input name="calculate_balance" type="checkbox" class="settings_field_pro_checkbox"<?php if($user_info["norm_auto"] % 2 == 1) echo " checked"; ?>>Рассчитать</div>
 						<div>
-							<div class="settings_fields_pro_block"><input class="settings_fields_pro" id="settings_field_pro" type="number" min="0" max="100" step="1" value="<?=$user_info["norm_b"]?>"<?php if($user_info["norm_auto"] % 2 == 1) echo " readonly"; ?>/><span style="color:#ffa371;">Б</span></div>
-							<div class="settings_fields_pro_block"><input class="settings_fields_pro" id="settings_field_fat" type="number" min="0" max="100" step="1" value="<?=$user_info["norm_z"]?>"<?php if($user_info["norm_auto"] % 2 == 1) echo " readonly"; ?>/><span style="color:#eed406;">Ж</span></div>
-							<div class="settings_fields_pro_block"><input class="settings_fields_pro" id="settings_field_car" type="number" min="0" max="100" step="1" value="<?=$user_info["norm_u"]?>"<?php if($user_info["norm_auto"] % 2 == 1) echo " readonly"; ?>/><span style="color:#62ddb7;">У</span></div>
+							<div class="settings_fields_pro_block"><input class="settings_fields_pro" id="settings_field_pro" name="proteins" type="number" min="0" max="100" step="1" value="<?=$user_info["norm_b"]?>"<?php if($user_info["norm_auto"] % 2 == 1) echo " readonly"; ?>/><span style="color:#ffa371;">Б</span></div>
+							<div class="settings_fields_pro_block"><input class="settings_fields_pro" id="settings_field_fat" name="fats" type="number" min="0" max="100" step="1" value="<?=$user_info["norm_z"]?>"<?php if($user_info["norm_auto"] % 2 == 1) echo " readonly"; ?>/><span style="color:#eed406;">Ж</span></div>
+							<div class="settings_fields_pro_block"><input class="settings_fields_pro" id="settings_field_car" name="carbohydrates" type="number" min="0" max="100" step="1" value="<?=$user_info["norm_u"]?>"<?php if($user_info["norm_auto"] % 2 == 1) echo " readonly"; ?>/><span style="color:#62ddb7;">У</span></div>
 						</div>
 					</div>
 				</div>
