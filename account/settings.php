@@ -53,7 +53,9 @@
 
 			<h1>Персональные данные</h1>
 
-			<div class="settings_fields">
+			<div class="settings_fields" id="personal_settings_fields">
+
+			<form id="save_changes_button_personal_info_form">
 				
 				<div class="settings_field">
 					<div class="settings_field_block_left settings_field_block">Имя</div>
@@ -78,7 +80,7 @@
 
 							<div>
 								<select id="day" name="day">
-									<option value="<?=(int)$day?>" selected="selected"/>
+									<option value="<?=(int)$day?>" selected="selected"></option>
 								</select>
 								/
 								<select id="month" name="month">
@@ -138,14 +140,19 @@
 					<div class="settings_field_block_right settings_field_block">
 						<div><input type="checkbox" class="settings_field_pro_checkbox"<?php if($user_info["norm_auto"] % 2 == 1) echo " checked"; ?>>Рассчитать</div>
 						<div>
-							<input class="settings_fields_pro" id="settings_field_pro" type="number" min="0" max="100" step="1" value="<?=$user_info["norm_b"]?>"<?php if($user_info["norm_auto"] % 2 == 1) echo " readonly"; ?>/><span style="color:#ffa371;">Б</span>
-							<input class="settings_fields_pro" id="settings_field_fat" type="number" min="0" max="100" step="1" value="<?=$user_info["norm_z"]?>"<?php if($user_info["norm_auto"] % 2 == 1) echo " readonly"; ?>/><span style="color:#eed406;">Ж</span>
-							<input class="settings_fields_pro" id="settings_field_car" type="number" min="0" max="100" step="1" value="<?=$user_info["norm_u"]?>"<?php if($user_info["norm_auto"] % 2 == 1) echo " readonly"; ?>/><span style="color:#62ddb7;">У</span>
+							<div class="settings_fields_pro_block"><input class="settings_fields_pro" id="settings_field_pro" type="number" min="0" max="100" step="1" value="<?=$user_info["norm_b"]?>"<?php if($user_info["norm_auto"] % 2 == 1) echo " readonly"; ?>/><span style="color:#ffa371;">Б</span></div>
+							<div class="settings_fields_pro_block"><input class="settings_fields_pro" id="settings_field_fat" type="number" min="0" max="100" step="1" value="<?=$user_info["norm_z"]?>"<?php if($user_info["norm_auto"] % 2 == 1) echo " readonly"; ?>/><span style="color:#eed406;">Ж</span></div>
+							<div class="settings_fields_pro_block"><input class="settings_fields_pro" id="settings_field_car" type="number" min="0" max="100" step="1" value="<?=$user_info["norm_u"]?>"<?php if($user_info["norm_auto"] % 2 == 1) echo " readonly"; ?>/><span style="color:#62ddb7;">У</span></div>
 						</div>
 					</div>
 				</div>
 
-				<div class="clearfix"></div>
+				<a id="save_changes_button_personal_info" class="save_changes_button" style="">Сохранить изменения</a>
+
+			</form>
+
+			<div class="clearfix"></div>
+			
 			</div>
 		</div>
 

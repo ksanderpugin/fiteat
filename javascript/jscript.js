@@ -995,6 +995,7 @@ function settingsFormInit(){
 			cleanSettingsPage();
 			DropDownBlockResize();
 			console.log( 'Send form for: ' + $(this).attr('id') );
+			console.log( JSON.stringify( $( '#'+$(this).attr("id")+'_form' ).serializeArray() ) );
 		}
 	});
 
@@ -1042,6 +1043,10 @@ function settingsFormEvents(){
 
 	$('.settings_recipes_item').change(function(){
 		activateChanges(true, '#save_changes_button_settings_1');
+	});
+
+	$('#personal_settings_fields').change(function(){
+		activateChanges(true, '#save_changes_button_personal_info');
 	});
 
 	$('.create_new_recipe').unbind().click(function(){
@@ -1178,19 +1183,21 @@ function printPersonalProductsRecord(recId, recName, products){
 
 	// Функция для создания записи.
 
-	var innerHTHL_Code = '<div class="settings_recipes_items_main_container">'+
-							'<div class="settings_recipes_item settings_recipes_item_FH">'+
-								'<div class="settings_recipes_item_name" style="margin-bottom: 15px;">'+
-									'<input type="text" value="'+recName+'" />'+
-									'<a class="recipe_delete settings_product_delete">Удалить продукт</a>'+
+	var innerHTHL_Code = 	'<div class="settings_recipes_items_main_container">'+
+								'<div class="settings_recipes_item settings_recipes_item_AH" style="padding-bottom: 0px;">'+
+									'<div class="settings_recipes_item_name settings_product_item">'+
+										'<input class="settings_product_name" type="text" value="'+recName+'" />'+
+										'<div class="settings_product_pro first_product"><input type="number" min="0" max="100" step="0.1" value="23.2"/><span style="color:#ffa371;">Б</span></div>'+
+										'<div class="settings_product_pro"><input type="number" min="0" max="100" step="0.1" value="5.1"/><span style="color:#eed406;">Ж</span></div>'+
+										'<div class="settings_product_pro"><input type="number" min="0" max="100" step="0.1" value="9.5"/><span style="color:#62ddb7;">У</span></div>'+
+										'<div class="settings_product_pro last_product"><input type="number" min="0" max="99999" step="1" value="450"/><span style="color:#b38bde;">ккал</span></div>'+
+										'<a class="settings_product_delete"></a>'+
+									'</div>'+
 								'</div>'+
-								//'<a class="recipe_delete settings_product_delete">Удалить продукт</a>'+
-
-								//'<div class="arrow" onclick="$(this).parent().toggleClass(&#39;settings_recipes_item_AH settings_recipes_item_FH&#39;);DropDownBlockResize();"></div>'+
-							'</div>'+
-							'<div class="settings_recipes_items_container_restore">'+
-								'<div class="settings_recipes_items_container_restore_text ellipsisOnOverflow"><div class="ellipsisOnOverflow">Восстановить ('+recName+')</div></div>'+
-								'<div class="settings_recipes_items_container_restore_button"></div>'+
+								'<div class="settings_recipes_items_container_restore">'+
+									'<div class="settings_recipes_items_container_restore_text ellipsisOnOverflow"><div class="ellipsisOnOverflow">Восстановить ('+recName+')</div></div>'+
+									'<div class="settings_recipes_items_container_restore_button"></div>'+
+								'</div>'+
 							'</div>';
 
 	var container = $('#settings_products_items_container');

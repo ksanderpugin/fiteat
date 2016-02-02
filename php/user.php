@@ -96,7 +96,7 @@ class User
                         "name" => $data[0]["name"],
                         "soname" => $data[0]["soname"],
                         "mail" => $data[0]["c_mail"] ? $data[0]["mail"] : false,
-                        "subs" => $data[0]["subs"],
+                        //"subs" => $data[0]["subs"],
                         "sex" => $data[0]["sex"],
                         "birthday" => $data[0]["birthday"],
                         "growth" => $data[0]["growth"],
