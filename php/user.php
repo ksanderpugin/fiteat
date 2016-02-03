@@ -73,6 +73,138 @@ class User
         return $this->user_info;
     }
 
+    public function updateUserSettings($new_settings) {
+        $sql_data = [];
+        $params = [];
+
+        if ($this->user_info["name"] != $new_settings["name"]) {
+            $sql_data[] = "name=':name'";
+            $params[] = [
+                "name" => ":name",
+                "val" => $new_settings["name"],
+                "type" => SQL::PARAM_STR
+            ];
+        }
+
+        if ($this->user_info["soname"] != $new_settings["surname"]) {
+            $sql_data[] = "soname=':soname'";
+            $params[] = [
+                "name" => ":soname",
+                "val" => $new_settings["surname"],
+                "type" => SQL::PARAM_STR
+            ];
+        }
+
+        if ($this->user_info["sex"] != $new_settings["gender"]) {
+            $sql_data[] = "sex=:sex";
+            $params[] = [
+                "name" => ":sex",
+                "val" => $new_settings["gender"],
+                "type" => SQL::PARAM_INT
+            ];
+        }
+
+
+        if ($new_settings["month"] < 10) $new_settings["month"] = "0".$new_settings["month"];
+        if ($new_settings["day"] < 10) $new_settings["day"] = "0".$new_settings["day"];
+        $birthday = $new_settings["year"]."-".$new_settings["month"]."-".$new_settings["day"];
+        if ($birthday != $this->user_info["birthday"]) {
+            $sql_data[] = "birthday=':birthday'";
+            $params[] = [
+                "name" => ":birthday",
+                "val" => $birthday,
+                "type" => SQL::PARAM_STR
+            ];
+        }
+
+        if ($this->user_info["growth"] != $new_settings["height"]) {
+            $sql_data[] = "growth=:growth";
+            $params[] = [
+                "name" => ":growth",
+                "val" => $new_settings["height"],
+                "type" => SQL::PARAM_INT
+            ];
+        }
+
+        if ($this->user_info["weight"] != $new_settings["weight"]) {
+            $sql_data[] = "weight=:weight";
+            $params[] = [
+                "name" => ":weight",
+                "val" => $new_settings["weight"],
+                "type" => SQL::PARAM_INT
+            ];
+        }
+
+        if ($this->user_info["lifestyle"] != $new_settings["lifestyle"]) {
+            $sql_data[] = "lifestyle=:lifestyle";
+            $params[] = [
+                "name" => ":lifestyle",
+                "val" => $new_settings["lifestyle"],
+                "type" => SQL::PARAM_INT
+            ];
+        }
+
+        if ($this->user_info["norm_k"] != $new_settings["calories"]) {
+            $sql_data[] = "norm_k=:calories";
+            $params[] = [
+                "name" => ":calories",
+                "val" => $new_settings["calories"],
+                "type" => SQL::PARAM_INT
+            ];
+        }
+
+        if ($this->user_info["norm_b"] != $new_settings["proteins"]) {
+            $sql_data[] = "norm_b=:proteins";
+            $params[] = [
+                "name" => ":proteins",
+                "val" => $new_settings["proteins"],
+                "type" => SQL::PARAM_INT
+            ];
+        }
+
+        if ($this->user_info["norm_z"] != $new_settings["fats"]) {
+            $sql_data[] = "norm_z=:fats";
+            $params[] = [
+                "name" => ":fats",
+                "val" => $new_settings["fats"],
+                "type" => SQL::PARAM_INT
+            ];
+        }
+
+        if ($this->user_info["norm_u"] != $new_settings["carbohydrates"]) {
+            $sql_data[] = "norm_u=:carbohydrates";
+            $params[] = [
+                "name" => ":carbohydrates",
+                "val" => $new_settings["carbohydrates"],
+                "type" => SQL::PARAM_INT
+            ];
+        }
+
+        $ac = array_key_exists("calculate_calories",$new_settings) ? 10 : 0;
+        $ab = array_key_exists("calculate_balance",$new_settings) ? 1 : 0;
+        if ($this->user_info["norm_auto"] != ($ac+$ab) ) {
+            $sql_data[] = "norm_auto=:norm_auto";
+            $params[] = [
+                "name" => ":norm_auto",
+                "val" => $ac+$ab,
+                "type" => SQL::PARAM_INT
+            ];
+        }
+
+        if (!empty($sql_data)) {
+            $query = "UPDATE users SET ";
+            foreach ($sql_data as $str) {
+                $query .= $str.",";
+            }
+            $query = substr($query,0,strlen($query)-1);
+            $query .= " WHERE id = " . $this->user_info["id"];
+            $sql = SQL::getInst();
+            return $sql->execute($query,$params);
+        }
+
+        return true;
+    }
+
     protected $auth;
     protected $user_info;
 
@@ -189,5 +321,11 @@ class User
         }
 
         return false;
+    }
+
+    public static function getNormCoefficient($lifestyle) {
+
+        return 1.2 + $lifestyle*0.7/6;
+
     }
 }

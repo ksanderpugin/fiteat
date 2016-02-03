@@ -68,8 +68,8 @@
 				<div class="settings_field">
 					<div class="settings_field_block_left settings_field_block">Пол</div>
 					<div class="settings_field_block_right settings_field_block">
-						<div><input type="radio" name="gender" value="male"<?php if($user_info["sex"] == User::SEX_MALE) echo " checked"; ?>>Мужской</div>
-						<div><input type="radio" name="gender" value="female"<?php if($user_info["sex"] == User::SEX_FEMALE) echo " checked"; ?>>Женский</div>
+						<div><input type="radio" name="gender" value="<?=User::SEX_MALE?>"<?php if($user_info["sex"] == User::SEX_MALE) echo " checked"; ?>>Мужской</div>
+						<div><input type="radio" name="gender" value="<?=User::SEX_FEMALE?>"<?php if($user_info["sex"] == User::SEX_FEMALE) echo " checked"; ?>>Женский</div>
 					</div>
 				</div>
 

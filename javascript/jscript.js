@@ -996,6 +996,28 @@ function settingsFormInit(){
 			DropDownBlockResize();
 			console.log( 'Send form for: ' + $(this).attr('id') );
 			console.log( JSON.stringify( $( '#'+$(this).attr("id")+'_form' ).serializeArray() ) );
+            $.ajax({
+                url: 'save_settings.php',
+                type: 'POST',
+                data: {
+                    json: JSON.stringify( $( '#'+$(this).attr("id")+'_form' ).serializeArray() )
+                },
+                dataType: 'json',
+                success: function(respond) {
+                    //if (respond.state) {
+                    //    //Save OK. Update calculate data from respond.calories, respond.proteins, respond.fats and respond.carbohydrates
+                    //    if ($("input.settings_field_cal_checkbox").prop("checked")) $("input#settings_field_cal").val(respond.calories);
+                    //    if ($("input.settings_field_pro_checkbox").prop("checked")) {
+                    //        $("input#settings_field_pro").val(respond.proteins);
+                    //        $("input#settings_field_fat").val(respond.fats);
+                    //        $("input#settings_field_car").val(respond.carbohydrates);
+                    //    }
+                    //}
+                },
+                error: function() {
+                    //setTimeout(function(){$(".save_changes_button").click();},2000);
+                }
+            })
 		}
 	});
 
