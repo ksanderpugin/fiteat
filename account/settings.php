@@ -26,7 +26,8 @@
     list($year,$month,$day) = explode("-",$user_info["birthday"]);
     $month_arr = ["","Января","Февраля","Марта","Апреля","Мая","Июня","Июля","Августа","Сентября","Октября","Ноября","Декабря"];
 
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html lang="ru">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -45,7 +46,7 @@
 
 <body onload="init()">
 
-    <?=$header?>
+	<?=$header?>
 
 	<div class="page_container">
 
@@ -60,7 +61,7 @@
 				<div class="settings_field">
 					<div class="settings_field_block_left settings_field_block">Имя</div>
 					<div class="settings_field_block_right settings_field_block">
-						<div class="settings_field_input_name"><input name="name" placeholder="Имя" enctype="multipart/form-data" value="<?=$user_info["name"]?>"/></div>
+						<div class="settings_field_input_name"><input name="name" placeholder="Имя" value="<?=$user_info["name"]?>"/></div>
 						<div class="settings_field_input_name"><input name="surname" placeholder="Фамилия" value="<?=$user_info["soname"]?>"/></div>
 					</div>
 				</div>

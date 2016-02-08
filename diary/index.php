@@ -5,15 +5,15 @@
 
 <head>
     <title>FitEat Diary</title>
-    <link rel="StyleSheet" type="text/css" href="stylesheets/main.css"/>
-    <link rel="StyleSheet" type="text/css" href="stylesheets/datepicker.css"/>
-    <script type="text/JavaScript" src="javascript/jquery-2.1.0.js"></script>
-    <script type="text/JavaScript" src="javascript/jquery-ui.js"></script>
-    <script type="text/javascript" src="javascript/datepicker.js"></script>
-    <script type="text/javascript" src="javascript/jquery.mask.js"></script>
-    <script type="text/javascript" src="javascript/Chart.js"></script>
-    <!--<script type="text/javascript" src="javascript/modernizr-custom.min.js"></script>-->
-    <script type="text/JavaScript" src="javascript/jscript.js"></script>
+    <link rel="StyleSheet" type="text/css" href="../stylesheets/main.css"/>
+    <link rel="StyleSheet" type="text/css" href="../stylesheets/datepicker.css"/>
+    <script type="text/JavaScript" src="../javascript/jquery-2.1.0.js"></script>
+    <script type="text/JavaScript" src="../javascript/jquery-ui.js"></script>
+    <script type="text/javascript" src="../javascript/datepicker.js"></script>
+    <script type="text/javascript" src="../javascript/jquery.mask.js"></script>
+    <script type="text/javascript" src="../javascript/Chart.js"></script>
+    <!--<script type="text/javascript" src="../javascript/modernizr-custom.min.js"></script>-->
+    <script type="text/JavaScript" src="../javascript/jscript.js"></script>
 </head>
 
 <body onload="init()">
@@ -93,7 +93,7 @@
 			</div>
 
 			<div class="header_button header_right_button header_menu_search">
-				<img src="images/searchicon.png" alt="Search Icon">
+				<!--<img src="images/searchicon.png" alt="Search Icon">-->
 				<form>
 					<input type="text" placeholder="Поиск по сайту..." name="search">
 				</form>

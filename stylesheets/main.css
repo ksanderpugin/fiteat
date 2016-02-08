@@ -462,7 +462,7 @@ h2{
 	left: 0;
 	height: 550px;
 	width: 100% !important;
-	background-image: url(../images/mount.png);
+	background-image: url(../images/mount-pount.jpg);
 	background-size: cover;
 	background-position: center;
 	z-index: -1;
@@ -3083,6 +3083,10 @@ input[type="radio"] {
 	margin: 50px;
 }
 
+.footer{
+	background-image: url(../images/footer.jpg);
+}
+
 }
 
 @media screen and (min-width: 961px) {
@@ -3113,6 +3117,7 @@ input[type="radio"] {
 
 .main_page_image_background{
 	top: 40px;
+	background-position: top;
 }
 
 .main_page_image > div{
@@ -3175,10 +3180,6 @@ input[type="radio"] {
 .mr_control_next{
 	display: block;
 	right: 10px;
-}
-
-.footer{
-	background-image: url(../images/footer.jpg);
 }
 
 .footer_footer{
