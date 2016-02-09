@@ -4,8 +4,11 @@
     include_once "../php/sql.php";
     include_once "../php/user.php";
 
-    if (User::getInst()->isAuthorized()) {
-        header("Location: http://" . $_SERVER['SERVER_NAME'] . "/account/");
+	if (array_key_exists("exit", $_GET)) {
+		setcookie("uk","",time() - 24*3600, "/");
+	} elseif (User::getInst()->isAuthorized()) {
+		$h_add = array_key_exists("app", $_GET) ? "?app=on" : "";
+        header("Location: http://" . $_SERVER['SERVER_NAME'] . "/account/" . $h_add);
         exit;
     }
 

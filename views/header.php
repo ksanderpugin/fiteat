@@ -3,7 +3,7 @@
         <a class="header_mobile_menu" onclick="sidebarMenu('show')"></a>
         <div class="header_button header_left_button logo" onclick="document.location = 'http://<?=$_SERVER['SERVER_NAME']?>'"><!--Fiteat--></div>
         <div class="header_button header_left_button"><a href="recipes.html">Рецепты</a></div>
-        <div class="header_button header_left_button"><a href="diary.html">Дневник питания</a></div>
+        <div class="header_button header_left_button"><a href="/diary/">Дневник питания</a></div>
         <div class="header_button header_left_button"><a href="#">Мой стол</a></div>
         <div class="header_button header_right_button header_menu_login">
             <?php if($user === false) : ?>
