@@ -1,21 +1,21 @@
 {
     "recipes": [
         {
-            "recipeID": "000000001",
+            "recipeID": "001",
             "recipeName": "Картошка запечённая с курицей",
             "products": [
                 {
-                    "productID": "000000001",
+                    "productID": "001",
                     "productName": "Картофель",
                     "weight": "430"
                 },
                 {
-                    "productID": "000000002",
+                    "productID": "002",
                     "productName": "Куриное филе",
                     "weight": "220"
                 },
                 {
-                    "productID": "000000003",
+                    "productID": "003",
                     "productName": "Сыр &#34;Пармезан&#34;",
                     "weight": "120"
                 }
@@ -23,31 +23,31 @@
         },
 
         {
-            "recipeID": "000000002",
+            "recipeID": "002",
             "recipeName": "Барашкины рёбрышки с айвой и яблочком",
             "products": [
                 {
-                    "productID": "000000004",
+                    "productID": "004",
                     "productName": "Баран",
                     "weight": "275"
                 },
                 {
-                    "productID": "000000003",
+                    "productID": "005",
                     "productName": "Сыр &#34;Гауда&#34;",
                     "weight": "120"
                 },
                 {
-                    "productID": "000000003",
+                    "productID": "006",
                     "productName": "Сыр &#34;Тысяча мертвых кролей&#34;",
                     "weight": "40"
                 },
                 {
-                    "productID": "000000003",
+                    "productID": "007",
                     "productName": "Айва",
                     "weight": "50"
                 },
                 {
-                    "productID": "000000003",
+                    "productID": "008",
                     "productName": "Яблочко",
                     "weight": "75"
                 }
@@ -55,11 +55,11 @@
         },
 
         {
-            "recipeID": "000000002",
+            "recipeID": "003",
             "recipeName": "Салат с рисом, курицей и черносливом",
             "products": [
                 {
-                    "productID": "000000005",
+                    "productID": "009",
                     "productName": "Рис",
                     "weight": "500"
                 }
@@ -67,11 +67,11 @@
         },
 
         {
-            "recipeID": "000000002",
+            "recipeID": "004",
             "recipeName": "Вареники с творогом и картошкой",
             "products": [
                 {
-                    "productID": "000000006",
+                    "productID": "010",
                     "productName": "Творог",
                     "weight": "350"
                 }
@@ -79,11 +79,11 @@
         },
 
         {
-            "recipeID": "000000002",
+            "recipeID": "005",
             "recipeName": "Пирожное подарочное &#34;Бананы&#34;",
             "products": [
                 {
-                    "productID": "000000007",
+                    "productID": "011",
                     "productName": "Масло",
                     "weight": "100"
                 }

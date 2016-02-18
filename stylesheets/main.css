@@ -2453,8 +2453,14 @@ input[type="radio"] {
 	width: 85%;
 	margin: 5px 7.5%;
 	border: 1px dotted rgba(200,50,50,0.45);
-	/*padding: 10px;*/
-	/*padding-right: 34px;*/
+	position: relative;
+	overflow: hidden;
+}
+
+.settings_products_item{
+	width: 85%;
+	margin: 5px 7.5%;
+	border: 1px dotted rgba(200,50,50,0.45);
 	position: relative;
 	overflow: hidden;
 }

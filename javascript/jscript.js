@@ -10,21 +10,26 @@ function init(){
 	loginInit();
 	diaryEventsInit();
 	getFoodDiaryRecords();
-	settingsFormInit();
+	accountFormsInit();
 }
 
 function diaryEventsInit(){
 
-	$('.record_delete').on("mouseup touchend", function (e){
-		var container = $(this).closest('.food_list_record_container');
+	$('.record_delete').unbind().on("mouseup touchend", function (e){
+
+			var container = $(this).closest('.food_list_record_container');
+			var containerIndex = $(container).index('.food_list_record_container');
+
+			var elementsID = $(container).find('.imageUpload').attr('id');
+
+			console.log(elementsID);
+
+			// containerIndex ? 
+			diaryInfoChanges(0, elementsID);
+
 			$(container).remove();
 			DropDownBlockResize();
 			activateChanges(true, '#save_changes_button_diary_1');
-			/*if (!container.is(e.target) // if the target of the click isn't the container...
-				&& container.has(e.target).length === 0) // ... nor a descendant of the container
-			{
-				container.hide();
-			}*/
 
 	});
 
@@ -61,12 +66,13 @@ function diaryEventsInit(){
 							imageUpload: 'image'
 						},
 		current = $(eventObject.originalEvent.path).filter('.food_list_record_container'),
+		currentID = $(current).find('.imageUpload').attr('id'),
 		index = $(eventObject.originalEvent.path[ $(eventObject.originalEvent.path).index(current) ]).index(),
 		typeOfItem = typeMap[eventObject.originalEvent.path[0].className],
 		newValueOfItem = eventObject.originalEvent.target.value;
 
 		if (typeOfItem == 'image'){
-			imagePreview( eventObject.originalEvent.path[0], index, typeOfItem);
+			imagePreview( eventObject.originalEvent.path[0], currentID, typeOfItem);
 		}else{
 			diaryInfoChanges(2, index, typeOfItem, newValueOfItem);
 		}
@@ -78,7 +84,6 @@ function diaryEventsInit(){
 	$('#save_changes_button_diary_1').unbind().click(function(){
 		if( $(this).hasClass('active') ){
 			sendDiaryList();
-			console.log( localStorage.getItem('upload'+'') );
 		}
 	});
 
@@ -107,12 +112,14 @@ function imagePreview(input, viewIndex, changesType){
 			$(input).parent().css('background-image', 'url(' + e.target.result + ')');
 			localStorage.setItem( imageId, e.target.result );
 			BASE64 = String(e.target.result);
-			console.log(BASE64);
 
-			var itemIndex = diaryFoodList.list.length - 1 - viewIndex;
-			diaryFoodList.list[ itemIndex ][ changesType ] = BASE64;
-			console.log( diaryFoodList.list[ itemIndex ] );
-
+			$(diaryFoodList.list).each(function(){
+				if(this['id'] == viewIndex){
+					this[ changesType ] = BASE64;
+					localStorage.setItem('diaryFoodList', JSON.stringify(diaryFoodList) );
+					console.log( localStorage.getItem('diaryFoodList') );
+				}
+			});
 		}
 
 		reader.readAsDataURL(input.files[0]);
@@ -122,6 +129,25 @@ function imagePreview(input, viewIndex, changesType){
 function sendDiaryList(){
 
 	// sending data
+
+	var diaryFoodList = localStorage.getItem('diaryFoodList');
+
+	console.log( diaryFoodList );
+
+	/*
+	$.ajax({
+		type: "POST",
+		url: "?",
+		dateType: "json",
+		data: diaryFoodList,
+		success: function(newIDs){    
+				// Set new IS's.
+				// Clean local storage diaryFoodList from deleted items.
+			},
+		beforeSend:function(){
+			}
+		});
+	*/
 
 	activateChanges('false', '#save_changes_button_diary_1');
 }
@@ -238,7 +264,7 @@ function CreateSmoothLineChart(){
 	var elementExists = $('.diary_linechart').length;
 
 	if( elementExists ){
-		$.getJSON('http://localhost/diaryChart.json', function(data){
+		$.getJSON('/diary/getdiarychart.php', function(data){
 			document.cookie = "diaryChartsData"+"="+JSON.stringify(data)+"; path=/";
 			drawSmoothLineChart();
 		});
@@ -523,7 +549,7 @@ function initResize(){
 		CreatePieChart();  
 		CreateLineChart();
 		DropDownBlockResize();
-		if($('.drop_down_block_calendar_id')){calendarMerge();}
+		if($('.drop_down_block_calendar_id').length === 0){calendarMerge();}
 	}
 }
 
@@ -900,15 +926,21 @@ function calendarMerge(){
 
 function getFoodDiaryRecords(){
 
-	localStorage.setItem( 'recordIds' , 0 );
-
-	if($('.food_list_records')){
-		$.getJSON('http://localhost/diary.json', function(data){
+	if($('.food_list_records').length){
+		localStorage.setItem( 'foodDiaryRecordIDs' , 0 );
+		$.getJSON('/diary/getdiary.php', function(data){
 			localStorage.setItem( 'diaryFoodList', JSON.stringify(data));
+			var diaryFoodChanges = {
+				"list": [] 
+			};
 			$.each(data.list, function (i) {
+				diaryFoodChanges.list[i] = {
+					"id": data.list[i].id
+				};
 				printFoodDiaryRecord(data.list[i].id, data.list[i].type, data.list[i].time, data.list[i].name, data.list[i].weight, data.list[i].link, data.list[i].image, data.list[i].pro, data.list[i].fat, data.list[i].car, data.list[i].kcal);
 			});
 			diaryEventsInit();
+			localStorage.setItem( 'diaryFoodList' , JSON.stringify(diaryFoodChanges));
 		});
 	}
 }
@@ -918,9 +950,29 @@ function addFoodDiaryRecord(){
 	var currentMinutes;
 	if(currentdate.getMinutes()<10){currentMinutes='0'+currentdate.getMinutes()}else{currentMinutes=currentdate.getMinutes()}
 	var currenttime = currentdate.getHours() + ":" + currentMinutes;
-	var newId = localStorage.getItem('recordIds');
-	localStorage.setItem( 'recordIds' , ++newId );
-	printFoodDiaryRecord(newId, 'recType', currenttime, '', '250', '', '', '0', '0', '0', '0');
+	var newId = localStorage.getItem('foodDiaryRecordIDs');
+	localStorage.setItem( 'foodDiaryRecordIDs' , ++newId );
+
+	newId = 'TEMP'+newId;
+
+	var	newValue = {
+			"id": newId,
+			"time": currenttime,
+			"type": "users",
+			"name": "",
+			"link": "",
+			"image": "",
+			"weight": "150",
+			"pro": "0",
+			"fat": "0",
+			"car": "0",
+			"kcal": "0"
+        };
+
+	printFoodDiaryRecord(newId, 'recType', currenttime, '', '150', '', '', '0', '0', '0', '0');
+
+	diaryInfoChanges(1, null, null, newValue);
+
 	diaryEventsInit();
 	DropDownBlockResize();
 	activateChanges(true, '#save_changes_button_diary_1');
@@ -976,7 +1028,7 @@ function printFoodDiaryRecord(recId, recType, recTime, recName, recWeight, recLi
 						'</div>');
 }
 
-function settingsFormInit(){
+function accountFormsInit(){
 
 	updateNumberOfDays();
 
@@ -1038,8 +1090,9 @@ function settingsFormInit(){
 		}
 	});
 
-	settingsFormEvents();
+	accountFormEvents();
 	getPersonalRecipeRecords();
+	getPersonalProductRecords();
 }
 
 function updateNumberOfDays(){
@@ -1064,7 +1117,7 @@ function daysInMonth(month, year) {
 	return new Date(year, month, 0).getDate();
 }
 
-function settingsFormEvents(){
+function accountFormEvents(){
 
 	$(".settings_recipes_item_part_delete").unbind().click(function(){
 		cleanSettingsPage();
@@ -1082,6 +1135,31 @@ function settingsFormEvents(){
 
 	$('.settings_recipes_item').change(function(){
 		activateChanges(true, '#save_changes_button_settings_1');
+	});
+
+	$('.settings_products_item').unbind().change(function(eventObject){
+		activateChanges(true, '#save_changes_button_settings_2');
+
+		console.log( eventObject.originalEvent );
+		
+		var typeMap = {
+							'1': 'proteins',
+							'2': 'fats',
+							'3': 'carbohydrates',
+							'4': 'calories'
+						},
+		itemsContainer = $(eventObject.originalEvent.path).filter('.settings_products_item'),
+		itemsID = $(itemsContainer).attr('id'),
+		current = $(eventObject.originalEvent.path).filter('.settings_product_pro'),
+		changesType = $(eventObject.originalEvent.path[ $(eventObject.originalEvent.path).index(current) ]).index(),
+		typeOfItem = typeMap[changesType],
+		newValueOfItem = eventObject.originalEvent.target.value;
+
+		console.log('Был изменен '+changesType+' параметр в продукте с ID: " '+itemsID+' "');
+		console.log('Новое значение: '+newValueOfItem);
+
+		userProductsChanges(2, itemsID, typeOfItem, newValueOfItem);
+
 	});
 
 	$('#personal_settings_fields').change(function(){
@@ -1113,6 +1191,7 @@ function settingsFormEvents(){
 			console.log('restore big');
 			var container = $(this).closest(".settings_recipes_items_main_container");
 			container.children(".settings_recipes_item").css('display','block');
+			container.children(".settings_products_item").css('display','block');
 			$(this).css('display','none');
 			DropDownBlockResize();
 		});
@@ -1121,7 +1200,7 @@ function settingsFormEvents(){
 	$('.settings_product_delete').unbind().click(function(){
 		cleanSettingsPage();
 		$(this).closest('.settings_recipes_items_main_container').find('.settings_recipes_items_container_restore').css('display','table');
-		$(this).closest('.settings_recipes_item').css('display','none');
+		$(this).closest('.settings_products_item').css('display','none');
 		activateChanges(true, '#save_changes_button_settings_2');
 		DropDownBlockResize();
 
@@ -1129,6 +1208,7 @@ function settingsFormEvents(){
 			console.log('restore big');
 			var container = $(this).closest(".settings_recipes_items_main_container");
 			container.children(".settings_recipes_item").css('display','block');
+			container.children(".settings_products_item").css('display','block');
 			$(this).css('display','none');
 			DropDownBlockResize();
 		});
@@ -1139,7 +1219,7 @@ function settingsFormEvents(){
 		printRecipeRecordItem( $(this).closest('.settings_recipes_items_main_container') , 'Новый ингредиент', 100);
 		activateChanges(true, '#save_changes_button_settings_1');
 		DropDownBlockResize();
-		settingsFormEvents();
+		accountFormEvents();
 	});
 }
 
@@ -1147,14 +1227,14 @@ function cleanSettingsPage(){
 
 	$('.settings_recipes_item').each(function(){
 		if ($(this).css('display') == 'none'){
-			console.log( $(this).parent().find('input').val() + ' ....... delete');
+			console.log( 'Удалить рецепт ' + $(this).parent().attr('id') );
 			$(this).parent().remove();
 		}
 	});
 
 	$('.settings_recipes_item_box').each(function(){
 		if ($(this).css('display') == 'none'){
-			console.log( $(this).parent().find('input').val() + ' ....... delete');
+			console.log( 'Удалить продукт ' + $(this).parent().attr('id') + ' из блюда ' + $(this).closest('.settings_recipes_items_main_container').attr('id') );
 			$(this).parent().remove();
 		}
 	});
@@ -1162,27 +1242,72 @@ function cleanSettingsPage(){
 
 function getPersonalRecipeRecords(){
 
-	//localStorage.setItem( 'recordIds' , 0 );
+	if($('#settings_recipes_items_container').length){
 
-	if($('.food_list_records')){
-		$.getJSON('http://localhost/userRecipes.json', function(data){
+		localStorage.setItem( 'personalRecipeRecordsIDs' , 0 );
 
-			localStorage.setItem( 'userRecipes', JSON.stringify(data));
+		$.getJSON('/diary/getuserrecipes.php', function(data){
 
-			var products = [];
+			//localStorage.setItem( 'userRecipes', JSON.stringify(data));
+
+			var products = [],
+			objBones = { "recipes": [] },
+			temp;
 			$.each(data.recipes, function (i) {
 
 				products = [];
 
+				temp = 	{ 	
+							"recipeID": data.recipes[i].recipeID,
+							"products": []
+						};
+
+				objBones.recipes.push(temp);
+
 				$.each(data.recipes[i].products, function (j) {
 					products.push(data.recipes[i].products[j]);
+					temp =	{
+								"productID": data.recipes[i].products[j].productID
+							};
+					objBones.recipes[i].products.push(temp);
 				});
 
 				printPersonalRecipeRecord(data.recipes[i].recipeID, data.recipes[i].recipeName, products);
 			});
+			localStorage.setItem( 'save_changes_button_settings_1_form', JSON.stringify(objBones));
+		});
+		accountFormEvents();
+	}
+}
+
+function getPersonalProductRecords(){
+
+	if($('#settings_products_items_container').length){
+
+		localStorage.setItem( 'personalProductRecordsIDs' , 0 );
+
+		$.getJSON('/diary/getuserproducts.php', function(data){
+
+			var products = [],
+			objBones = { "products": [] },
+			temp;
+
+			$.each(data.products, function (i){
+
+				products = [];
+
+				temp = 	{ "productID": data.products[i].productID };
+
+				objBones.products.push(temp);
+
+				printPersonalProductsRecord( this.productID ,this.productName, this.proteins, this.fats, this.carbohydrates, this.calories);
+			});
+			localStorage.setItem( 'save_changes_button_settings_2_form', JSON.stringify(objBones));
+
 		});
 
-		settingsFormEvents();
+		DropDownBlockResize();
+		accountFormEvents();
 	}
 }
 
@@ -1190,7 +1315,7 @@ function printPersonalRecipeRecord(recId, recName, products){
 
 	// Функция для создания записи.
 
-	var innerHTHL_Code = '<div class="settings_recipes_items_main_container">'+
+	var innerHTHL_Code = '<div id="'+recId+'" class="settings_recipes_items_main_container">'+
 							'<div class="settings_recipes_item settings_recipes_item_FH">'+
 								'<div class="settings_recipes_item_name" style="margin-bottom: 15px;">'+
 									'<input type="text" value="'+recName+'" />'+
@@ -1215,24 +1340,24 @@ function printPersonalRecipeRecord(recId, recName, products){
 	container.append(innerHTHL_Code);
 
 	$.each(products, function (i) {
-		printRecipeRecordItem(container, products[i].productName, products[i].weight);
+		printRecipeRecordItem(container, products[i].productName, products[i].weight, products[i].productID);
 	});
 
-	settingsFormEvents();
+	accountFormEvents();
 }
 
-function printPersonalProductsRecord(recId, recName, products){
+function printPersonalProductsRecord(recId, recName, proteins, fats, carbohydrates, calories){
 
 	// Функция для создания записи.
 
 	var innerHTHL_Code = 	'<div class="settings_recipes_items_main_container">'+
-								'<div class="settings_recipes_item settings_recipes_item_AH" style="padding-bottom: 0px;">'+
+								'<div id="'+recId+'" class="settings_products_item settings_recipes_item_AH" style="padding-bottom: 0px;">'+
 									'<div class="settings_recipes_item_name settings_product_item">'+
 										'<input class="settings_product_name" type="text" value="'+recName+'" />'+
-										'<div class="settings_product_pro first_product"><input type="number" min="0" max="100" step="0.1" value="23.2"/><span style="color:#ffa371;">Б</span></div>'+
-										'<div class="settings_product_pro"><input type="number" min="0" max="100" step="0.1" value="5.1"/><span style="color:#eed406;">Ж</span></div>'+
-										'<div class="settings_product_pro"><input type="number" min="0" max="100" step="0.1" value="9.5"/><span style="color:#62ddb7;">У</span></div>'+
-										'<div class="settings_product_pro last_product"><input type="number" min="0" max="99999" step="1" value="450"/><span style="color:#b38bde;">ккал</span></div>'+
+										'<div class="settings_product_pro first_product"><input type="number" min="0" max="100" step="0.1" value="'+proteins+'"/><span style="color:#ffa371;">Б</span></div>'+
+										'<div class="settings_product_pro"><input type="number" min="0" max="100" step="0.1" value="'+fats+'"/><span style="color:#eed406;">Ж</span></div>'+
+										'<div class="settings_product_pro"><input type="number" min="0" max="100" step="0.1" value="'+carbohydrates+'"/><span style="color:#62ddb7;">У</span></div>'+
+										'<div class="settings_product_pro last_product"><input type="number" min="0" max="99999" step="1" value="'+calories+'"/><span style="color:#b38bde;">ккал</span></div>'+
 										'<a class="settings_product_delete"></a>'+
 									'</div>'+
 								'</div>'+
@@ -1245,11 +1370,11 @@ function printPersonalProductsRecord(recId, recName, products){
 	var container = $('#settings_products_items_container');
 	container.append(innerHTHL_Code);
 
-	settingsFormEvents();
+	accountFormEvents();
 }
 
-function printRecipeRecordItem(parentObject, productName, weight){
-	$(parentObject).find(".settings_recipes_items_container").last().append('<div class="settings_recipes_item_container">'+
+function printRecipeRecordItem(parentObject, productName, weight, id){
+	$(parentObject).find(".settings_recipes_items_container").last().append('<div id="'+id+'" class="settings_recipes_item_container">'+
 									'<div class="settings_recipes_item_box">'+
 										'<div class="settings_recipes_item_part_name_container">'+
 											'<div class="settings_recipes_item_part_name">'+
@@ -1395,7 +1520,7 @@ function setFocus(e){
 		}
 }
 
-function diaryInfoChanges(changesCase, viewIndex, changesType, newValue){
+function diaryInfoChanges(changesCase, itemsID, changesType, newValue){
 
 var diaryFoodList = localStorage.getItem('diaryFoodList');
 
@@ -1410,23 +1535,102 @@ switch(changesCase){
 	case 0:
 			// Delete item;
 
-			
+			if( itemsID.substring(0, 4) == "TEMP"){
+				// Delete TEMP object
+					for(var i = 0; i < diaryFoodList.list.length; i++){
+						var obj = diaryFoodList.list[i];
+						if((obj.id) == itemsID){
+							diaryFoodList.list.splice(i, 1);
+						}
+					}
+			}else{
+				// Delete object from base
+				for(var i = 0; i < diaryFoodList.list.length; i++){
+					var obj = diaryFoodList.list[i];
+					if((obj.id) == itemsID){
+							for(var propertyName in diaryFoodList.list[i]) {
+								if (propertyName != 'id') delete diaryFoodList.list[i][propertyName];
+							}
+							diaryFoodList.list[i]['delete'] = "DELETE";
+					}
+				}	
+			}
 
 		break;
 
 	case 1:
 			// Add item;
 
-			
-
+			diaryFoodList.list.push(newValue);
 		break;
 
 	case 2:
 			// Information changes;
 
-			var itemIndex = diaryFoodList.list.length - 1 - viewIndex;
+			var itemIndex = diaryFoodList.list.length - 1 - itemsID; // !
+			//var itemIndex = findWithAttr(diaryFoodList.list, 'id', itemsID);
 			diaryFoodList.list[ itemIndex ][ changesType ] = newValue;
-			console.log( diaryFoodList.list[ itemIndex ] );
+		break;
+
+	default:
+		console.log( 'Something goes wrong.' );
+}
+
+localStorage.setItem( 'diaryFoodList', JSON.stringify(diaryFoodList));
+
+console.log(  jQuery.parseJSON( localStorage['diaryFoodList'] ));
+
+}
+
+function userProductsChanges(changesCase, itemsID, changesType, newValue){
+
+var userProductsList = localStorage.getItem('save_changes_button_settings_2_form');
+
+userProductsList = jQuery.parseJSON( userProductsList );
+
+switch(changesCase){
+
+	case 0:
+			// Delete item;
+
+			/*
+
+			if( itemsID.substring(0, 4) == "TEMP"){
+				// Delete TEMP object
+					for(var i = 0; i < diaryFoodList.list.length; i++){
+						var obj = diaryFoodList.list[i];
+						if((obj.id) == itemsID){
+							diaryFoodList.list.splice(i, 1);
+						}
+					}
+			}else{
+				// Delete object from base
+				for(var i = 0; i < diaryFoodList.list.length; i++){
+					var obj = diaryFoodList.list[i];
+					if((obj.id) == itemsID){
+							for(var propertyName in diaryFoodList.list[i]) {
+								if (propertyName != 'id') delete diaryFoodList.list[i][propertyName];
+							}
+							diaryFoodList.list[i]['delete'] = "DELETE";
+					}
+				}	
+			}
+
+			*/
+
+		break;
+
+	case 1:
+			// Add item;
+
+			userProductsList.products.push(newValue);
+
+		break;
+
+	case 2:
+			// Information changes;
+			var itemIndex = findWithAttr(userProductsList.products, 'productID', itemsID);
+			userProductsList.products[ itemIndex ][ changesType ] = newValue;
 
 		break;
 
@@ -1434,5 +1638,17 @@ switch(changesCase){
 		console.log( 'Something goes wrong.' );
 }
 
+localStorage.setItem( 'save_changes_button_settings_2_form', JSON.stringify(userProductsList));
+
+console.log(  jQuery.parseJSON( localStorage['save_changes_button_settings_2_form'] ));
+
+}
+
+function findWithAttr(array, attr, value) {
+	for(var i = 0; i < array.length; i += 1) {
+		if(array[i][attr] === value) {
+			return i;
+		}
+	}
 }
 

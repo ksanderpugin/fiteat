@@ -1,0 +1,23 @@
+{
+    "products": [
+
+        {
+            "productID": "001",
+            "productName": "Картофель варёный",
+            "proteins": "2.0",
+            "fats": "0.4",
+            "carbohydrates": "16.7",
+            "calories": "82"
+        },
+
+        {
+            "productID": "002",
+            "productName": "Ряженка",
+            "proteins": "2.8",
+            "fats": "4",
+            "carbohydrates": "4.2",
+            "calories": "67"
+        }
+
+    ]
+}
