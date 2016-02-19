@@ -1,3 +1,5 @@
+var objBones = {};
+
 function init(){
 	initSlider('mr'); // init mainpage recipes slider
 	initSlider('pr'); // init recipes page slider
@@ -417,6 +419,10 @@ function initDropDownBlocks(){
 			});
 		}
 	});
+
+    $('.drop_down_block_title').click(function () {
+        $(this).siblings('.drop_down_block_point').click();
+    });
 }
 
 function DropDownBlockResize(){
@@ -1058,7 +1064,7 @@ function accountFormsInit(){
 
 	// Send foodlist if this event was called.
 
-	$('.save_changes_button').unbind().click(function(){
+	$('#save_changes_button_personal_info').unbind().click(function(){
 		if( $(this).hasClass('active') ){
 			activateChanges('false', '#'+$(this).attr('id') );
 			cleanSettingsPage();
@@ -1073,22 +1079,26 @@ function accountFormsInit(){
 				},
 				dataType: 'json',
 				success: function(respond) {
-					//if (respond.state) {
+					if (respond.state) {
 					//    //Save OK. Update calculate data from respond.calories, respond.proteins, respond.fats and respond.carbohydrates
-					//    if ($("input.settings_field_cal_checkbox").prop("checked")) $("input#settings_field_cal").val(respond.calories);
-					//    if ($("input.settings_field_pro_checkbox").prop("checked")) {
-					//        $("input#settings_field_pro").val(respond.proteins);
-					//        $("input#settings_field_fat").val(respond.fats);
-					//        $("input#settings_field_car").val(respond.carbohydrates);
-					//    }
-					//}
+					    if ($("input.settings_field_cal_checkbox").prop("checked")) $("input#settings_field_cal").val(respond.calories);
+					    if ($("input.settings_field_pro_checkbox").prop("checked")) {
+					        $("input#settings_field_pro").val(respond.proteins);
+					        $("input#settings_field_fat").val(respond.fats);
+					        $("input#settings_field_car").val(respond.carbohydrates);
+					    }
+					}
 				},
 				error: function() {
-					//setTimeout(function(){$(".save_changes_button").click();},2000);
+					setTimeout(function(){$("#save_changes_button_personal_info").click();},2000);
 				}
 			});
 		}
 	});
+
+    $('#save_changes_button_settings_1').unbind().click(function () {
+        //console.log(JSON.stringify(objBones));
+    });
 
 	accountFormEvents();
 	getPersonalRecipeRecords();
@@ -1337,7 +1347,9 @@ function printPersonalRecipeRecord(recId, recName, products){
 						'</div>';
 
 	var container = $('#settings_recipes_items_container');
-	container.append(innerHTHL_Code);
+	//container.append(innerHTHL_Code);
+    container.prepend(innerHTHL_Code);
+    $(".settings_recipes_items_main_container").eq(0).find(".settings_recipes_item_name").effect("highlight",{color:'#55ff55'},400);
 
 	$.each(products, function (i) {
 		printRecipeRecordItem(container, products[i].productName, products[i].weight, products[i].productID);
