@@ -1,4 +1,5 @@
-var objBones = {};
+var diaryFoodListBones = {}, userProductBones = {}, userRecipeBones = {},
+	foodDiaryRecordIDs, personalProductRecordsIDs, personalRecipeRecordsIDs;
 
 function init(){
 	initSlider('mr'); // init mainpage recipes slider
@@ -6,7 +7,6 @@ function init(){
 	initDropDownBlocks(); // itit dropdown blocks
 	CreatePieChart();
 	CreateLineChart();
-	//CreateSmoothLineChart(); // this fuction call is in double_data_picker init method
 	datePickerInit();
 	initResize();
 	loginInit();
@@ -69,14 +69,13 @@ function diaryEventsInit(){
 						},
 		current = $(eventObject.originalEvent.path).filter('.food_list_record_container'),
 		currentID = $(current).find('.imageUpload').attr('id'),
-		index = $(eventObject.originalEvent.path[ $(eventObject.originalEvent.path).index(current) ]).index(),
 		typeOfItem = typeMap[eventObject.originalEvent.path[0].className],
 		newValueOfItem = eventObject.originalEvent.target.value;
 
 		if (typeOfItem == 'image'){
 			imagePreview( eventObject.originalEvent.path[0], currentID, typeOfItem);
 		}else{
-			diaryInfoChanges(2, index, typeOfItem, newValueOfItem);
+			diaryInfoChanges(2, currentID, typeOfItem, newValueOfItem);
 		}
 
 	});
@@ -98,10 +97,7 @@ function diaryEventsInit(){
 function imagePreview(input, viewIndex, changesType){
 
 	var	BASE64;
-	var diaryFoodList = localStorage.getItem('diaryFoodList');
-	diaryFoodList = jQuery.parseJSON( diaryFoodList );
-
-	console.log(diaryFoodList);
+	var diaryFoodList = diaryFoodListBones;
 
 	imageId = $(input).attr('id');
 
@@ -118,8 +114,8 @@ function imagePreview(input, viewIndex, changesType){
 			$(diaryFoodList.list).each(function(){
 				if(this['id'] == viewIndex){
 					this[ changesType ] = BASE64;
-					localStorage.setItem('diaryFoodList', JSON.stringify(diaryFoodList) );
-					console.log( localStorage.getItem('diaryFoodList') );
+					diaryFoodListBones = diaryFoodList;
+					console.log(diaryFoodListBones);
 				}
 			});
 		}
@@ -132,19 +128,17 @@ function sendDiaryList(){
 
 	// sending data
 
-	var diaryFoodList = localStorage.getItem('diaryFoodList');
-
-	console.log( diaryFoodList );
+	console.log( diaryFoodListBones );
 
 	/*
 	$.ajax({
 		type: "POST",
 		url: "?",
 		dateType: "json",
-		data: diaryFoodList,
+		data: diaryFoodListBones,
 		success: function(newIDs){    
 				// Set new IS's.
-				// Clean local storage diaryFoodList from deleted items.
+				// Clean local storage diaryFoodListBones from deleted items.
 			},
 		beforeSend:function(){
 			}
@@ -933,9 +927,11 @@ function calendarMerge(){
 function getFoodDiaryRecords(){
 
 	if($('.food_list_records').length){
-		localStorage.setItem( 'foodDiaryRecordIDs' , 0 );
+		foodDiaryRecordIDs = 0;
 		$.getJSON('/diary/getdiary.php', function(data){
-			localStorage.setItem( 'diaryFoodList', JSON.stringify(data));
+
+			diaryFoodListBones = data;
+
 			var diaryFoodChanges = {
 				"list": [] 
 			};
@@ -946,7 +942,7 @@ function getFoodDiaryRecords(){
 				printFoodDiaryRecord(data.list[i].id, data.list[i].type, data.list[i].time, data.list[i].name, data.list[i].weight, data.list[i].link, data.list[i].image, data.list[i].pro, data.list[i].fat, data.list[i].car, data.list[i].kcal);
 			});
 			diaryEventsInit();
-			localStorage.setItem( 'diaryFoodList' , JSON.stringify(diaryFoodChanges));
+			diaryFoodListBones = diaryFoodChanges;
 		});
 	}
 }
@@ -956,10 +952,9 @@ function addFoodDiaryRecord(){
 	var currentMinutes;
 	if(currentdate.getMinutes()<10){currentMinutes='0'+currentdate.getMinutes()}else{currentMinutes=currentdate.getMinutes()}
 	var currenttime = currentdate.getHours() + ":" + currentMinutes;
-	var newId = localStorage.getItem('foodDiaryRecordIDs');
-	localStorage.setItem( 'foodDiaryRecordIDs' , ++newId );
+	var newId = ++foodDiaryRecordIDs;
 
-	newId = 'TEMP'+newId;
+	newId = '-'+newId;
 
 	var	newValue = {
 			"id": newId,
@@ -1066,11 +1061,6 @@ function accountFormsInit(){
 
 	$('#save_changes_button_personal_info').unbind().click(function(){
 		if( $(this).hasClass('active') ){
-			activateChanges('false', '#'+$(this).attr('id') );
-			cleanSettingsPage();
-			DropDownBlockResize();
-			console.log( 'Send form for: ' + $(this).attr('id') );
-			console.log( JSON.stringify( $( '#'+$(this).attr("id")+'_form' ).serializeArray() ) );
 			$.ajax({
 				url: 'save_settings.php',
 				type: 'POST',
@@ -1096,9 +1086,25 @@ function accountFormsInit(){
 		}
 	});
 
-    $('#save_changes_button_settings_1').unbind().click(function () {
-        //console.log(JSON.stringify(objBones));
-    });
+	$('#save_changes_button_settings_1').unbind().click(function () {
+		if( $(this).hasClass('active') ){
+			cleanSettingsPage();
+			DropDownBlockResize();
+			console.log( 'Send form for: ' + $(this).attr('id') );
+			console.log(JSON.stringify(userRecipeBones));
+			activateChanges('false', '#'+$(this).attr('id') );
+		}
+	});
+
+	$('#save_changes_button_settings_2').unbind().click(function () {
+		if( $(this).hasClass('active') ){
+			cleanSettingsPage();
+			DropDownBlockResize();
+			console.log( 'Send form for: ' + $(this).attr('id') );
+			console.log(JSON.stringify(userProductBones));
+			activateChanges('false', '#'+$(this).attr('id') );
+		}
+	});
 
 	accountFormEvents();
 	getPersonalRecipeRecords();
@@ -1225,7 +1231,6 @@ function accountFormEvents(){
 	});
 
 	$('.recipe_add_new_product').unbind().click(function(){
-		console.log('delete this little shit');
 		printRecipeRecordItem( $(this).closest('.settings_recipes_items_main_container') , 'Новый ингредиент', 100);
 		activateChanges(true, '#save_changes_button_settings_1');
 		DropDownBlockResize();
@@ -1282,9 +1287,12 @@ function getPersonalRecipeRecords(){
 					objBones.recipes[i].products.push(temp);
 				});
 
+				console.log( "ID: "+data.recipes[i].recipeID+"; Название: "+data.recipes[i].recipeName+";");
+				console.log( products );
+
 				printPersonalRecipeRecord(data.recipes[i].recipeID, data.recipes[i].recipeName, products);
 			});
-			localStorage.setItem( 'save_changes_button_settings_1_form', JSON.stringify(objBones));
+			userRecipeBones = objBones;
 		});
 		accountFormEvents();
 	}
@@ -1312,8 +1320,8 @@ function getPersonalProductRecords(){
 
 				printPersonalProductsRecord( this.productID ,this.productName, this.proteins, this.fats, this.carbohydrates, this.calories);
 			});
-			localStorage.setItem( 'save_changes_button_settings_2_form', JSON.stringify(objBones));
-
+			//localStorage.setItem( 'save_changes_button_settings_2_form', JSON.stringify(objBones));
+			userProductBones = objBones;
 		});
 
 		DropDownBlockResize();
@@ -1346,13 +1354,11 @@ function printPersonalRecipeRecord(recId, recName, products){
 							'<div class="settings_recipes_items_container_restore_button"></div>'+
 						'</div>';
 
-	var container = $('#settings_recipes_items_container');
-	//container.append(innerHTHL_Code);
-    container.prepend(innerHTHL_Code);
-    $(".settings_recipes_items_main_container").eq(0).find(".settings_recipes_item_name").effect("highlight",{color:'#55ff55'},400);
+    $('#settings_recipes_items_container').prepend(innerHTHL_Code);
+    $(".settings_recipes_items_main_container#"+recId).find(".settings_recipes_item_name").effect("highlight",{color:'#fff571'},400);
 
 	$.each(products, function (i) {
-		printRecipeRecordItem(container, products[i].productName, products[i].weight, products[i].productID);
+		printRecipeRecordItem($(".settings_recipes_items_main_container#"+recId), products[i].productName, products[i].weight, products[i].productID);
 	});
 
 	accountFormEvents();
@@ -1380,7 +1386,9 @@ function printPersonalProductsRecord(recId, recName, proteins, fats, carbohydrat
 							'</div>';
 
 	var container = $('#settings_products_items_container');
-	container.append(innerHTHL_Code);
+	container.prepend(innerHTHL_Code);
+
+	$(".settings_products_item#"+recId).effect("highlight",{color:'#fff571'},400);
 
 	accountFormEvents();
 }
@@ -1534,126 +1542,93 @@ function setFocus(e){
 
 function diaryInfoChanges(changesCase, itemsID, changesType, newValue){
 
-var diaryFoodList = localStorage.getItem('diaryFoodList');
+	var diaryFoodList = diaryFoodListBones;
 
-//console.log( diaryFoodList );
+	//diaryFoodList = jQuery.parseJSON( diaryFoodList );
 
-diaryFoodList = jQuery.parseJSON( diaryFoodList );
+	switch(changesCase){
 
-//console.log( diaryFoodList );
+		case 0:
+				// Delete item;
 
-switch(changesCase){
-
-	case 0:
-			// Delete item;
-
-			if( itemsID.substring(0, 4) == "TEMP"){
-				// Delete TEMP object
+				if( itemsID.substring(0, 1) == "-"){
+					// Delete TEMP object
+						for(var i = 0; i < diaryFoodList.list.length; i++){
+							var obj = diaryFoodList.list[i];
+							if((obj.id) == itemsID){
+								diaryFoodList.list.splice(i, 1);
+							}
+						}
+				}else{
+					// Delete object from base
 					for(var i = 0; i < diaryFoodList.list.length; i++){
 						var obj = diaryFoodList.list[i];
 						if((obj.id) == itemsID){
-							diaryFoodList.list.splice(i, 1);
+								for(var propertyName in diaryFoodList.list[i]) {
+									if (propertyName != 'id') delete diaryFoodList.list[i][propertyName];
+								}
+								diaryFoodList.list[i]['delete'] = "DELETE";
 						}
-					}
-			}else{
-				// Delete object from base
-				for(var i = 0; i < diaryFoodList.list.length; i++){
-					var obj = diaryFoodList.list[i];
-					if((obj.id) == itemsID){
-							for(var propertyName in diaryFoodList.list[i]) {
-								if (propertyName != 'id') delete diaryFoodList.list[i][propertyName];
-							}
-							diaryFoodList.list[i]['delete'] = "DELETE";
-					}
-				}	
-			}
+					}	
+				}
 
-		break;
+			break;
 
-	case 1:
-			// Add item;
+		case 1:
+				// Add item;
 
-			diaryFoodList.list.push(newValue);
-		break;
+				diaryFoodList.list.push(newValue);
+			break;
 
-	case 2:
-			// Information changes;
+		case 2:
+				// Information changes;
 
-			var itemIndex = diaryFoodList.list.length - 1 - itemsID; // !
-			//var itemIndex = findWithAttr(diaryFoodList.list, 'id', itemsID);
-			diaryFoodList.list[ itemIndex ][ changesType ] = newValue;
-		break;
+				console.log(itemsID);
+				var itemIndex = findWithAttr(diaryFoodList.list, 'id', itemsID);
+				diaryFoodList.list[ itemIndex ][ changesType ] = newValue;
+			break;
 
-	default:
-		console.log( 'Something goes wrong.' );
-}
+		default:
+			console.log( 'Something goes wrong.' );
+	}
 
-localStorage.setItem( 'diaryFoodList', JSON.stringify(diaryFoodList));
+	//localStorage.setItem( 'diaryFoodList', JSON.stringify(diaryFoodList));
 
-console.log(  jQuery.parseJSON( localStorage['diaryFoodList'] ));
+	diaryFoodListBones = diaryFoodList;
 
+	console.log( JSON.stringify(diaryFoodListBones) );
 }
 
 function userProductsChanges(changesCase, itemsID, changesType, newValue){
 
-var userProductsList = localStorage.getItem('save_changes_button_settings_2_form');
+	switch(changesCase){
 
-userProductsList = jQuery.parseJSON( userProductsList );
+		case 0:
+				// Delete item;
 
-switch(changesCase){
+				//
 
-	case 0:
-			// Delete item;
+			break;
 
-			/*
+		case 1:
+				// Add item;
 
-			if( itemsID.substring(0, 4) == "TEMP"){
-				// Delete TEMP object
-					for(var i = 0; i < diaryFoodList.list.length; i++){
-						var obj = diaryFoodList.list[i];
-						if((obj.id) == itemsID){
-							diaryFoodList.list.splice(i, 1);
-						}
-					}
-			}else{
-				// Delete object from base
-				for(var i = 0; i < diaryFoodList.list.length; i++){
-					var obj = diaryFoodList.list[i];
-					if((obj.id) == itemsID){
-							for(var propertyName in diaryFoodList.list[i]) {
-								if (propertyName != 'id') delete diaryFoodList.list[i][propertyName];
-							}
-							diaryFoodList.list[i]['delete'] = "DELETE";
-					}
-				}	
-			}
+				userProductBones.products.push(newValue);
 
-			*/
+			break;
 
-		break;
+		case 2:
+				// Information changes;
+				var itemIndex = findWithAttr(userProductBones.products, 'productID', itemsID);
+				userProductBones.products[ itemIndex ][ changesType ] = newValue;
 
-	case 1:
-			// Add item;
+			break;
 
-			userProductsList.products.push(newValue);
+		default:
+			console.log( 'Something goes wrong.' );
+	}
 
-		break;
-
-	case 2:
-			// Information changes;
-			var itemIndex = findWithAttr(userProductsList.products, 'productID', itemsID);
-			userProductsList.products[ itemIndex ][ changesType ] = newValue;
-
-		break;
-
-	default:
-		console.log( 'Something goes wrong.' );
-}
-
-localStorage.setItem( 'save_changes_button_settings_2_form', JSON.stringify(userProductsList));
-
-console.log(  jQuery.parseJSON( localStorage['save_changes_button_settings_2_form'] ));
-
+	console.log( userProductBones );
 }
 
 function findWithAttr(array, attr, value) {

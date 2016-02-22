@@ -1376,6 +1376,7 @@ q:after {
 	-ms-text-overflow: ellipsis;
 	text-overflow: ellipsis;
 	-o-text-overflow: ellipsis;
+	cursor: pointer;
 }
 
 .drop_down_block_content{
