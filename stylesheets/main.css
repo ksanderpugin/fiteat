@@ -1098,6 +1098,10 @@ q:after {
 	background-color: #30ba8f !important;
 }
 
+.sidebar_menu_up_line {
+    border-top: 1px #CCCCCC solid;
+}
+
 #vk_side{
 	background-image: url(../images/icon_vk_side.png);
 }
