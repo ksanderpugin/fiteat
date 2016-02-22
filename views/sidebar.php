@@ -1,6 +1,14 @@
 <div id="sidebar_menu">
     <div class="sidebar_menu_body">
-        <div class="sidebar_menu_button logo" onclick="document.location = 'http://<?=$_SERVER['SERVER_NAME']?>'"><!--Fiteat--></div>
+        <!--<div class="sidebar_menu_button logo"></div>//-->
+        <?php if ($user) :
+            $n_ = mb_substr(trim($user),0,1,"UTF-8");
+            ?>
+        <div class="sidebar_menu_account_info">
+            <div class="sidebar_menu_account_logo"><span><?=$n_?></span></div>
+            <div class="sidebar_menu_account_name"><?=$user?></div>
+        </div>
+        <?php endif ?>
         <div class="sidebar_menu_button"><a href="recipes.html">Рецепты</a></div>
         <div class="sidebar_menu_button"><a href="/diary/">Дневник питания</a></div>
         <div class="sidebar_menu_button"><a>Мой стол</a></div>

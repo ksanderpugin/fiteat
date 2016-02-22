@@ -21,7 +21,7 @@ $header = render(__DIR__."/views/header.php",[
 $sidebar = render(__DIR__."/views/sidebar.php",[
     "fb_url" => $fb_url,
     "vk_url" => $vk_url,
-    "user" => User::getInst()->isAuthorized() ? User::getInst()->getUserInfo()["name"] : false
+    "user" => User::getInst()->isAuthorized() ? User::getInst()->getUserInfo()["name"]." ".User::getInst()->getUserInfo()["soname"] : false
 ]);
 $footer = render(__DIR__."/views/footer.php",[]);
 
@@ -36,7 +36,7 @@ $footer = render(__DIR__."/views/footer.php",[]);
     <link rel="StyleSheet" type="text/css" href="stylesheets/main.css"/>
     <link rel="StyleSheet" type="text/css" href="stylesheets/datepicker.css"/>
     <script type="text/JavaScript" src="javascript/jquery-2.1.0.js"></script>
-    <script type="text/JavaScript" src="javascript/jquery-ui.js"></script>
+    <script type="text/JavaScript" src="javascript/jquery-ui.min.js"></script>
     <script type="text/javascript" src="javascript/datepicker.js"></script>
     <script type="text/javascript" src="javascript/jquery.mask.js"></script>
     <script type="text/JavaScript" src="javascript/jscript.js"></script>

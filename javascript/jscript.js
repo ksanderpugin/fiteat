@@ -505,11 +505,11 @@ function initSlider(prefix){
 function sidebarMenu(todo){
 	if (todo == 'show'){
 		// sidebar_page_background display -> block
-		$( ".sidebar_page_background" ).show();
-		$( ".sidebar_menu_body" ).show();
+		$( ".sidebar_page_background" ).fadeIn(400);
+		$( ".sidebar_menu_body" ).show('slide',{direction:'left'},400);
 	}else{
-		$( ".sidebar_page_background" ).hide();
-		$( ".sidebar_menu_body" ).hide();
+		$( ".sidebar_page_background" ).fadeOut(400);
+		$( ".sidebar_menu_body" ).hide('slide',{direction:'left'},400);
 	}
 }
 
