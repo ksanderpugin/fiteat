@@ -52,7 +52,7 @@
         </div>
 
         <?php endif ?>
-        <p class="sidebar_menu_close" onclick="sidebarMenu('hide')">✖</p>
+        <!--<p class="sidebar_menu_close" onclick="sidebarMenu('hide')">✖</p>-->
     </div>
     <div class="sidebar_page_background" onclick="sidebarMenu('hide')"></div>
 </div>

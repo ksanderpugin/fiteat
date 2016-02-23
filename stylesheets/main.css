@@ -1067,6 +1067,10 @@ q:after {
 	padding-left: 10px;
 }
 
+.sidebar_menu_button a{
+	display: block;
+}
+
 .sidebar_menu_form_soc_block{
 	height: 100%;
 	width: 100%;
@@ -1114,15 +1118,17 @@ q:after {
 	background-image: url(../images/icon_twitter_side.png);
 }
 
+/*
 .sidebar_menu_close{
-	position: fixed;
+	position: absolute;
 	top: 10px;
-	/*right: 15px;*/
+	//right: 15px;
     left: 85vw;
     margin-left: -30px;
 	font-size: 20px;
 	cursor: pointer;
 }
+*/
 
 .sidebar_menu_account_info {
     position: relative;
@@ -2929,10 +2935,10 @@ input[type="radio"] {
 	width: 45vw;
 }
 
-.sidebar_menu_close{
+/*.sidebar_menu_close{
 	left: 45%;
 	margin-left: -35px;
-}
+}*/
 
 .sidebar_menu_account_logo {
     top: 2vw;
