@@ -1,5 +1,5 @@
 var diaryFoodListBones = {}, userProductBones = {}, userRecipeBones = {},
-	foodDiaryRecordIDs = 0, personalProductRecordsIDs = 0, personalRecipeRecordsIDs = 0;
+	foodDiaryRecordIDs = 0, personalProductRecordsIDs = 0, personalRecipeRecordsIDs = 0, personalProductRecipeRecordsIDs = 0;
 
 function init(){
 	initSlider('mr'); // init mainpage recipes slider
@@ -92,7 +92,6 @@ function diaryEventsInit(){
 		imagePreview(this);
 	});*/
 }
-
 
 function imagePreview(input, viewIndex, changesType){
 
@@ -1151,14 +1150,40 @@ function accountFormEvents(){
 		});
 	});
 
-	$('.settings_recipes_item').change(function(){
+	$('.settings_recipes_item').unbind().change(function(eventObject){
+
+		console.log( eventObject.originalEvent );
+
+		var productID = $(eventObject.originalEvent.path).filter('.settings_recipes_item_container').attr('id'),
+		itemsContainer = $(eventObject.originalEvent.path).filter('.settings_recipes_items_main_container'),
+		itemsID = $(itemsContainer).attr('id'),
+		current = $(eventObject.originalEvent.path).filter('.settings_product_pro'),
+		newValue = eventObject.originalEvent.target.value;
+
+		if(productID){
+			var itemsClassName = eventObject.originalEvent.path[1].className;
+
+			var typeMap = {
+				'settings_recipes_item_part_name': 'productName',
+				'settings_recipes_item_part_weight': 'weight'
+			};
+
+			var typeOfItem = typeMap[itemsClassName];
+
+			var newObject = {
+					type : typeOfItem,
+					value: newValue
+				};
+			userRecipesChanges(5, itemsID, productID, newObject);
+		}else{
+			userRecipesChanges(2, itemsID, 'recipeName', newValue);
+		}
+
 		activateChanges(true, '#save_changes_button_settings_1');
 	});
 
 	$('.settings_products_item').unbind().change(function(eventObject){
 		activateChanges(true, '#save_changes_button_settings_2');
-
-		// NAME?
 
 		console.log( eventObject.originalEvent );
 		
@@ -1166,13 +1191,22 @@ function accountFormEvents(){
 							'1': 'proteins',
 							'2': 'fats',
 							'3': 'carbohydrates',
-							'4': 'calories'
+							'4': 'calories',
+							'5': 'productName'
 						},
 		itemsContainer = $(eventObject.originalEvent.path).filter('.settings_products_item'),
 		itemsID = $(itemsContainer).attr('id'),
-		current = $(eventObject.originalEvent.path).filter('.settings_product_pro'),
-		changesType = $(eventObject.originalEvent.path[ $(eventObject.originalEvent.path).index(current) ]).index(),
-		typeOfItem = typeMap[changesType],
+		current = $(eventObject.originalEvent.path).filter('.settings_product_pro');
+
+		var changesType = $(eventObject.originalEvent.path[ $(eventObject.originalEvent.path).index(current) ]).index();
+
+		if (changesType == -1){
+			if( $(eventObject.originalEvent.path[0]).hasClass('settings_product_name') ){
+				changesType = 5;
+			}
+		}
+
+		var typeOfItem = typeMap[changesType],
 		newValueOfItem = eventObject.originalEvent.target.value;
 
 		console.log('Был изменен '+changesType+' параметр в продукте с ID: " '+itemsID+' "');
@@ -1252,7 +1286,22 @@ function accountFormEvents(){
 	});
 
 	$('.recipe_add_new_product').unbind().click(function(){
-		printRecipeRecordItem( $(this).closest('.settings_recipes_items_main_container') , 'Новый ингредиент', 100);
+
+		var container = $(this).closest('.settings_recipes_items_main_container'),
+		ProductObj = {
+			"productID": '-'+(++personalProductRecipeRecordsIDs),
+			"productName": "Новый ингредиент",
+			"weight": "100"
+		};
+
+		printRecipeRecordItem( container , ProductObj.productName, ProductObj.weight, ProductObj.productID);
+		
+		// Add product to recipe (4, RecipeID, , ProductObj)
+
+		var RecipeID = container.attr('id');
+
+		userRecipesChanges(4, RecipeID, '', ProductObj);
+		
 		activateChanges(true, '#save_changes_button_settings_1');
 		DropDownBlockResize();
 		accountFormEvents();
@@ -1264,7 +1313,16 @@ function cleanSettingsPage(){
 	$('.settings_recipes_item').each(function(){
 		if ($(this).css('display') == 'none'){
 			console.log( 'Удалить рецепт ' + $(this).parent().attr('id') );
-			//userRecipesChanges(0, itemsID, changesType, newValue);
+			userRecipesChanges(0, $(this).parent().attr('id'));
+			$(this).parent().remove();
+		}
+	});
+
+	// Products in recipes.
+	$('.settings_recipes_item_box').each(function(){
+		if ($(this).css('display') == 'none'){
+			console.log( 'Удалить продукт ' + $(this).parent().attr('id') + ' в блюде ' + $(this).closest('.settings_recipes_items_main_container').attr('id') );
+			userRecipesChanges(3, $(this).closest('.settings_recipes_items_main_container').attr('id'), '', $(this).parent().attr('id'));
 			$(this).parent().remove();
 		}
 	});
@@ -1621,14 +1679,33 @@ function userRecipesChanges(changesCase, itemsID, changesType, newValue){
 	switch(changesCase){
 
 		case 0:
-				// Delete item;
+				// Delete recipe (0, RecipeID)
 
-				// 
+				if( itemsID.substring(0, 1) == "-"){
+					// Delete TEMP object
+						for(var i = 0; i < userRecipeBones.recipes.length; i++){
+							var obj = userRecipeBones.recipes[i];
+							if((obj.recipeID) == itemsID){
+								userRecipeBones.recipes.splice(i, 1);
+							}
+						}
+				}else{
+					// Delete object from base
+					for(var i = 0; i < userRecipeBones.recipes.length; i++){
+						var obj = userRecipeBones.recipes[i];
+						if((obj.recipeID) == itemsID){
+								for(var propertyName in userRecipeBones.recipes[i]) {
+									if (propertyName != 'recipeID') delete userRecipeBones.recipes[i][propertyName];
+								}
+								userRecipeBones.recipes[i]['delete'] = "DELETE";
+						}
+					}	
+				}
 
 			break;
 
 		case 1:
-				// Add item;
+				// Add Recipe (1, , , RecipeObj);
 
 				console.log(newValue);
 				userRecipeBones.recipes.push(newValue);
@@ -1636,19 +1713,60 @@ function userRecipesChanges(changesCase, itemsID, changesType, newValue){
 			break;
 
 		case 2:
-				// Information changes;
+				// Change Recipe Name (2, RecipeID, 'recipeName', 'New Name');
+				
 				var itemIndex = findWithAttr(userRecipeBones.recipes, 'recipeID', itemsID);
 				userRecipeBones.recipes[ itemIndex ][ changesType ] = newValue;
 
 			break;
 
+		case 3:
+				// Delete product from recipe (3, ProductID, , RecipeID);
 
+				console.log('Удалить продукт '+newValue+' из блюда '+itemsID);
+
+				var recipeIndex = findWithAttr(userRecipeBones.recipes, 'recipeID', itemsID),
+				productIndex = findWithAttr(userRecipeBones.recipes[recipeIndex].products, 'productID', newValue);
+
+				console.log(recipeIndex, productIndex);
+
+				if( newValue.substring(0, 1) == "-"){
+					// Delete TEMP product
+					userRecipeBones.recipes[recipeIndex].products.splice(productIndex, 1);
+				}else{
+					// Delete product from base
+					for(var propertyName in userRecipeBones.recipes[recipeIndex].products[productIndex]){
+						if (propertyName != 'productID') delete userRecipeBones.recipes[recipeIndex].products[productIndex][propertyName];
+					}
+					userRecipeBones.recipes[recipeIndex].products[productIndex]['delete'] = "DELETE";
+				}
+
+			break;
+
+		case 4:
+				// Add product to recipe (4, RecipeID, , ProductObj)
+
+				var recipeIndex = findWithAttr(userRecipeBones.recipes, 'recipeID', itemsID);
+
+				userRecipeBones.recipes[recipeIndex].products.push(newValue);
+
+			break;
+
+		case 5:
+				// Change product in recipe (5, RecipeID, ProductID, { 'productName/weight': 'newName/newWeight'})
+
+				var recipeItemIndex = findWithAttr(userRecipeBones.recipes, 'recipeID', itemsID),
+				productItemIndex = findWithAttr(userRecipeBones.recipes[recipeItemIndex].products, 'productID', changesType)
+
+				userRecipeBones.recipes[ recipeItemIndex ].products[productItemIndex][ newValue.type ] = newValue.value;
+
+			break;
 
 		default:
 			console.log( 'Something goes wrong.' );
 	}
 
-	console.log( userRecipeBones );
+	//console.log(userRecipeBones);
 }
 
 function userProductsChanges(changesCase, itemsID, changesType, newValue){
@@ -1693,6 +1811,7 @@ function userProductsChanges(changesCase, itemsID, changesType, newValue){
 
 		case 2:
 				// Information changes;
+
 				var itemIndex = findWithAttr(userProductBones.products, 'productID', itemsID);
 				userProductBones.products[ itemIndex ][ changesType ] = newValue;
 
@@ -1705,7 +1824,7 @@ function userProductsChanges(changesCase, itemsID, changesType, newValue){
 	console.log( userProductBones );
 }
 
-function findWithAttr(array, attr, value) {
+function findWithAttr(array, attr, value){
 	for(var i = 0; i < array.length; i += 1) {
 		if(array[i][attr] === value) {
 			return i;
