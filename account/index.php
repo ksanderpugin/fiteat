@@ -67,9 +67,35 @@
 
     <?=$header?>
 
+	<div id="new_product_dialog" class="drop_down_block dialog">
+		<div class="drop_down_block_title">Мои продукты</div>
+
+		<div class="clearfix"></div>
+		<div class="drop_down_block_content">
+
+			<div class="save_changes_container"><a id="save_changes_button_settings_2" class="save_changes_button" style="">Сохранить изменения</a></div>
+
+			<div class="drop_down_block_options">
+				<a class="add_record_to_diary"><span class="drop_down_block_options_plus">+</span> Добавить новый продукт в базу</a>
+			</div>
+
+			<div id="settings_products_items_container">						
+
+			</div>
+
+		</div>
+		<div id="product_dialog_close" class="dialog_close"></div>
+	</div>
+
+	<div id="question_dialog" class="dialog">
+		<p>Продукт '<span id="question_dialog_name"></span>' отсутствует в базе. Желаете добавить продукт самостоятельно? <span id="question_dialog_span"><a id='open_new_product_dialog'> ДA </a> / <a class="question_dialog_close"> НЕТ </a></span> </p>
+		<div class="clearfix"></div>
+		<div class="dialog_close question_dialog_close"></div>
+	</div>
+
 	<div class="page_container">
 
-		<div class="diary_body">
+		<div class="settings_body">
 
 			<h1>Персональные данные <a id="edit_personal_info" href="settings.php<?php if ($app) echo '?app=on';?>"></a></h1>
 
@@ -106,18 +132,39 @@
 			</div>
 
 			<div class="drop_down_block">
-				<div class="drop_down_block_title">Мои продукты</div>
+				<div class="drop_down_block_title">Любимые продукты</div>
 
 				<div class="clearfix"></div>
 				<div class="drop_down_block_content">
 
-				<div class="save_changes_container"><a id="save_changes_button_settings_2" class="save_changes_button" style="">Сохранить изменения</a></div>
+				<div class="save_changes_container"><a id="save_changes_button_settings_3" class="save_changes_button" style="">Сохранить изменения</a></div>
+				<!--save_changes_button_settings_2-->
 
 				<div class="drop_down_block_options">
-					<a class="add_record_to_diary"><span class="drop_down_block_options_plus">+</span> Добавить новый продукт в базу</a>
+					<a class="add_favorite_record"><span class="drop_down_block_options_plus">+</span> Добавить любимый продукт</a>
 				</div>
 
-				<div id="settings_products_items_container">						
+				<div id="settings_favorite_products_container">
+
+				</div>
+
+				</div>
+				<div class="drop_down_block_point"></div>
+			</div>
+
+			<div class="drop_down_block">
+				<div class="drop_down_block_title">Черный список продуктов</div>
+
+				<div class="clearfix"></div>
+				<div class="drop_down_block_content">
+
+				<div class="save_changes_container"><a id="save_changes_button_settings_4" class="save_changes_button" style="">Сохранить изменения</a></div>
+
+				<div class="drop_down_block_options">
+					<a class="add_blacklist_record"><span class="drop_down_block_options_plus">+</span> Добавить продукт в черный список</a>
+				</div>
+
+				<div id="settings_blacklist_products_container">
 
 				</div>
 

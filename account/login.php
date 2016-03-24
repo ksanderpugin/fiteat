@@ -113,7 +113,7 @@
 		}
 
 		#login input{
-			width: 164px;
+			width: 150px;
 			height: 24px;
 			margin-top: 8px;
 			border: none;
@@ -122,7 +122,7 @@
 		}
 
 		#password input{
-			width: 164px;
+			width: 150px;
 			height: 24px;
 			margin-top: 8px;
 			border: none;

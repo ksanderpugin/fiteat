@@ -35,14 +35,6 @@ function diaryEventsInit(){
 
 	});
 
-	/*
-	if (Modernizr.inputtypes.time) {
-		alert('input time доступен');
-	} else {
-		alert('input time не доступен');
-	}
-	*/
-
 	// record time
 
 	$('.record_time').mask('Z0:z0', {
@@ -1107,6 +1099,28 @@ function accountFormsInit(){
 		}
 	});
 
+	$('#save_changes_button_settings_3').unbind().click(function () {
+		if( $(this).hasClass('active') ){
+			cleanSettingsPage();
+			DropDownBlockResize();
+			console.log( 'Send form for: ' + $(this).attr('id') );
+			//console.log(JSON.stringify(userProductBones));
+			activateChanges('false', '#'+$(this).attr('id') );
+		}
+	});
+
+	$('#save_changes_button_settings_4').unbind().click(function () {
+		if( $(this).hasClass('active') ){
+			cleanSettingsPage();
+			DropDownBlockResize();
+			console.log( 'Send form for: ' + $(this).attr('id') );
+			//console.log(JSON.stringify(userProductBones));
+			activateChanges('false', '#'+$(this).attr('id') );
+		}
+	});
+
+	$('.settings_body').append('<div id="answers" class="aInvisible"></div>');
+
 	accountFormEvents();
 	getPersonalRecipeRecords();
 	getPersonalProductRecords();
@@ -1138,9 +1152,20 @@ function accountFormEvents(){
 
 	$(".settings_recipes_item_part_delete").unbind().click(function(){
 		cleanSettingsPage();
-		$(this).closest('.settings_recipes_item_container').find('.settings_recipes_item_part_restore').css('display','table');
+		var container = $(this).closest('.settings_recipes_item_container');
+		container.find('.settings_recipes_item_part_restore').css('display','table');
 		$(this).closest('.settings_recipes_item_box').css('display','none');
-		activateChanges(true, '#save_changes_button_settings_1');
+		var buttonsID = '';
+		
+		if (container.hasClass('recipes_item_container')){
+			buttonsID = '#save_changes_button_settings_1';
+		}else if (container.hasClass('favourite_item_container')){
+			buttonsID = '#save_changes_button_settings_3';
+		}else if (container.hasClass('blacklist_item_container')){
+			buttonsID = '#save_changes_button_settings_4';
+		}
+
+		activateChanges(true, buttonsID);
 
 		$(".settings_recipes_item_part_restore").unbind().click(function(){
 			console.log('restore');
@@ -1152,7 +1177,7 @@ function accountFormEvents(){
 
 	$('.settings_recipes_item').unbind().change(function(eventObject){
 
-		console.log( eventObject.originalEvent );
+		//console.log( eventObject.originalEvent );
 
 		var productID = $(eventObject.originalEvent.path).filter('.settings_recipes_item_container').attr('id'),
 		itemsContainer = $(eventObject.originalEvent.path).filter('.settings_recipes_items_main_container'),
@@ -1251,6 +1276,24 @@ function accountFormEvents(){
 		DropDownBlockResize();
 	});
 
+	$('.add_favorite_record').unbind().click(function(){
+		var container = $(this).closest('.drop_down_block')
+		printFavoriteProductItem(container, 'Название продукта', 'number');
+
+		activateChanges(true, '#save_changes_button_settings_3');
+		DropDownBlockResize();
+		accountFormEvents();
+	});
+
+	$('.add_blacklist_record').unbind().click(function(){
+		var container = $(this).closest('.drop_down_block')
+		printBlacklistProductItem(container, 'Название продукта', 'number');
+
+		activateChanges(true, '#save_changes_button_settings_4');
+		DropDownBlockResize();
+		accountFormEvents();
+	});
+
 	$('.settings_recipe_delete').unbind().click(function(){
 		cleanSettingsPage();
 		$(this).closest('.settings_recipes_items_main_container').find('.settings_recipes_items_container_restore').css('display','table');
@@ -1306,6 +1349,96 @@ function accountFormEvents(){
 		DropDownBlockResize();
 		accountFormEvents();
 	});
+
+	$('.settings_recipes_item_part_name input').unbind('focusin').focusin(function(){
+
+		$(this).attr('id', 'active_input_field');
+
+		var container = $(this).closest('.settings_recipes_item_box');
+		var l = container.offset().left, t = container.offset().top + 28;
+
+		$('#answers').addClass('aVisible').removeClass('aInvisible');
+
+		container.css({ boxShadow: 'inset 0px 0px 0px 1px rgb(230, 163, 163)' });
+
+		$('#answers').css({
+			top: t+'px',
+			left: l+'px',
+			backgroundColor: container.css('backgroundColor')
+		});
+
+		answersEvents();
+	});
+
+	$('.settings_recipes_item_part_name input').unbind('focusout').focusout(function(e){
+
+		openQuestionDialog(e.target.value);
+
+		var container = $(this).closest('.settings_recipes_item_box');
+
+		container.css({ boxShadow: 'inset 0px 0px 0px 0px rgba(0,0,0,0)' });
+
+		$('#answers').addClass('aInvisible').removeClass('aVisible');
+		$('#answers').html('');
+	});
+
+	$('#open_new_product_dialog').unbind('click').click(function(){
+		$('#new_product_dialog').css({
+			"display":"block",
+			"zIndex":"2"
+		});
+		$('#question_dialog').css({
+			"display":"none",
+			"zIndex":"-9999"
+		});
+	});
+
+	$('#product_dialog_close').unbind('click').click(function(){
+		$('#new_product_dialog').css({
+			"display":"none",
+			"zIndex":"-9999"
+		});
+	});
+
+	$('.question_dialog_close').unbind('click').click(function(){
+		$('#question_dialog').css({
+			"display":"none",
+			"zIndex":"-9999"
+		});
+	});
+}
+
+function openQuestionDialog(value){
+	$('#question_dialog_name').html(value);
+	$('#question_dialog').css({
+		"display":"block",
+		"zIndex":"2"
+	});
+}
+
+function answersEvents(){
+
+	$('.settings_recipes_item_part_name input').unbind('keyup').keyup(function(){
+
+		$.getJSON('/account/getAnswerList.php', function(data){
+			var answer = '';
+			$.each(data.answers, function (i) {
+				answer +='<p class="answer_block">'+data.answers[i].value+'</p>';
+			});
+			$('#answers').html( answer );
+
+			// $('#active_input_field')
+
+			$( ".answer_block" ).unbind('mousedown').mousedown(function(e) {
+				//console.log(e.target.outerText);
+				$('#active_input_field').val(e.target.outerText); 
+				$('#answers').addClass('aInvisible').removeClass('aVisible');
+				$('#active_input_field').each(function(){
+					$(this).removeAttr('id');
+				});
+			});
+		});
+	});
 }
 
 function cleanSettingsPage(){
@@ -1319,7 +1452,7 @@ function cleanSettingsPage(){
 	});
 
 	// Products in recipes.
-	$('.settings_recipes_item_box').each(function(){
+	$('.settings_personal_recipes_item_box').each(function(){
 		if ($(this).css('display') == 'none'){
 			console.log( 'Удалить продукт ' + $(this).parent().attr('id') + ' в блюде ' + $(this).closest('.settings_recipes_items_main_container').attr('id') );
 			userRecipesChanges(3, $(this).closest('.settings_recipes_items_main_container').attr('id'), '', $(this).parent().attr('id'));
@@ -1343,8 +1476,6 @@ function getPersonalRecipeRecords(){
 		localStorage.setItem( 'personalRecipeRecordsIDs' , 0 );
 
 		$.getJSON('/diary/getuserrecipes.php', function(data){
-
-			//localStorage.setItem( 'userRecipes', JSON.stringify(data));
 
 			var products = [],
 			objBones = { "recipes": [] },
@@ -1435,8 +1566,8 @@ function printPersonalRecipeRecord(recId, recName, products){
 							'<div class="settings_recipes_items_container_restore_button"></div>'+
 						'</div>';
 
-    $('#settings_recipes_items_container').prepend(innerHTHL_Code);
-    $(".settings_recipes_items_main_container#"+recId).find(".settings_recipes_item_name").effect("highlight",{color:'#fff571'},400);
+	$('#settings_recipes_items_container').prepend(innerHTHL_Code);
+	$(".settings_recipes_items_main_container#"+recId).find(".settings_recipes_item_name").effect("highlight",{color:'#fff571'},400);
 
 	$.each(products, function (i) {
 		printRecipeRecordItem($(".settings_recipes_items_main_container#"+recId), products[i].productName, products[i].weight, products[i].productID);
@@ -1475,14 +1606,48 @@ function printPersonalProductsRecord(recId, recName, proteins, fats, carbohydrat
 }
 
 function printRecipeRecordItem(parentObject, productName, weight, id){
-	$(parentObject).find(".settings_recipes_items_container").last().append('<div id="'+id+'" class="settings_recipes_item_container">'+
-									'<div class="settings_recipes_item_box">'+
+	$(parentObject).find(".settings_recipes_items_container").last().append('<div id="'+id+'" class="settings_recipes_item_container recipes_item_container">'+
+									'<div class="settings_recipes_item_box settings_personal_recipes_item_box">'+
 										'<div class="settings_recipes_item_part_name_container">'+
 											'<div class="settings_recipes_item_part_name">'+
 												'<input class="" value="'+productName+'"/>'+
 											'</div>'+
 										'</div>'+
 										'<div class="settings_recipes_item_part_weight"><input type="number" value="'+weight+'" />(г)</div>'+
+										'<div class="settings_recipes_item_part_delete"></div>'+
+									'</div>'+
+									'<div class="settings_recipes_item_part_restore">'+
+									'<div class="settings_recipes_item_part_restore_text ellipsisOnOverflow"><div class="ellipsisOnOverflow">Восстановить ('+productName+')</div></div>'+
+										'<div class="settings_recipes_item_part_restore_button"></div>'+
+									'</div>'+
+								'</div>');
+}
+
+function printFavoriteProductItem(parentObject, productName, id){
+	$(parentObject).find("#settings_favorite_products_container").append('<div id="'+id+'" class="settings_recipes_item_container favourite_item_container">'+
+									'<div class="settings_recipes_item_box">'+
+										'<div class="settings_recipes_item_part_name_container">'+
+											'<div class="settings_recipes_item_part_name">'+
+												'<input class="" value="'+productName+'"/>'+
+											'</div>'+
+										'</div>'+
+										'<div class="settings_recipes_item_part_delete"></div>'+
+									'</div>'+
+									'<div class="settings_recipes_item_part_restore">'+
+									'<div class="settings_recipes_item_part_restore_text ellipsisOnOverflow"><div class="ellipsisOnOverflow">Восстановить ('+productName+')</div></div>'+
+										'<div class="settings_recipes_item_part_restore_button"></div>'+
+									'</div>'+
+								'</div>');
+}
+
+function printBlacklistProductItem(parentObject, productName, id){
+	$(parentObject).find("#settings_blacklist_products_container").append('<div id="'+id+'" class="settings_recipes_item_container blacklist_item_container">'+
+									'<div class="settings_recipes_item_box">'+
+										'<div class="settings_recipes_item_part_name_container">'+
+											'<div class="settings_recipes_item_part_name">'+
+												'<input class="" value="'+productName+'"/>'+
+											'</div>'+
+										'</div>'+
 										'<div class="settings_recipes_item_part_delete"></div>'+
 									'</div>'+
 									'<div class="settings_recipes_item_part_restore">'+
@@ -1832,3 +1997,7 @@ function findWithAttr(array, attr, value){
 	}
 }
 
+
+function setParent(el, newParent){
+	newParent.append(el);
+}
