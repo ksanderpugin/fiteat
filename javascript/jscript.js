@@ -1,5 +1,6 @@
 var diaryFoodListBones = {}, userProductBones = {}, userRecipeBones = {},
-	foodDiaryRecordIDs = 0, personalProductRecordsIDs = 0, personalRecipeRecordsIDs = 0, personalProductRecipeRecordsIDs = 0;
+	foodDiaryRecordIDs = 0, personalProductRecordsIDs = 0, personalRecipeRecordsIDs = 0, personalProductRecipeRecordsIDs = 0,
+	typingTimer = 0;
 
 function init(){
 	initSlider('mr'); // init mainpage recipes slider
@@ -79,10 +80,6 @@ function diaryEventsInit(){
 			sendDiaryList();
 		}
 	});
-
-	/*$(".imageUpload").unbind().change(function(){
-		imagePreview(this);
-	});*/
 }
 
 function imagePreview(input, viewIndex, changesType){
@@ -1020,6 +1017,34 @@ function printFoodDiaryRecord(recId, recType, recTime, recName, recWeight, recLi
 						'</div>');
 }
 
+function cleanSettingsPage(){
+
+	$('.settings_recipes_item').each(function(){
+		if ($(this).css('display') == 'none'){
+			console.log( 'Удалить рецепт ' + $(this).parent().attr('id') );
+			userRecipesChanges(0, $(this).parent().attr('id'));
+			$(this).parent().remove();
+		}
+	});
+
+	// Products in recipes.
+	$('.settings_personal_recipes_item_box').each(function(){
+		if ($(this).css('display') == 'none'){
+			console.log( 'Удалить продукт ' + $(this).parent().attr('id') + ' в блюде ' + $(this).closest('.settings_recipes_items_main_container').attr('id') );
+			userRecipesChanges(3, $(this).closest('.settings_recipes_items_main_container').attr('id'), '', $(this).parent().attr('id'));
+			$(this).parent().remove();
+		}
+	});
+
+	$('.settings_products_item').each(function(){
+		if ($(this).css('display') == 'none'){
+			console.log( 'Удалить продукт ' + $(this).attr('id') );
+			userProductsChanges(0, $(this).attr('id'));
+			$(this).parent().remove();
+		}
+	});
+}
+
 function accountFormsInit(){
 
 	updateNumberOfDays();
@@ -1123,7 +1148,7 @@ function accountFormsInit(){
 
 	accountFormEvents();
 	getPersonalRecipeRecords();
-	getPersonalProductRecords();
+	bonesForPersonalProductRecords();
 }
 
 function updateNumberOfDays(){
@@ -1249,31 +1274,18 @@ function accountFormEvents(){
 
 		var newRecipe = {
 			"recipeID": "-" + (++personalRecipeRecordsIDs),
-			"recipeName": "Новое блюдо"
+			"recipeName": "Новое блюдо",
+			"products": []
 		}
 
+		userRecipesChanges(1, '', '', newRecipe)
 		printPersonalRecipeRecord(newRecipe.recipeID, newRecipe.recipeName, []);
 		activateChanges(true, '#save_changes_button_settings_1');
 		DropDownBlockResize();
 	});
 
 	$('.add_record_to_diary').unbind().click(function(){
-
-		var newProduct = {
-			"productID": "-" + (++personalProductRecordsIDs),
-			"productName": "Новый продукт",
-			"proteins": "10.0",
-			"fats": "20.",
-			"carbohydrates": "60.0",
-			"calories": "660"
-		}
-
-		userProductsChanges(1, '', '', newProduct)
-
-		printPersonalProductsRecord(newProduct.productID, newProduct.productName, newProduct.proteins, newProduct.fats, newProduct.carbohydrates, newProduct.calories );
-
-		activateChanges(true, '#save_changes_button_settings_2');
-		DropDownBlockResize();
+		createNewProduct();
 	});
 
 	$('.add_favorite_record').unbind().click(function(){
@@ -1350,7 +1362,7 @@ function accountFormEvents(){
 		accountFormEvents();
 	});
 
-	$('.settings_recipes_item_part_name input').unbind('focusin').focusin(function(){
+	$('#settings_recipes_items_container, #settings_favorite_products_container, #settings_blacklist_products_container').on('focusin', '.settings_recipes_item_part_name input', function(){
 
 		$(this).attr('id', 'active_input_field');
 
@@ -1370,9 +1382,13 @@ function accountFormEvents(){
 		answersEvents();
 	});
 
-	$('.settings_recipes_item_part_name input').unbind('focusout').focusout(function(e){
+	$('#settings_recipes_items_container, #settings_favorite_products_container, #settings_blacklist_products_container').on('focusout', '.settings_recipes_item_part_name input', function(e){
 
 		openQuestionDialog(e.target.value);
+
+		$('#active_input_field').each(function(){
+			$(this).removeAttr('id');
+		});
 
 		var container = $(this).closest('.settings_recipes_item_box');
 
@@ -1391,6 +1407,9 @@ function accountFormEvents(){
 			"display":"none",
 			"zIndex":"-9999"
 		});
+
+		var text = $('#question_dialog_name').text();
+		createNewProduct(text);
 	});
 
 	$('#product_dialog_close').unbind('click').click(function(){
@@ -1416,57 +1435,83 @@ function openQuestionDialog(value){
 	});
 }
 
+function createNewProduct(productName){
+
+	var newName;
+
+	if (productName){
+		newName = productName;
+	}else{
+		newName = "Новый продукт";
+	}
+
+	var newProduct = {
+			"productID": "-" + (++personalProductRecordsIDs),
+			"productName": newName,
+			"proteins": "10.0",
+			"fats": "20.",
+			"carbohydrates": "60.0",
+			"calories": "660"
+		}
+
+	userProductsChanges(1, '', '', newProduct)
+
+	printPersonalProductsRecord(newProduct.productID, newProduct.productName, newProduct.proteins, newProduct.fats, newProduct.carbohydrates, newProduct.calories );
+
+	activateChanges(true, '#save_changes_button_settings_2');
+	DropDownBlockResize();
+}
+
 function answersEvents(){
-
-	$('.settings_recipes_item_part_name input').unbind('keyup').keyup(function(){
-
-		$.getJSON('/account/getAnswerList.php', function(data){
-			var answer = '';
-			$.each(data.answers, function (i) {
-				answer +='<p class="answer_block">'+data.answers[i].value+'</p>';
-			});
-			$('#answers').html( answer );
-
-			// $('#active_input_field')
-
-			$( ".answer_block" ).unbind('mousedown').mousedown(function(e) {
-				//console.log(e.target.outerText);
-				$('#active_input_field').val(e.target.outerText); 
-				$('#answers').addClass('aInvisible').removeClass('aVisible');
-				$('#active_input_field').each(function(){
-					$(this).removeAttr('id');
-				});
-			});
-		});
+	$('#settings_recipes_items_container, #settings_favorite_products_container, #settings_blacklist_products_container').unbind('keypress').on('keypress', '.settings_recipes_item_part_name input', function(){
+		if (this.value.length > 2){
+			if (typingTimer) {
+				clearTimeout(typingTimer);
+			}
+			typingTimer = setTimeout(getHints, 400); 
+		}
 	});
 }
 
-function cleanSettingsPage(){
+function getHints(){
 
-	$('.settings_recipes_item').each(function(){
-		if ($(this).css('display') == 'none'){
-			console.log( 'Удалить рецепт ' + $(this).parent().attr('id') );
-			userRecipesChanges(0, $(this).parent().attr('id'));
-			$(this).parent().remove();
-		}
-	});
+		console.log( $('#active_input_field').text() );
 
-	// Products in recipes.
-	$('.settings_personal_recipes_item_box').each(function(){
-		if ($(this).css('display') == 'none'){
-			console.log( 'Удалить продукт ' + $(this).parent().attr('id') + ' в блюде ' + $(this).closest('.settings_recipes_items_main_container').attr('id') );
-			userRecipesChanges(3, $(this).closest('.settings_recipes_items_main_container').attr('id'), '', $(this).parent().attr('id'));
-			$(this).parent().remove();
-		}
-	});
+		$.ajax({
+			url: '/account/getAnswerList.php',
+			type: 'POST',
+			data: {
+				word: $('#active_input_field').text()
+			},
+			dataType: 'json',
+			success: function(respond) {
+				console.log('Respond: ' + JSON.stringify(respond) );
+				var answer = '';
+				$.each(respond.answers, function (i) {
+					answer +='<p class="answer_block">'+respond.answers[i].value+'</p>';
+				});
+				$('#answers').html( answer );
 
-	$('.settings_products_item').each(function(){
-		if ($(this).css('display') == 'none'){
-			console.log( 'Удалить продукт ' + $(this).attr('id') );
-			userProductsChanges(0, $(this).attr('id'));
-			$(this).parent().remove();
-		}
-	});
+				$( ".answer_block" ).unbind('mousedown').mousedown(function(e) {
+					$('#active_input_field').val(e.target.outerText);
+					var ProductID = $('#active_input_field').closest('.settings_recipes_item_container').attr('id'),
+					RecipeID = $('#active_input_field').closest('.settings_recipes_items_main_container').attr('id');
+					var newObject = {
+						type : 'productName',
+						value: e.target.outerText
+					};
+					userRecipesChanges(5, RecipeID, ProductID, newObject);
+					activateChanges(true, '#save_changes_button_settings_1');
+					$('#answers').addClass('aInvisible').removeClass('aVisible');
+					$('#active_input_field').each(function(){
+						$(this).removeAttr('id');
+					});
+				});
+			},
+			error: function() {
+				// Печалька
+			}
+		});
 }
 
 function getPersonalRecipeRecords(){
@@ -1510,34 +1555,9 @@ function getPersonalRecipeRecords(){
 	}
 }
 
-function getPersonalProductRecords(){
-
+function bonesForPersonalProductRecords(){
 	if($('#settings_products_items_container').length){
-
-		localStorage.setItem( 'personalProductRecordsIDs' , 0 );
-
-		$.getJSON('/diary/getuserproducts.php', function(data){
-
-			var products = [],
-			objBones = { "products": [] },
-			temp;
-
-			$.each(data.products, function (i){
-
-				products = [];
-
-				temp = 	{ "productID": data.products[i].productID };
-
-				objBones.products.push(temp);
-
-				printPersonalProductsRecord( this.productID ,this.productName, this.proteins, this.fats, this.carbohydrates, this.calories);
-			});
-			//localStorage.setItem( 'save_changes_button_settings_2_form', JSON.stringify(objBones));
-			userProductBones = objBones;
-		});
-
-		DropDownBlockResize();
-		accountFormEvents();
+		userProductBones = {"products": []}
 	}
 }
 
@@ -1840,6 +1860,8 @@ function diaryInfoChanges(changesCase, itemsID, changesType, newValue){
 }
 
 function userRecipesChanges(changesCase, itemsID, changesType, newValue){
+
+	console.log(changesCase+'...'+itemsID+'...'+changesType+'...'+newValue);
 
 	switch(changesCase){
 
