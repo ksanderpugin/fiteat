@@ -488,7 +488,7 @@ h2{
 	height: 40px;
 	width: 200px;
 	text-align: center;
-	background-color: rgba(48,186,143,0.6);
+	background-color: rgba(48,186,143,0.85);
 	font-size: 18px;
 	line-height: 40px;
 	font-family: 'Proxima Nova';
@@ -2260,13 +2260,6 @@ input:focus{
 	margin: 0 0 0 30px;
 	font-size: 13px;
 	position: relative;
-	display: block;
-	/*overflow: hidden;
-	white-space: nowrap;
-	-moz-white-space: nowrap;
-	-ms-text-overflow: ellipsis;
-	text-overflow: ellipsis;
-	-o-text-overflow: ellipsis;*/
 }
 
 .drop_down_block_options_plus{

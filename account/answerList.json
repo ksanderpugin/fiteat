@@ -1,24 +1,31 @@
 {
     "answers": [
         {
+            "id": "001",
             "value": "hint1"
         },
         {
+            "id": "002",
             "value": "hint2"
         },
         {
+            "id": "003",
             "value": "hint3"
         },
         {
+            "id": "004",
             "value": "hint4"
         },
         {
+            "id": "005",
             "value": "hint5"
         },
         {
+            "id": "006",
             "value": "hint6"
         },
         {
+            "id": "007",
             "value": "hint7"
         }
     ]

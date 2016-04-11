@@ -1,5 +1,6 @@
-var diaryFoodListBones = {}, userProductBones = {}, userRecipeBones = {},
+var diaryFoodListBones = {}, userProductBones = {}, userRecipeBones = {}, userFavouriteProducts = {}, userBlacklistProducts = {},
 	foodDiaryRecordIDs = 0, personalProductRecordsIDs = 0, personalRecipeRecordsIDs = 0, personalProductRecipeRecordsIDs = 0,
+	favouriteProductIDs = 0, blacklistProductIDs = 0,
 	typingTimer = 0;
 
 function init(){
@@ -1036,6 +1037,16 @@ function cleanSettingsPage(){
 		}
 	});
 
+	$('.settings_recipes_item_box').each(function(){
+		if ($(this).css('display') == 'none'){
+			var container = $(this).closest('settings_recipes_item_container');
+			console.log( 'Удалить рецепт: ' + container.find('.settings_recipes_item_part_name input').value );
+			console.log( 'Тип: '+container.parent().attr('id') );
+			//userRecipesChanges(0, $(this).parent().attr('id'));
+			container.remove();
+		}
+	});
+
 	$('.settings_products_item').each(function(){
 		if ($(this).css('display') == 'none'){
 			console.log( 'Удалить продукт ' + $(this).attr('id') );
@@ -1109,6 +1120,7 @@ function accountFormsInit(){
 			cleanSettingsPage();
 			DropDownBlockResize();
 			console.log( 'Send form for: ' + $(this).attr('id') );
+			// SEND userRecipeBones
 			console.log(JSON.stringify(userRecipeBones));
 			activateChanges('false', '#'+$(this).attr('id') );
 		}
@@ -1119,6 +1131,7 @@ function accountFormsInit(){
 			cleanSettingsPage();
 			DropDownBlockResize();
 			console.log( 'Send form for: ' + $(this).attr('id') );
+			// SEND userProductBones
 			console.log(JSON.stringify(userProductBones));
 			activateChanges('false', '#'+$(this).attr('id') );
 		}
@@ -1129,7 +1142,8 @@ function accountFormsInit(){
 			cleanSettingsPage();
 			DropDownBlockResize();
 			console.log( 'Send form for: ' + $(this).attr('id') );
-			//console.log(JSON.stringify(userProductBones));
+			// SEND userFavouriteProducts
+			//console.log(JSON.stringify(userFavouriteProducts));
 			activateChanges('false', '#'+$(this).attr('id') );
 		}
 	});
@@ -1139,7 +1153,8 @@ function accountFormsInit(){
 			cleanSettingsPage();
 			DropDownBlockResize();
 			console.log( 'Send form for: ' + $(this).attr('id') );
-			//console.log(JSON.stringify(userProductBones));
+			// SEND userBlacklistProducts
+			//console.log(JSON.stringify(userBlacklistProducts));
 			activateChanges('false', '#'+$(this).attr('id') );
 		}
 	});
@@ -1148,6 +1163,7 @@ function accountFormsInit(){
 
 	accountFormEvents();
 	getPersonalRecipeRecords();
+	getSpecialProducts();
 	bonesForPersonalProductRecords();
 }
 
@@ -1175,7 +1191,7 @@ function daysInMonth(month, year) {
 
 function accountFormEvents(){
 
-	$(".settings_recipes_item_part_delete").unbind().click(function(){
+	$(".drop_down_block").unbind('click').on('click', '.settings_recipes_item_part_delete', function(){
 		cleanSettingsPage();
 		var container = $(this).closest('.settings_recipes_item_container');
 		container.find('.settings_recipes_item_part_restore').css('display','table');
@@ -1201,8 +1217,6 @@ function accountFormEvents(){
 	});
 
 	$('.settings_recipes_item').unbind().change(function(eventObject){
-
-		//console.log( eventObject.originalEvent );
 
 		var productID = $(eventObject.originalEvent.path).filter('.settings_recipes_item_container').attr('id'),
 		itemsContainer = $(eventObject.originalEvent.path).filter('.settings_recipes_items_main_container'),
@@ -1289,8 +1303,9 @@ function accountFormEvents(){
 	});
 
 	$('.add_favorite_record').unbind().click(function(){
-		var container = $(this).closest('.drop_down_block')
-		printFavoriteProductItem(container, 'Название продукта', 'number');
+		var temp = { 'productID': '-'+(++favouriteProductIDs), 'productName': 'Название продукта'}
+		userFavouriteProducts.products.push(temp);
+		printFavoriteProductItem(temp.productName, temp.productID);
 
 		activateChanges(true, '#save_changes_button_settings_3');
 		DropDownBlockResize();
@@ -1298,8 +1313,9 @@ function accountFormEvents(){
 	});
 
 	$('.add_blacklist_record').unbind().click(function(){
-		var container = $(this).closest('.drop_down_block')
-		printBlacklistProductItem(container, 'Название продукта', 'number');
+		var temp = { 'productID': '-'+(++blacklistProductIDs), 'productName': 'Название продукта'}
+		userBlacklistProducts.products.push(temp);
+		printBlacklistProductItem(temp.productName, temp.productID);
 
 		activateChanges(true, '#save_changes_button_settings_4');
 		DropDownBlockResize();
@@ -1488,7 +1504,7 @@ function getHints(){
 				console.log('Respond: ' + JSON.stringify(respond) );
 				var answer = '';
 				$.each(respond.answers, function (i) {
-					answer +='<p class="answer_block">'+respond.answers[i].value+'</p>';
+					answer +='<p id="'+respond.answers[i].id+'" class="answer_block">'+respond.answers[i].value+'</p>';
 				});
 				$('#answers').html( answer );
 
@@ -1517,8 +1533,6 @@ function getHints(){
 function getPersonalRecipeRecords(){
 
 	if($('#settings_recipes_items_container').length){
-
-		localStorage.setItem( 'personalRecipeRecordsIDs' , 0 );
 
 		$.getJSON('/diary/getuserrecipes.php', function(data){
 
@@ -1553,6 +1567,37 @@ function getPersonalRecipeRecords(){
 		});
 		accountFormEvents();
 	}
+}
+
+function getSpecialProducts(){
+
+	if(document.getElementById('settings_favorite_products_container')){
+		$.getJSON('/account/getuserproducts.php', function(data){
+			var objBones = { 'products': [] },
+			temp;
+			$.each(data.products, function (i) {
+				temp = 	{ "productID": data.products[i].productID, "productName": data.products[i].productName };
+				objBones.products.push(temp);
+				printFavoriteProductItem(data.products[i].productName, data.products[i].productID);
+			});
+			userFavouriteProducts = objBones;
+		});
+	}
+
+	if(document.getElementById('settings_blacklist_products_container')){
+		$.getJSON('/account/getuserproducts.php', function(data){
+			var objBones = { 'products': [] },
+			temp;
+			$.each(data.products, function (i) {
+				temp = 	{ "productID": data.products[i].productID, "productName": data.products[i].productName };
+				objBones.products.push(temp);
+				printBlacklistProductItem(data.products[i].productName, data.products[i].productID);
+			});
+			userBlacklistProducts = objBones;
+		});
+	}
+
+	accountFormEvents();
 }
 
 function bonesForPersonalProductRecords(){
@@ -1643,12 +1688,12 @@ function printRecipeRecordItem(parentObject, productName, weight, id){
 								'</div>');
 }
 
-function printFavoriteProductItem(parentObject, productName, id){
-	$(parentObject).find("#settings_favorite_products_container").append('<div id="'+id+'" class="settings_recipes_item_container favourite_item_container">'+
+function printFavoriteProductItem(productName, baseID){
+	$("#settings_favorite_products_container").append('<div class="settings_recipes_item_container favourite_item_container">'+
 									'<div class="settings_recipes_item_box">'+
 										'<div class="settings_recipes_item_part_name_container">'+
 											'<div class="settings_recipes_item_part_name">'+
-												'<input class="" value="'+productName+'"/>'+
+												'<input id="'+baseID+'" class="" value="'+productName+'"/>'+
 											'</div>'+
 										'</div>'+
 										'<div class="settings_recipes_item_part_delete"></div>'+
@@ -1660,12 +1705,12 @@ function printFavoriteProductItem(parentObject, productName, id){
 								'</div>');
 }
 
-function printBlacklistProductItem(parentObject, productName, id){
-	$(parentObject).find("#settings_blacklist_products_container").append('<div id="'+id+'" class="settings_recipes_item_container blacklist_item_container">'+
+function printBlacklistProductItem(productName, baseID){
+	$("#settings_blacklist_products_container").append('<div class="settings_recipes_item_container blacklist_item_container">'+
 									'<div class="settings_recipes_item_box">'+
 										'<div class="settings_recipes_item_part_name_container">'+
 											'<div class="settings_recipes_item_part_name">'+
-												'<input class="" value="'+productName+'"/>'+
+												'<input id="'+baseID+'" class="" value="'+productName+'"/>'+
 											'</div>'+
 										'</div>'+
 										'<div class="settings_recipes_item_part_delete"></div>'+
