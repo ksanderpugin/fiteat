@@ -1491,13 +1491,13 @@ function answersEvents(){
 
 function getHints(){
 
-		console.log( $('#active_input_field').text() );
+		console.log('word:' + $('#active_input_field').val() );
 
 		$.ajax({
 			url: '/account/getAnswerList.php',
-			type: 'POST',
+			type: 'GET',
 			data: {
-				word: $('#active_input_field').text()
+				word: $('#active_input_field').val()
 			},
 			dataType: 'json',
 			success: function(respond) {
