@@ -530,6 +530,7 @@ function initResize(){
 		resetSmoothLineChartCanvas();
 		CreateSmoothLineChart();
 		diaryInputResize();
+		answersPosition();
 		clearTimeout(id);
 		id = setTimeout(doneResizing, 400); 
 	});
@@ -539,6 +540,20 @@ function initResize(){
 		CreateLineChart();
 		DropDownBlockResize();
 		if($('.drop_down_block_calendar_id').length === 0){calendarMerge();}
+	}
+}
+
+function answersPosition(){
+	if (document.getElementById('active_input_field')){
+		var container = $('#active_input_field').closest('.settings_recipes_item_box');
+		var l = container.offset().left, t = container.offset().top + 28;
+		$('#answers').addClass('aVisible').removeClass('aInvisible');
+		container.css({ boxShadow: 'inset 0px 0px 0px 1px rgb(230, 163, 163)' });
+		$('#answers').css({
+			top: t+'px',
+			left: l+'px',
+			backgroundColor: container.css('backgroundColor')
+		});
 	}
 }
 
@@ -1039,10 +1054,12 @@ function cleanSettingsPage(){
 
 	$('.settings_recipes_item_box').each(function(){
 		if ($(this).css('display') == 'none'){
-			var container = $(this).closest('settings_recipes_item_container');
-			console.log( 'Удалить рецепт: ' + container.find('.settings_recipes_item_part_name input').value );
-			console.log( 'Тип: '+container.parent().attr('id') );
-			//userRecipesChanges(0, $(this).parent().attr('id'));
+			var container = $(this).closest('.settings_recipes_item_container');
+			var changesCase, containerType, itemsID;
+			changesCase = 0;
+			containerType = container.parent().attr('id');
+			itemsID = container.find('.settings_recipes_item_part_name input').attr('id');
+			specialProductsChanges(changesCase, containerType, '', itemsID);
 			container.remove();
 		}
 	});
@@ -1097,15 +1114,15 @@ function accountFormsInit(){
 				dataType: 'json',
 				success: function(respond) {
 					if (respond.state) {
-					//    //Save OK. Update calculate data from respond.calories, respond.proteins, respond.fats and respond.carbohydrates
-					    if ($("input.settings_field_cal_checkbox").prop("checked")) $("input#settings_field_cal").val(respond.calories);
-					    if ($("input.settings_field_pro_checkbox").prop("checked")) {
-					        $("input#settings_field_pro").val(respond.proteins);
-					        $("input#settings_field_fat").val(respond.fats);
-					        $("input#settings_field_car").val(respond.carbohydrates);
-					    }
-					    console.log('OK');
-					    activateChanges('false', '#save_changes_button_personal_info');
+					//Save OK. Update calculate data from respond.calories, respond.proteins, respond.fats and respond.carbohydrates
+						if ($("input.settings_field_cal_checkbox").prop("checked")) $("input#settings_field_cal").val(respond.calories);
+						if ($("input.settings_field_pro_checkbox").prop("checked")) {
+							$("input#settings_field_pro").val(respond.proteins);
+							$("input#settings_field_fat").val(respond.fats);
+							$("input#settings_field_car").val(respond.carbohydrates);
+						}
+						console.log('OK');
+						activateChanges('false', '#save_changes_button_personal_info');
 					}
 				},
 				error: function() {
@@ -1121,7 +1138,7 @@ function accountFormsInit(){
 			DropDownBlockResize();
 			console.log( 'Send form for: ' + $(this).attr('id') );
 			// SEND userRecipeBones
-			console.log(JSON.stringify(userRecipeBones));
+			console.log('SEND user recipes: ' + JSON.stringify(userRecipeBones));
 			activateChanges('false', '#'+$(this).attr('id') );
 		}
 	});
@@ -1132,7 +1149,7 @@ function accountFormsInit(){
 			DropDownBlockResize();
 			console.log( 'Send form for: ' + $(this).attr('id') );
 			// SEND userProductBones
-			console.log(JSON.stringify(userProductBones));
+			console.log('SEND user products: ' + JSON.stringify(userProductBones));
 			activateChanges('false', '#'+$(this).attr('id') );
 		}
 	});
@@ -1143,7 +1160,7 @@ function accountFormsInit(){
 			DropDownBlockResize();
 			console.log( 'Send form for: ' + $(this).attr('id') );
 			// SEND userFavouriteProducts
-			//console.log(JSON.stringify(userFavouriteProducts));
+			console.log('SEND favourite: ' + JSON.stringify(userFavouriteProducts));
 			activateChanges('false', '#'+$(this).attr('id') );
 		}
 	});
@@ -1154,12 +1171,55 @@ function accountFormsInit(){
 			DropDownBlockResize();
 			console.log( 'Send form for: ' + $(this).attr('id') );
 			// SEND userBlacklistProducts
-			//console.log(JSON.stringify(userBlacklistProducts));
+			console.log('SEND blacklist: ' + JSON.stringify(userBlacklistProducts));
 			activateChanges('false', '#'+$(this).attr('id') );
 		}
 	});
 
 	$('.settings_body').append('<div id="answers" class="aInvisible"></div>');
+
+	$(".settings_body").unbind('mousedown').on('mousedown', '.answer_block', function(e){
+
+		// #settings_recipes_items_container
+		// #settings_favourite_products_container
+		// #settings_blacklist_products_container
+
+		if( $('#active_input_field').closest('#settings_recipes_items_container').length > 0 ){
+
+			$('#active_input_field').find('input').val(e.target.outerText);
+			var ProductID = $('#active_input_field').closest('.settings_recipes_item_container').attr('id'),
+			RecipeID = $('#active_input_field').closest('.settings_recipes_items_main_container').attr('id');
+			var newObject = {
+				type : 'productName',
+				value: e.target.outerText
+			};
+			userRecipesChanges(5, RecipeID, ProductID, newObject);
+			activateChanges(true, '#save_changes_button_settings_1');
+			$('#answers').addClass('aInvisible').removeClass('aVisible');
+			$('#active_input_field').each(function(){
+				$(this).removeAttr('id');
+			});
+			
+		}else if( $('#active_input_field').closest('#settings_favourite_products_container').length > 0 ){
+
+			var itemsID = $('#active_input_field').find('input').attr('id');
+			$('#active_input_field').find('input').val(e.target.outerText);
+			newValue = { 'productID': $(e.target).attr('id'), 'productName': e.target.outerText };
+			specialProductsChanges(2, 'favourite', newValue, itemsID);
+			activateChanges(true, '#save_changes_button_settings_3');
+
+		}else if( $('#active_input_field').closest('#settings_blacklist_products_container').length > 0 ){
+
+			var itemsID = $('#active_input_field').find('input').attr('id');
+			$('#active_input_field').find('input').val(e.target.outerText);
+			newValue = { 'productID': $(e.target).attr('id'), 'productName': e.target.outerText };
+			specialProductsChanges(2, 'blacklist', newValue, itemsID);
+			activateChanges(true, '#save_changes_button_settings_4');
+
+		}else{
+			console.log('There is no active field.');
+		}
+	});
 
 	accountFormEvents();
 	getPersonalRecipeRecords();
@@ -1302,11 +1362,10 @@ function accountFormEvents(){
 		createNewProduct();
 	});
 
-	$('.add_favorite_record').unbind().click(function(){
+	$('.add_favourite_record').unbind().click(function(){
 		var temp = { 'productID': '-'+(++favouriteProductIDs), 'productName': 'Название продукта'}
-		userFavouriteProducts.products.push(temp);
+		specialProductsChanges(1, 'favourite', temp);
 		printFavoriteProductItem(temp.productName, temp.productID);
-
 		activateChanges(true, '#save_changes_button_settings_3');
 		DropDownBlockResize();
 		accountFormEvents();
@@ -1314,9 +1373,8 @@ function accountFormEvents(){
 
 	$('.add_blacklist_record').unbind().click(function(){
 		var temp = { 'productID': '-'+(++blacklistProductIDs), 'productName': 'Название продукта'}
-		userBlacklistProducts.products.push(temp);
+		specialProductsChanges(1, 'blacklist', temp);
 		printBlacklistProductItem(temp.productName, temp.productID);
-
 		activateChanges(true, '#save_changes_button_settings_4');
 		DropDownBlockResize();
 		accountFormEvents();
@@ -1378,29 +1436,17 @@ function accountFormEvents(){
 		accountFormEvents();
 	});
 
-	$('#settings_recipes_items_container, #settings_favorite_products_container, #settings_blacklist_products_container').on('focusin', '.settings_recipes_item_part_name input', function(){
+	$('#settings_recipes_items_container, #settings_favourite_products_container, #settings_blacklist_products_container').unbind('focusin').on('focusin', '.settings_recipes_item_part_name input', function(){
 
-		$(this).attr('id', 'active_input_field');
-
-		var container = $(this).closest('.settings_recipes_item_box');
-		var l = container.offset().left, t = container.offset().top + 28;
-
-		$('#answers').addClass('aVisible').removeClass('aInvisible');
-
-		container.css({ boxShadow: 'inset 0px 0px 0px 1px rgb(230, 163, 163)' });
-
-		$('#answers').css({
-			top: t+'px',
-			left: l+'px',
-			backgroundColor: container.css('backgroundColor')
-		});
-
+		$(this).closest('.settings_recipes_item_part_name').attr('id', 'active_input_field');
+		answersPosition();
 		answersEvents();
 	});
 
-	$('#settings_recipes_items_container, #settings_favorite_products_container, #settings_blacklist_products_container').on('focusout', '.settings_recipes_item_part_name input', function(e){
+	$('#settings_recipes_items_container, #settings_favourite_products_container, #settings_blacklist_products_container').unbind('focusout').on('focusout', '.settings_recipes_item_part_name input', function(e){
 
-		openQuestionDialog(e.target.value);
+		// if (products name with this ID match name in base){
+		// }else{ openQuestionDialog(e.target.value); }
 
 		$('#active_input_field').each(function(){
 			$(this).removeAttr('id');
@@ -1412,6 +1458,16 @@ function accountFormEvents(){
 
 		$('#answers').addClass('aInvisible').removeClass('aVisible');
 		$('#answers').html('');
+	});
+
+	$('#settings_favourite_products_container').unbind('change').on('change', '.settings_recipes_item_part_name input', function(e){
+		activateChanges(true, '#save_changes_button_settings_3');
+		console.log('favourite changed');
+	});
+
+	$('#settings_blacklist_products_container').unbind('change').on('change', '.settings_recipes_item_part_name input', function(e){
+		activateChanges(true, '#save_changes_button_settings_4');
+		console.log('blacklist changed');
 	});
 
 	$('#open_new_product_dialog').unbind('click').click(function(){
@@ -1479,55 +1535,49 @@ function createNewProduct(productName){
 }
 
 function answersEvents(){
-	$('#settings_recipes_items_container, #settings_favorite_products_container, #settings_blacklist_products_container').unbind('keypress').on('keypress', '.settings_recipes_item_part_name input', function(){
-		if (this.value.length > 2){
+	$('#settings_recipes_items_container, #settings_favourite_products_container, #settings_blacklist_products_container').unbind('keypress keydown').on('keypress keydown', '.settings_recipes_item_part_name input', function(){
+			
+			if (this.value.length < 3){
+				$('#answers').html('');
+			}
+
 			if (typingTimer) {
 				clearTimeout(typingTimer);
 			}
 			typingTimer = setTimeout(getHints, 400); 
-		}
 	});
 }
 
 function getHints(){
 
-		console.log('word:' + $('#active_input_field').val() );
+	console.log('word:' + $('#active_input_field').find('input').val() );
+
+	if ( $('#active_input_field').find('input').val().length > 2){
 
 		$.ajax({
 			url: '/account/getAnswerList.php',
 			type: 'GET',
 			data: {
-				word: $('#active_input_field').val()
+				word: $('#active_input_field').find('input').val()
 			},
 			dataType: 'json',
 			success: function(respond) {
 				console.log('Respond: ' + JSON.stringify(respond) );
 				var answer = '';
-				$.each(respond.answers, function (i) {
-					answer +='<p id="'+respond.answers[i].id+'" class="answer_block">'+respond.answers[i].value+'</p>';
-				});
-				$('#answers').html( answer );
-
-				$( ".answer_block" ).unbind('mousedown').mousedown(function(e) {
-					$('#active_input_field').val(e.target.outerText);
-					var ProductID = $('#active_input_field').closest('.settings_recipes_item_container').attr('id'),
-					RecipeID = $('#active_input_field').closest('.settings_recipes_items_main_container').attr('id');
-					var newObject = {
-						type : 'productName',
-						value: e.target.outerText
-					};
-					userRecipesChanges(5, RecipeID, ProductID, newObject);
-					activateChanges(true, '#save_changes_button_settings_1');
-					$('#answers').addClass('aInvisible').removeClass('aVisible');
-					$('#active_input_field').each(function(){
-						$(this).removeAttr('id');
+				if(respond.answers.length > 0){
+					$.each(respond.answers, function (i) {
+						answer +='<p id="'+respond.answers[i].id+'" class="answer_block">'+respond.answers[i].value+'</p>';
 					});
-				});
+					$('#answers').html( answer );
+				}else{
+					$('#answers').html('');
+				}
 			},
 			error: function() {
 				// Печалька
 			}
 		});
+	}
 }
 
 function getPersonalRecipeRecords(){
@@ -1571,7 +1621,7 @@ function getPersonalRecipeRecords(){
 
 function getSpecialProducts(){
 
-	if(document.getElementById('settings_favorite_products_container')){
+	if(document.getElementById('settings_favourite_products_container')){
 		$.getJSON('/account/getuserproducts.php', function(data){
 			var objBones = { 'products': [] },
 			temp;
@@ -1689,7 +1739,7 @@ function printRecipeRecordItem(parentObject, productName, weight, id){
 }
 
 function printFavoriteProductItem(productName, baseID){
-	$("#settings_favorite_products_container").append('<div class="settings_recipes_item_container favourite_item_container">'+
+	$("#settings_favourite_products_container").append('<div class="settings_recipes_item_container favourite_item_container">'+
 									'<div class="settings_recipes_item_box">'+
 										'<div class="settings_recipes_item_part_name_container">'+
 											'<div class="settings_recipes_item_part_name">'+
@@ -1822,32 +1872,6 @@ function popupSearch(word){
 		//если поле поиска пустое, очищаем слой с результатами поиска
 		else {
 			$('#search_result').html('');
-		}
-}
-
-function setFocus(e){
-
-	selectedElement = window.getSelection().focusNode.parentNode;
-
-		if( (window.getSelection().type) == "Range" ){
-			// Range was selected
-			//console.log('range was selected');
-			//elem = document.getElementById('txt1');
-			setEndOfContenteditable( selectedElement );
-		}else{
-			//selectedElement = window.getSelection().focusNode.parentNode;
-			
-			if ( ( $(selectedElement).hasClass("settings_recipes_item_part_name") )||( $(selectedElement).hasClass("inner") ) ){
-				if ( $(selectedElement).hasClass("inner") ) {
-					$(selectedElement).removeClass('ellipsisOnOverflow');
-				} else{
-					$(selectedElement).closest('.inner').removeClass('ellipsisOnOverflow');
-				}
-			}else{
-				$( ".inner" ).addClass('ellipsisOnOverflow');
-				//Caret must be moved to the first position
-				//setEndOfContenteditable( selectedElement );
-			}
 		}
 }
 
@@ -2054,6 +2078,62 @@ function userProductsChanges(changesCase, itemsID, changesType, newValue){
 	}
 
 	console.log( userProductBones );
+}
+
+function specialProductsChanges(changesCase, containerType, newValue, itemsID){
+
+	var container;
+
+	if (containerType.indexOf('favourite') > -1){
+		containerType = 'favourite';
+		container = userFavouriteProducts;
+	}else if(containerType.indexOf('blacklist') > -1){
+		containerType = 'blacklist';
+		container = userBlacklistProducts;
+	}else{
+		console.log('something wrong');
+	}
+
+	// changesCase - 1 add, 0 delete, 2 change
+	// containerType - favourite, blacklist
+	// newValue - new item to replace with
+	// itemsID - product ID to change
+
+	switch(changesCase){
+
+		case 0:
+
+				console.log('Delete ...' + itemsID + ' from ' + containerType);
+
+				// Delete item;
+
+				for(var i = 0; i < container.products.length; i++){
+					var obj = container.products[i];
+					if((obj['productID']) == itemsID){
+						container.products.splice(i, 1);
+					}
+				}
+
+			break;
+
+		case 1:
+				// Add item;
+
+				container.products.push(newValue);
+
+			break;
+
+		case 2:
+				// Information changes;
+
+				var itemIndex = findWithAttr(container.products, 'productID', itemsID);
+				container.products[ itemIndex ] = newValue;
+
+			break;
+
+		default:
+			console.log( 'Something goes wrong.' );
+	}
 }
 
 function findWithAttr(array, attr, value){

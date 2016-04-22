@@ -141,10 +141,10 @@
 				<!--save_changes_button_settings_2-->
 
 				<div class="drop_down_block_options">
-					<a class="add_favorite_record"><span class="drop_down_block_options_plus">+</span> Добавить любимый продукт</a>
+					<a class="add_favourite_record"><span class="drop_down_block_options_plus">+</span> Добавить любимый продукт</a>
 				</div>
 
-				<div id="settings_favorite_products_container">
+				<div id="settings_favourite_products_container">
 
 				</div>
 

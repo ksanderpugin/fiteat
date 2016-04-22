@@ -2573,6 +2573,8 @@ input[type="radio"] {
 	-o-text-overflow: ellipsis;
 	-ms-text-overflow: ellipsis;
 	text-overflow: ellipsis;
+
+	word-wrap: normal;
 }
 
 .settings_recipes_item_box{
@@ -2748,6 +2750,7 @@ input[type="radio"] {
 	font-size: 12px;
 	color: #747474;
 	margin: 2px;
+	text-align: right;
 
 	overflow: hidden;
 	white-space: nowrap;
@@ -2933,8 +2936,10 @@ input[type="radio"] {
 	top: 30px;
 	border: 1px solid rgb(230, 163, 163);
 	border-top: 1px solid transparent;
-	overflow: hidden;
+	overflow-x: hidden;
+	overflow-y: scroll;
 	width: 190px;
+	max-height: 200px
 }
 
 .aVisible{
@@ -2953,6 +2958,10 @@ input[type="radio"] {
 	color: #747474;
 	padding: 4px 10px;
 	font-size: 15px
+}
+
+.answer_block:nth-child(odd){
+	background-color: rgba(255,242,242,1);
 }
 
 .answer_block:hover{
@@ -3264,6 +3273,10 @@ input[type="radio"] {
 	max-height: 80vh;
 }
 
+#answers{
+	width: 275px;
+}
+
 }
 
 @media screen and (min-width: 961px) {
@@ -3534,31 +3547,16 @@ input[type="radio"] {
 	width: 95%!important;
 }
 
-/*.settings_product_pro{
-	display: table-cell;
-	width: 90px;
-	float: none;
-	font-size: 16px;
-}
-
-.last_product{
-	width: 110px;
-}
-
-.settings_product_pro input{
-	width: 50px;
-	font-size: 16px;
-}
-
-.settings_product_pro:nth-child(even):before{
-	border-left: 1px dotted rgba(200,50,50,0.45);
-}*/
-
 /* --- */
 
 #save_changes_button_personal_info{
 	margin: 20px 0px 20px 150px;
 	width: auto;
+}
+
+#answers{
+	width: 375px;
+	max-height: 375px
 }
 
 }
@@ -3659,6 +3657,11 @@ q {
 	display: block;
 }
 
+#answers{
+	width: 575px;
+	max-height: 450px
+}
+
 }
 
 @media screen and (min-width: 1921px) {
@@ -3703,6 +3706,10 @@ q {
 .settings_body{
 	width: 70%;
 	padding: 70px 15% 70px 15%;
+}
+
+#answers{
+	width: 775px;
 }
 
 }
