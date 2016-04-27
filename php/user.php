@@ -238,7 +238,9 @@ class User
                         "norm_b" => $data[0]["norm_b"],
                         "norm_z" => $data[0]["norm_z"],
                         "norm_u" => $data[0]["norm_u"],
-                        "norm_auto" => $data[0]["norm_auto"]
+                        "norm_auto" => $data[0]["norm_auto"],
+                    	"favorite_list" => $data[0]["favorite_list"],
+                    	"black_list" => $data[0]["black_list"]
                     ];
                 }
             }

@@ -1161,6 +1161,17 @@ function accountFormsInit(){
 			console.log( 'Send form for: ' + $(this).attr('id') );
 			// SEND userFavouriteProducts
 			console.log('SEND favourite: ' + JSON.stringify(userFavouriteProducts));
+			$.ajax({
+				url: 'setuserproducts.php?list=favorite',
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					json: JSON.stringify(userFavouriteProducts)
+				},
+				success: function(respond) {
+					console.log('respond save favorite: ' + JSON.stringify(respond) );
+				}
+			});
 			activateChanges('false', '#'+$(this).attr('id') );
 		}
 	});
@@ -1172,6 +1183,17 @@ function accountFormsInit(){
 			console.log( 'Send form for: ' + $(this).attr('id') );
 			// SEND userBlacklistProducts
 			console.log('SEND blacklist: ' + JSON.stringify(userBlacklistProducts));
+			$.ajax({
+				url: 'setuserproducts.php?list=black',
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					json: JSON.stringify(userBlacklistProducts)
+				},
+				success: function(respond) {
+					console.log('respond save black: ' + JSON.stringify(respond) );
+				}
+			});
 			activateChanges('false', '#'+$(this).attr('id') );
 		}
 	});
@@ -1621,31 +1643,32 @@ function getPersonalRecipeRecords(){
 
 function getSpecialProducts(){
 
-	if(document.getElementById('settings_favourite_products_container')){
-		$.getJSON('/account/getuserproducts.php', function(data){
+	
+	$.getJSON('/account/getuserproducts.php', function(data){
+		
+		if(document.getElementById('settings_favourite_products_container')){
 			var objBones = { 'products': [] },
 			temp;
-			$.each(data.products, function (i) {
-				temp = 	{ "productID": data.products[i].productID, "productName": data.products[i].productName };
+			$.each(data.favorite, function (i) {
+				temp = 	{ "productID": data.favorite[i].productID, "productName": data.favorite[i].productName };
 				objBones.products.push(temp);
-				printFavoriteProductItem(data.products[i].productName, data.products[i].productID);
+				printFavoriteProductItem(data.favorite[i].productName, data.favorite[i].productID);
 			});
 			userFavouriteProducts = objBones;
-		});
-	}
-
-	if(document.getElementById('settings_blacklist_products_container')){
-		$.getJSON('/account/getuserproducts.php', function(data){
+		}
+		
+		if(document.getElementById('settings_blacklist_products_container')){
 			var objBones = { 'products': [] },
 			temp;
-			$.each(data.products, function (i) {
-				temp = 	{ "productID": data.products[i].productID, "productName": data.products[i].productName };
+			$.each(data.black, function (i) {
+				temp = 	{ "productID": data.black[i].productID, "productName": data.black[i].productName };
 				objBones.products.push(temp);
-				printBlacklistProductItem(data.products[i].productName, data.products[i].productID);
+				printBlacklistProductItem(data.black[i].productName, data.black[i].productID);
 			});
 			userBlacklistProducts = objBones;
-		});
-	}
+		}
+		
+	});
 
 	accountFormEvents();
 }
