@@ -1,7 +1,7 @@
 <?php
 
 $list_type = array_key_exists('list', $_GET) ? $_GET['list'] : exit;
-if ($list_type != 'favorite' && $list_type != 'black') exit;
+if ($list_type != 'favourite' && $list_type != 'black') exit;
 
 $data = array_key_exists('json', $_POST) ? json_decode($_POST['json'],true) : exit;
 
@@ -21,7 +21,7 @@ $renum = [];
 
 if (!empty($data['products'])) foreach ($data['products'] as $product) {
 	if ($product['productID'] < 0) {
-		
+
 		$result = $sql->query("SELECT id FROM products WHERE name = ':name'", [
 			[
 				"name" => ":name",
@@ -29,12 +29,12 @@ if (!empty($data['products'])) foreach ($data['products'] as $product) {
 				"type" => SQL::PARAM_STR
 			]
 		]);
-		
+
 		$id = 0;
-		
+
 		if (!empty($result)) $id = $result[0]['id'];
 		else {
-			
+
 			$sql->execute("INSERT INTO products (name, uid) VALUE (':name', :uid)", [
 					[
 							"name" => ":name",
@@ -47,13 +47,13 @@ if (!empty($data['products'])) foreach ($data['products'] as $product) {
 							"type" => SQL::PARAM_INT
 					]
 			]);
-			
+
 			$id = $sql->getInsertID();
 		}
-		
+
 		$renum[$product['productID']] = $id;
 		$arr_str .= $id.',';
-		
+
 	} else $arr_str .= $product['productID'].',';
 }
 
