@@ -1,7 +1,7 @@
 <?php
 
 $list_type = array_key_exists('list', $_GET) ? $_GET['list'] : exit;
-if ($list_type != 'favourite' && $list_type != 'black') exit;
+if ($list_type != 'favorite' && $list_type != 'black') exit;
 
 $data = array_key_exists('json', $_POST) ? json_decode($_POST['json'],true) : exit;
 

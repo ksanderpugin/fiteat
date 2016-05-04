@@ -1158,7 +1158,7 @@ function accountFormsInit(){
 			// SEND userFavouriteProducts
 			console.log('SEND favourite: ' + JSON.stringify(userFavouriteProducts));
 			$.ajax({
-				url: 'setuserproducts.php?list=favourite',
+				url: 'setuserproducts.php?list=favorite',
 				type: 'POST',
 				dataType: 'json',
 				data: {
@@ -1686,10 +1686,10 @@ function getSpecialProducts(){
 
 		if(document.getElementById('settings_favourite_products_container')){
 			objBones = { 'products': [] };
-			$.each(data.favourite, function (i) {
-				temp = 	{ "productID": data.favourite[i].productID, "productName": data.favourite[i].productName };
+			$.each(data.favorite, function (i) {
+				temp = 	{ "productID": data.favorite[i].productID, "productName": data.favorite[i].productName };
 				objBones.products.push(temp);
-				printFavouriteProductItem(data.favourite[i].productName, data.favourite[i].productID);
+				printFavouriteProductItem(data.favorite[i].productName, data.favorite[i].productID);
 			});
 			userFavouriteProducts = objBones;
 		}

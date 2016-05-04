@@ -18,7 +18,7 @@
     $black = strlen($user_info['black_list']) > 0 ? explode(',', $user_info['black_list']) : [];
 
     if (empty($favorite) && empty($black)) {
-    	echo '{"favourite":[],"black":[]}';
+    	echo '{"favorite":[],"black":[]}';
     	exit;
     }
 
@@ -48,6 +48,6 @@
     }
 
     echo json_encode([
-    	'favourite' => $fjs,
+    	'favorite' => $fjs,
     	'black' => $bjs
     ]);
