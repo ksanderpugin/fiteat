@@ -36,11 +36,11 @@ a {
     text-decoration: none;
 }
 
-a:hover 
+a:hover
 {
-     color: inherit; 
-     text-decoration:none; 
-     cursor: pointer;  
+     color: inherit;
+     text-decoration:none;
+     cursor: pointer;
 }
 
 input:focus{
@@ -581,7 +581,7 @@ h2{
 	background-position: center;
 }
 
-q { 
+q {
 	position: absolute;
 	top: 100px;
 	display: inline;
@@ -595,7 +595,7 @@ q {
 	font-weight: 100;
 }
 
-q:before { 
+q:before {
 	position: absolute;
 	left: -30px;
 	font-size: 60px;
@@ -604,7 +604,7 @@ q:before {
 	color: rgba(255,255,255,0.5);
 }
 
-q:after { 
+q:after {
 	position: absolute;
 	right: -30px;
 	margin-top: 10px;
@@ -1391,7 +1391,7 @@ q:after {
 
 .drop_down_block_content{
 	margin: 5px 0px 60px 0px;
-	min-height: 150px;  
+	min-height: 150px;
 }
 
 .drop_down_block_calendar{
@@ -1588,7 +1588,7 @@ q:after {
 /* recipes */
 
 .recipes_personal_recommendations{
-	margin-bottom: 40px; 
+	margin-bottom: 40px;
 }
 
 .recipes_header_image_block > .phrase{
@@ -2482,17 +2482,17 @@ input[type="radio"] {
 	margin-right: 10px!important;
 }
 
-#settings_field_cal:read-only { 
+#settings_field_cal:read-only {
     color: #999;
     border-bottom: 1px solid transparent;
 }
 
-#settings_field_pro, #settings_field_fat, #settings_field_car { 
+#settings_field_pro, #settings_field_fat, #settings_field_car {
     color: black;
     border-bottom: 1px dashed rgba(182,182,182,0.9);
 }
 
-#settings_field_pro:read-only, #settings_field_fat:read-only, #settings_field_car:read-only { 
+#settings_field_pro:read-only, #settings_field_fat:read-only, #settings_field_car:read-only {
     color: #999;
     border-bottom: 1px solid transparent;
 }
@@ -2579,7 +2579,7 @@ input[type="radio"] {
 
 .settings_recipes_item_box{
 	display: table;
-	margin: 1px 10px;
+	margin: 1px 7.5%;
 	background-color: rgba(252, 252, 252, 1);
 }
 
@@ -2601,7 +2601,7 @@ input[type="radio"] {
 .settings_recipes_item_part_restore{
 	height: 30px;
 	display: none;
-	margin: 0 10px;
+	margin: 0 7.5%;
 	background-color: #eaf9f4;
 	cursor: pointer;
 }
@@ -2808,7 +2808,7 @@ input[type="radio"] {
 	float: right;
 	position: absolute;
 	right: 0;
-	top: 0; 
+	top: 0;
 	height: 22px;
 	width: 25px;
 	padding: 10px;
@@ -2823,7 +2823,7 @@ input[type="radio"] {
 	position: fixed;
 	background-color: white;
 	outline:none;
-	z-index: -9999;	
+	z-index: -9999;
 
 	-webkit-box-shadow: inset 0px 0px 0px 2px rgba(48,186,143,1);
 	-moz-box-shadow: inset 0px 0px 0px 2px rgba(48,186,143,1);
@@ -3534,7 +3534,7 @@ input[type="radio"] {
 .settings_product_delete{
 	display: table-cell;
 	margin-top: 12px;
-	margin-right: 5px; 
+	margin-right: 5px;
 	height: 15px;
 	width: 25px;
 	float: none;
@@ -3568,14 +3568,14 @@ input[type="radio"] {
 	margin: 0 10% 0 10%;
 }
 
-q { 
+q {
 	width: 50%;
 	margin-left: 25%;
 }
 
 .main_recommendations{
 	width: 80%;
-	padding: 0 10% 0 10%;	
+	padding: 0 10% 0 10%;
 }
 
 .main_page_image > div{
@@ -3612,11 +3612,11 @@ q {
 }
 
 .footer_part:nth-child(odd){
-	margin-left: 10%; 
+	margin-left: 10%;
 }
 
 .footer_part:nth-child(even){
-	margin-right: 10%; 
+	margin-right: 10%;
 }
 
 .registration_body{
@@ -3673,7 +3673,7 @@ q {
 
 .main_recommendations{
 	width: 70%;
-	padding: 0 15% 0 15%;	
+	padding: 0 15% 0 15%;
 }
 
 .footer_part{
@@ -3681,11 +3681,11 @@ q {
 }
 
 .footer_part:nth-child(odd){
-	margin-left: 15%; 
+	margin-left: 15%;
 }
 
 .footer_part:nth-child(even){
-	margin-right: 15%; 
+	margin-right: 15%;
 }
 
 .registration_body{

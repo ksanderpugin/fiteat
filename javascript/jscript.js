@@ -1535,25 +1535,29 @@ function checkProductInBase(value){
 	// }else{ openQuestionDialog(e.target.value); }
 
 	var output, temp = false, url = "../php/checkProductInBase.php?word=" + value.productName;
-	$.get( url, function( data ) {
-		if ($(data).html() === "NO RESULTS"){
-			openQuestionDialog(value);
-		}else{
-		  console.log( "Data from url : " + url );
-			output = $( data );
-			//console.log( output );
-			count = output.find('tr').length;
-			output.find('tr').each(function (i) {
-	      console.log(this);
-				if( ($(this).children().eq(0).text() === value.productID)&&($(this).children().eq(1).text() === value.productName) ){
-					temp = true;
-				}
-				if ( (!--count)&&(!temp) ){
-					openQuestionDialog(value);
-				}
-	    });
-		}
-	});
+
+	setTimeout(function(){
+		$.get( url, function( data ) {
+			if ($(data).html() === "NO RESULTS"){
+				openQuestionDialog(value);
+			}else{
+			  console.log( "Data from url : " + url );
+				output = $( data );
+				//console.log( output );
+				count = output.find('tr').length;
+				output.find('tr').each(function (i) {
+		      console.log(this);
+					if( ($(this).children().eq(0).text() === value.productID)&&($(this).children().eq(1).text() === value.productName) ){
+						temp = true;
+					}
+					if ( (!--count)&&(!temp) ){
+						openQuestionDialog(value);
+					}
+		    });
+			}
+		});}, 500);
+
+
 }
 
 function openQuestionDialog(value){

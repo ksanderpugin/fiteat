@@ -79,7 +79,7 @@
 				<a class="add_record_to_diary"><span class="drop_down_block_options_plus">+</span> Добавить новый продукт в базу</a>
 			</div>
 
-			<div id="settings_products_items_container">						
+			<div id="settings_products_items_container">
 
 			</div>
 
@@ -100,7 +100,7 @@
 			<h1>Персональные данные <a id="edit_personal_info" href="settings.php<?php if ($app) echo '?app=on';?>"></a></h1>
 
 			<div class="settings_fields">
-				
+
 				<div class="settings_fields_showroom">
 					<p id="showroom_name"><span id="male"><?=$user_info["name"]." ".$user_info["soname"]?></span></p>
 					<p id="showroom_parameters"><?=$old." ".$old_str?>, <?=$user_info["growth"]?> см, <?=$user_info["weight"]?> кг</p>
@@ -123,7 +123,7 @@
 						<a class="create_new_recipe"><span class="drop_down_block_options_plus">+</span> Создать новое блюдо</a>
 					</div>
 
-					<div id="settings_recipes_items_container">						
+					<div id="settings_recipes_items_container">
 
 					</div>
 
