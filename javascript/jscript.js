@@ -1135,6 +1135,17 @@ function accountFormsInit(){
 			console.log( 'Send form for: ' + $(this).attr('id') );
 			// SEND userRecipeBones
 			console.log('SEND user recipes: ' + JSON.stringify(userRecipeBones));
+			$.ajax({
+				url: 'setuserrecipes.php',
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					json: JSON.stringify(userRecipeBones)
+				},
+				success: function(respond) {
+					console.log('Recipe respond: ' + JSON.stringify(respond));
+				}
+			})
 			activateChanges('false', '#'+$(this).attr('id') );
 		}
 	});
@@ -1645,7 +1656,7 @@ function getPersonalRecipeRecords(){
 
 	if($('#settings_recipes_items_container').length){
 
-		$.getJSON('/diary/getuserrecipes.php', function(data){
+		$.getJSON('getuserrecipes.php', function(data){
 
 			var products = [],
 			objBones = { "recipes": [] },
