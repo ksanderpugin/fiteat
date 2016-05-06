@@ -1,5 +1,7 @@
 <?php
 
+ini_set("display_errors", "Off");
+
 $data = array_key_exists("json", $_POST) ? json_decode($_POST["json"], true) : exit;
 
 include_once "../php/basic.php";
@@ -213,3 +215,92 @@ foreach ($compositions as $key => $flag) {
 }
 
 echo json_encode($new_ids);
+$time = time();
+calcRecipesEnergy($recalc_ids);
+writeLog("calc recipes time: " . (time() - $time) . "c");
+
+
+function calcRecipesEnergy($recipe_ids) {
+	$sql = SQL::getInst();
+	$comp = [];
+	$products = [];
+	$product_ids = [];
+	$recipes = [];
+	
+	$result = $sql->query("SELECT * FROM composition WHERE r_id IN (:ids)", [
+			[
+					"name" => ":ids",
+					"val" => substr( json_encode( array_keys($recipe_ids) ), 1, -1 ),
+					"type" => SQL::PARAM_STR
+			]
+	]);
+	
+	foreach ($result as $row) {
+		$comp[$row['id_r']][$row['id_p']] = $row['weight'];
+		$product_ids[$row['id_p']] = true;
+	}
+	
+	$result = $sql->query("SELECT * FROM products WHERE id IN (:ids)", [
+			[
+					"name" => ":ids",
+					"val" => substr( json_encode( array_keys($product_ids) ), 1, -1 ),
+					"type" => SQL::PARAM_STR
+			]
+	]);
+	
+	foreach ($result as $row) {
+		$products[$row['id']] = $row;
+	}
+	
+	foreach ($recipe_ids as $key => $t_) {
+		$r_en = [
+				'protein' => 0,
+				'fat' => 0,
+				'nzk' => 0,
+				'chol' => 0,
+				'carb' => 0,
+				'pv' => 0,
+				'na' => 0,
+				'k' => 0,
+				'ca' => 0,
+				'mg' => 0,
+				'p' => 0,
+				'fe' => 0,
+				'a' => 0,
+				'car' => 0,
+				're' => 0,
+				'te' => 0,
+				'b1' => 0,
+				'b2' => 0,
+				'ne' => 0,
+				'c' => 0,
+				'cal' => 0
+		];
+		
+		foreach ($comp[$key] as $id_p => $weight) {
+			foreach($r_en as $name_cell => $num) {
+				$num += $products[$id_p][$name_cell]*$weight/100;
+				$r_en[$name_cell] = $num;
+			}
+		}
+		
+		$params = [];
+		$query = "UPDATE recipe SET ";
+		foreach ($r_en as $name_cell => $val) {
+			$params[] = [
+					"name" => ":".$name_cell,
+					"val" => $val,
+					"type" => SQL::PARAM_FLOAT
+			];
+			$query .= $name_cell . "=:" . $name_cell . ", ";
+		}
+		$query = substr($query, 0, -2) . " WHERE id = :id";
+		$params[] = [
+				"name" => ":id",
+				"val" => $key,
+				"type" => SQL::PARAM_INT
+		];
+		
+		$sql->execute($query, $params);
+	}
+}

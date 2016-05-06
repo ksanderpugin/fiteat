@@ -1,5 +1,7 @@
 <?php
 
+ini_set("display_errors", "Off");
+
 include_once "../php/basic.php";
 include_once "../php/config.php";
 include_once "../php/sql.php";

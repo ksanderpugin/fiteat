@@ -8,3 +8,7 @@ function render($view,$data)
     $view_data = ob_get_clean();
     return $view_data;
 }
+
+function writeLog($str) {
+	file_put_contents(__DIR__.'/log.txt', $str . PHP_EOL, FILE_APPEND);
+}
