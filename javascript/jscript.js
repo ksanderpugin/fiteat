@@ -1,5 +1,5 @@
 var diaryFoodListBones = {}, userProductBones = {}, userRecipeBones = {}, userFavouriteProducts = {}, userBlacklistProducts = {},
-	foodDiaryRecordIDs = 0, personalProductRecordsIDs = 0, personalRecipeRecordsIDs = 0, personalProductRecipeRecordsIDs = 0,
+	foodDiaryRecordIDs = 0, personalProductRecordsIDs = 10000, personalRecipeRecordsIDs = 0, personalProductRecipeRecordsIDs = 0,
 	favouriteProductIDs = 0, blacklistProductIDs = 0,
 	typingTimer = 0;
 
@@ -1145,7 +1145,7 @@ function accountFormsInit(){
 				success: function(respond) {
 					console.log('Recipe respond: ' + JSON.stringify(respond));
 				}
-			})
+			});
 			activateChanges('false', '#'+$(this).attr('id') );
 		}
 	});
@@ -1482,6 +1482,20 @@ function accountFormEvents(){
 
 	$('#settings_recipes_items_container, #settings_favourite_products_container, #settings_blacklist_products_container').unbind('focusout').on('focusout', '.settings_recipes_item_part_name input', function(e){
 
+		$('#open_new_product_dialog').unbind('click').click(function(){
+			$('#new_product_dialog').css({
+				"display":"block",
+				"zIndex":"2"
+			});
+			$('#question_dialog').css({
+				"display":"none",
+				"zIndex":"-9999"
+			});
+
+			var text = $('#question_dialog_name').text();
+			createNewProduct(text, e.target);
+		});
+
 		var value = {
 			"productID": $("#active_input_field").find("input").attr("id"),
 			"productName":  $("#active_input_field").find("input").val()
@@ -1511,20 +1525,6 @@ function accountFormEvents(){
 		console.log('blacklist changed');
 	});
 
-	$('#open_new_product_dialog').unbind('click').click(function(){
-		$('#new_product_dialog').css({
-			"display":"block",
-			"zIndex":"2"
-		});
-		$('#question_dialog').css({
-			"display":"none",
-			"zIndex":"-9999"
-		});
-
-		var text = $('#question_dialog_name').text();
-		createNewProduct(text);
-	});
-
 	$('#product_dialog_close').unbind('click').click(function(){
 		$('#new_product_dialog').css({
 			"display":"none",
@@ -1541,9 +1541,6 @@ function accountFormEvents(){
 }
 
 function checkProductInBase(value){
-
-	// if (products name with this ID match name in base){
-	// }else{ openQuestionDialog(e.target.value); }
 
 	var output, temp = false, url = "../php/checkProductInBase.php?word=" + value.productName;
 
@@ -1572,6 +1569,7 @@ function checkProductInBase(value){
 }
 
 function openQuestionDialog(value){
+
 	$('#question_dialog_name').html(value.productName);
 	$('#question_dialog').css({
 		"display":"block",
@@ -1579,7 +1577,7 @@ function openQuestionDialog(value){
 	});
 }
 
-function createNewProduct(productName){
+function createNewProduct(productName, target){
 
 	var newName;
 
@@ -1597,6 +1595,8 @@ function createNewProduct(productName){
 			"carbohydrates": "60.0",
 			"calories": "660"
 		};
+
+	$(target).attr("id", newProduct.productID);
 
 	userProductsChanges(1, '', '', newProduct);
 
@@ -1687,7 +1687,12 @@ function getPersonalRecipeRecords(){
 			});
 			//userRecipeBones = objBones;
 			userRecipeBones = data;
+		}).fail(function( jqxhr, textStatus, error ){
+			 var err = textStatus + ', ' + error;
+			 console.log( "Request Failed: " + err);
 		});
+
+
 		accountFormEvents();
 	}
 }
@@ -2089,7 +2094,9 @@ function userRecipesChanges(changesCase, itemsID, changesType, newValue){
 		case 5:
 				// Change product in recipe (5, RecipeID, ProductID, { 'productName/weight': 'newName/newWeight'})
 
-				var recipeItemIndex = findWithAttr(userRecipeBones.recipes, 'recipeID', itemsID),
+				var recipeItemIndex;
+				recipeItemIndex = findWithAttr(userRecipeBones.recipes, 'recipeID', itemsID);
+				var productItemIndex;
 				productItemIndex = findWithAttr(userRecipeBones.recipes[recipeItemIndex].products, 'productID', changesType);
 
 				userRecipeBones.recipes[ recipeItemIndex ].products[productItemIndex][ newValue.type ] = newValue.value;
@@ -2225,7 +2232,7 @@ function specialProductsChanges(changesCase, containerType, newValue, itemsID){
 
 function findWithAttr(array, attr, value){
 	for(var i = 0; i < array.length; i += 1) {
-		if(array[i][attr] === value) {
+		if(array[i][attr] == value) {
 			return i;
 		}
 	}

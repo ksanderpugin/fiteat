@@ -1,7 +1,5 @@
 <?php
-
 ini_set("display_errors", "Off");
-
 include_once "../php/basic.php";
 include_once "../php/config.php";
 include_once "../php/sql.php";
@@ -54,4 +52,3 @@ foreach ($recipes as $recipe_id => $recipe_name) {
 }
 
 echo json_encode(["recipes" => $data]);
-

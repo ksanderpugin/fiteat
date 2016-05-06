@@ -26,21 +26,21 @@ if (!empty($result)) {
 	foreach ($result as $row) {
 		$user_rescipes[$row['id']] = $row['name'];
 	}
-	
-	$result = $sql->query("SELECT id_r, id_p, weight FROM composition WHERE id_r IN (SELECT id FROM recipes WHERE uid = " . 
+
+	$result = $sql->query("SELECT id_r, id_p, weight FROM composition WHERE id_r IN (SELECT id FROM recipes WHERE uid = " .
 			User::getInst()->getUserInfo()['id'] . ")");
-	
+
 	foreach ($result as $row) {
 		$compositions[$row['id_r'] . '-' . $row['id_p']] = $row['weight'];
 	}
 }
 
 if (!empty($data["recipes"])) foreach ($data["recipes"] as $recipe) {
-	
+
 	if ($recipe["recipeID"] < 0) {
-	
+
 		if (!empty($recipe["products"])) {
-			
+
 			$sql->execute("INSERT INTO recipes (name) VALUE (':name')",[
 					[
 							"name" => ":name",
@@ -50,10 +50,10 @@ if (!empty($data["recipes"])) foreach ($data["recipes"] as $recipe) {
 			]);
 			$new_ids[$recipe["recipeID"]] = $sql->getInsertID();
 			$recalc_ids[$sql->getInsertID()] = true;
-			
+
 			foreach ($recipe["products"] as $product) {
 				if ($product["productID"] < 0) {
-					
+
 					$result = $sql->query("SELECT id FROM products WHERE name = ':name'", [
 							[
 									"name" => ":name",
@@ -61,7 +61,7 @@ if (!empty($data["recipes"])) foreach ($data["recipes"] as $recipe) {
 									"type" => SQL::PARAM_STR
 							]
 					]);
-					
+
 					if (empty($result)) {
 						$sql->execute("INSERT INTO products (name, uid) VALUE (':name', :uid)", [
 								[
@@ -81,9 +81,9 @@ if (!empty($data["recipes"])) foreach ($data["recipes"] as $recipe) {
 						$new_ids[$product["productID"]] = $result[0]['id'];
 						$product["productID"] = $result[0]['id'];
 					}
-					
+
 				}
-					
+
 					$sql->execute("INSERT INTO composition VALUE (:id_r, :id_p, :weight)", [
 							[
 									"name" => ":id_r",
@@ -101,10 +101,10 @@ if (!empty($data["recipes"])) foreach ($data["recipes"] as $recipe) {
 									"type" => SQL::PARAM_INT
 							]
 					]);
-				
+
 			}
 		}
-		
+
 	} else {
 		if ($recipe["recipeName"] != $user_rescipes[$recipe["recipeID"]]) {
 			$sql->execute("UPDATE recipes SET name = ':name' WHERE id = :id", [
@@ -121,10 +121,10 @@ if (!empty($data["recipes"])) foreach ($data["recipes"] as $recipe) {
 			]);
 		}
 		$user_rescipes[$recipe["recipeID"]] = false;
-		
+
 		foreach ($recipe["products"] as $product) {
 			if ($product["productID"] < 0) {
-					
+
 				$result = $sql->query("SELECT id FROM products WHERE name = ':name'", [
 						[
 								"name" => ":name",
@@ -132,7 +132,7 @@ if (!empty($data["recipes"])) foreach ($data["recipes"] as $recipe) {
 								"type" => SQL::PARAM_STR
 						]
 				]);
-					
+
 				if (empty($result)) {
 					$sql->execute("INSERT INTO products (name, uid) VALUE (':name', :uid)", [
 							[
@@ -152,9 +152,9 @@ if (!empty($data["recipes"])) foreach ($data["recipes"] as $recipe) {
 					$new_ids[$product["productID"]] = $result[0]['id'];
 					$product["productID"] = $result[0]['id'];
 				}
-					
+
 			}
-			
+
 			if (!array_key_exists($recipe["recipeID"] . '-' . $product["productID"], $compositions)){
 				$sql->execute("INSERT INTO composition VALUE (:id_r, :id_p, :weight)", [
 						[
@@ -194,11 +194,11 @@ if (!empty($data["recipes"])) foreach ($data["recipes"] as $recipe) {
 				]);
 				$recalc_ids[$recipe["recipeID"]] = true;
 			}
-			
+
 			$compositions[ $recipe["recipeID"] . '-' . $product["productID"] ] = false;
 		}
 	}
-	
+
 }
 
 foreach ($user_rescipes as $key => $flag) {
@@ -226,7 +226,7 @@ function calcRecipesEnergy($recipe_ids) {
 	$products = [];
 	$product_ids = [];
 	$recipes = [];
-	
+
 	$result = $sql->query("SELECT * FROM composition WHERE r_id IN (:ids)", [
 			[
 					"name" => ":ids",
@@ -234,12 +234,12 @@ function calcRecipesEnergy($recipe_ids) {
 					"type" => SQL::PARAM_STR
 			]
 	]);
-	
+
 	foreach ($result as $row) {
 		$comp[$row['id_r']][$row['id_p']] = $row['weight'];
 		$product_ids[$row['id_p']] = true;
 	}
-	
+
 	$result = $sql->query("SELECT * FROM products WHERE id IN (:ids)", [
 			[
 					"name" => ":ids",
@@ -247,11 +247,11 @@ function calcRecipesEnergy($recipe_ids) {
 					"type" => SQL::PARAM_STR
 			]
 	]);
-	
+
 	foreach ($result as $row) {
 		$products[$row['id']] = $row;
 	}
-	
+
 	foreach ($recipe_ids as $key => $t_) {
 		$r_en = [
 				'protein' => 0,
@@ -276,14 +276,14 @@ function calcRecipesEnergy($recipe_ids) {
 				'c' => 0,
 				'cal' => 0
 		];
-		
+
 		foreach ($comp[$key] as $id_p => $weight) {
 			foreach($r_en as $name_cell => $num) {
 				$num += $products[$id_p][$name_cell]*$weight/100;
 				$r_en[$name_cell] = $num;
 			}
 		}
-		
+
 		$params = [];
 		$query = "UPDATE recipe SET ";
 		foreach ($r_en as $name_cell => $val) {
@@ -300,7 +300,7 @@ function calcRecipesEnergy($recipe_ids) {
 				"val" => $key,
 				"type" => SQL::PARAM_INT
 		];
-		
+
 		$sql->execute($query, $params);
 	}
 }
