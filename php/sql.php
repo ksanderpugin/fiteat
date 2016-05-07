@@ -14,6 +14,7 @@ class SQL {
         $result = $this->mysql->query($query);
         if ($result === false) {
             $this->last_error = $this->mysql->error;
+            writeLog("SQL Error:\n\t" . $this->last_error . "\n\tQuery: " . $this->last_query);
             return false;
         }
         $ret_res = [];
@@ -29,6 +30,7 @@ class SQL {
         $this->last_query = $query;
         if (!$this->mysql->real_query($query)) {
             $this->last_error = $this->mysql->error;
+            writeLog("SQL Error:\n\t" . $this->last_error . "\n\tQuery: " . $this->last_query);
             return false;
         }
         return true;

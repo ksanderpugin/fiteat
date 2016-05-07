@@ -175,14 +175,14 @@ if (!empty($data["recipes"])) foreach ($data["recipes"] as $recipe) {
 				]);
 			}
 			elseif ($compositions[ $recipe["recipeID"] . '-' . $product["productID"] ] != $product["weight"] ) {
-				$sql->execute("UPDATE compositions SET weight = :weight WHERE id_r = :id_r AND id_p = :id_p", [
+				$sql->execute("UPDATE composition SET weight = :weight WHERE id_r = :id_r AND id_p = :id_p", [
 						[
 								"name" => ":weight",
 								"val" => $product["weight"],
 								"type" => SQL::PARAM_INT
 						],
 						[
-								"name" => "id_r",
+								"name" => ":id_r",
 								"val" => $recipe["recipeID"],
 								"type" => SQL::PARAM_INT
 						],
@@ -211,6 +211,8 @@ foreach ($compositions as $key => $flag) {
 	if ($flag !== false) {
 		$ids = explode("-", $key);
 		$sql->execute("DELETE FROM composition WHERE id_r = $ids[0] AND id_p = $ids[1]");
+		if ($user_rescipes[$ids[0]] === false) 
+			$recalc_ids[$ids[0]] = true;
 	}
 }
 
@@ -227,7 +229,7 @@ function calcRecipesEnergy($recipe_ids) {
 	$product_ids = [];
 	$recipes = [];
 
-	$result = $sql->query("SELECT * FROM composition WHERE r_id IN (:ids)", [
+	$result = $sql->query("SELECT * FROM composition WHERE id_r IN (:ids)", [
 			[
 					"name" => ":ids",
 					"val" => substr( json_encode( array_keys($recipe_ids) ), 1, -1 ),
@@ -285,14 +287,16 @@ function calcRecipesEnergy($recipe_ids) {
 		}
 
 		$params = [];
-		$query = "UPDATE recipe SET ";
+		$query = "UPDATE recipes SET ";
+		$val_id = 0;
 		foreach ($r_en as $name_cell => $val) {
+			$val_id++;
 			$params[] = [
-					"name" => ":".$name_cell,
+					"name" => ":val".$val_id,
 					"val" => $val,
 					"type" => SQL::PARAM_FLOAT
 			];
-			$query .= $name_cell . "=:" . $name_cell . ", ";
+			$query .= $name_cell . "=:val" . $val_id . ", ";
 		}
 		$query = substr($query, 0, -2) . " WHERE id = :id";
 		$params[] = [
