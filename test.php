@@ -11,6 +11,8 @@ if ($word) {
 	$results = SQL::getInst()->query("SELECT * FROM products WHERE name LIKE '%$word%'");
 }
 
+$test = "test git pub";
+
 ?><!DOCTYPE html>
 <html lang="ru">
 <head>
