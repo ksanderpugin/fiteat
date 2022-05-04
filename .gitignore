@@ -45,3 +45,7 @@ Temporary Items
 
 # Log file
 log.txt
+
+# Configure files
+config.php
+settings.php
